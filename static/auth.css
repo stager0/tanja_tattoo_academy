@@ -1,0 +1,285 @@
+/* ====================================================================
+   --- Tanja Tattoo Academy - Auth Pages Stylesheet ---
+   ==================================================================== */
+
+/* --- Global Settings & Variables --- */
+:root {
+    --bg-dark: #0d0d0d;
+    --bg-surface: #1a1a1a;
+    --primary-orange: #ff4500;
+    --primary-orange-hover: #e03e00;
+    --accent-glow: rgba(255, 69, 0, 0.5);
+    --text-light: #f5f5f5;
+    --text-medium: #a0a0a0;
+    --border-color: #333333;
+    --success-color: #28a745;
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Roboto', sans-serif;
+    --font-logo: 'Megrim', cursive;
+    --transition-fast: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+    background-size: 30px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- Auth Container and Box --- */
+.auth-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-box, .thank-you-box {
+    width: 100%;
+    max-width: 500px;
+    background: linear-gradient(145deg, var(--bg-surface), #111);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    animation: fade-in-up 0.8s ease-out;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Logo and Titles --- */
+.logo {
+    font-family: var(--font-logo);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--text-light);
+    text-decoration: none;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.logo span {
+    color: var(--primary-orange);
+    font-family: var(--font-primary);
+    font-weight: 900;
+    font-size: 2.2rem;
+}
+
+.auth-box h2 {
+    font-family: var(--font-primary);
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.auth-subtitle {
+    color: var(--text-medium);
+    margin-bottom: 30px;
+}
+
+/* --- Form Styles --- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    text-align: left;
+}
+
+.input-row {
+    display: flex;
+    gap: 20px;
+}
+
+.input-row .input-group {
+    width: 50%;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input-group input::placeholder {
+    color: #555;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.btn {
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-orange);
+    color: var(--text-light);
+    text-decoration: none;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: var(--primary-orange-hover);
+    transform: translateY(-3px);
+}
+
+/* --- Form Footer --- */
+.form-footer {
+    margin-top: 25px;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+.form-footer a, .forgot-password, .back-link {
+    color: var(--primary-orange);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+.form-footer a:hover, .forgot-password:hover, .back-link:hover {
+    color: var(--primary-orange-hover);
+    text-decoration: underline;
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 10px;
+}
+
+/* --- Thank You Page Specifics --- */
+.thank-you-box {
+    max-width: 600px;
+}
+
+.thank-you-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--success-color);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 2.5rem;
+    animation: icon-pop-in 0.5s 0.5s ease-out backwards;
+}
+
+@keyframes icon-pop-in {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.thank-you-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--text-light);
+}
+
+.thank-you-box p {
+    color: var(--text-medium);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.message-box {
+    background-color: rgba(0,0,0,0.2);
+    border-left: 4px solid var(--primary-orange);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.message-box p {
+    margin-bottom: 0;
+    font-size: 1rem;
+}
+
+.thank-you-box .btn {
+    max-width: 300px;
+    margin: 0 auto 20px;
+}
+
+.back-link {
+    display: inline-block;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 500px) {
+    .auth-box, .thank-you-box {
+        padding: 30px 20px;
+    }
+
+    .logo {
+        font-size: 2.5rem;
+    }
+
+    .logo span {
+        font-size: 1.8rem;
+    }
+
+    .auth-box h2 {
+        font-size: 1.8rem;
+    }
+
+    .input-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .input-row .input-group {
+        width: 100%;
+    }
+}

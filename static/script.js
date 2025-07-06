@@ -2,7 +2,7 @@
    --- Tanja Tattoo Academy Scripts ---
    ==================================================================== */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     const app = {
         // --- 1. Initialize all functionalities ---
@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.handleActiveNavOnScroll();
             this.updateCopyrightYear();
             this.handleSmoothScrollForModalButton();
+            this.handlePricingToggle();
+            this.handleCourseLessonsToggle();
         },
 
         // --- 2. Preloader ---
@@ -29,19 +31,43 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
 
+        handleCourseLessonsToggle() {
+            const toggleButton = document.querySelector('.lessons-toggle-btn');
+            const navContainer = document.querySelector('.course-lessons-nav-mobile');
+
+            if (toggleButton && navContainer) {
+                toggleButton.addEventListener('click', () => {
+                    const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+
+                    navContainer.classList.toggle('active');
+                    toggleButton.setAttribute('aria-expanded', !isExpanded);
+
+                    // Меняем иконку (опционально)
+                    const icon = toggleButton.querySelector('i');
+                    if (icon) {
+                        if (navContainer.classList.contains('active')) {
+                            icon.classList.remove('fa-list');
+                            icon.classList.add('fa-times'); // Или fa-chevron-up, fa-arrow-up
+                        } else {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-list'); // Или fa-chevron-down, fa-arrow-down
+                        }
+                    }
+                });
+            }
+        },
+
         // --- 3. Header Scroll Effect & Parallax ---
         handleHeaderScroll() {
             const header = document.getElementById('main-header');
             const heroBg = document.querySelector('.hero-bg-parallax');
             if (header) {
                 window.addEventListener('scroll', () => {
-                    // Header scroll
                     if (window.scrollY > 50) {
                         header.classList.add('scrolled');
                     } else {
                         header.classList.remove('scrolled');
                     }
-                    // Hero parallax
                     if (heroBg) {
                         const offset = window.pageYOffset;
                         heroBg.style.transform = `translateY(${offset * 0.4}px)`;
@@ -138,30 +164,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (e.key === 'Escape' && modal.classList.contains('visible')) closeModal();
             });
 
-            this.modalInstance = { openModal, closeModal };
+            this.modalInstance = {openModal, closeModal};
         },
 
         // --- 7. Smooth scrolling for tariff button inside modal ---
         handleSmoothScrollForModalButton() {
             const modalTariffBtn = document.querySelector('.modal-action-btn');
-            if(modalTariffBtn) {
+            if (modalTariffBtn) {
                 modalTariffBtn.addEventListener('click', (e) => {
                     e.preventDefault();
                     if (this.modalInstance) {
                         this.modalInstance.closeModal();
                     }
-                    // Wait for modal to close
                     setTimeout(() => {
                         const tariffsSection = document.getElementById('tariffs');
                         if (tariffsSection) {
-                            tariffsSection.scrollIntoView({ behavior: 'smooth' });
+                            tariffsSection.scrollIntoView({behavior: 'smooth'});
                         }
                     }, 300);
                 });
             }
         },
 
-        // --- 8. Scroll Reveal Animation ---
+        // --- 8. Pricing Toggle for Tariffs --- NEW FUNCTION ---
+        handlePricingToggle() {
+            const pricingSwitch = document.getElementById('pricing-switch');
+            const tariffsSection = document.getElementById('tariffs');
+            if (pricingSwitch && tariffsSection) {
+                pricingSwitch.addEventListener('change', () => {
+                    if (pricingSwitch.checked) {
+                        tariffsSection.classList.add('parts-active');
+                    } else {
+                        tariffsSection.classList.remove('parts-active');
+                    }
+                });
+            }
+        },
+
+        // --- 9. Scroll Reveal Animation ---
         handleScrollAnimations() {
             const revealElements = document.querySelectorAll('.animate-on-scroll');
             if (revealElements.length > 0) {
@@ -175,13 +215,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, {threshold: 0.1});
 
                 revealElements.forEach(el => revealObserver.observe(el));
             }
         },
 
-        // --- 9. Scroll to Top Button ---
+        // --- 10. Scroll to Top Button ---
         handleScrollToTop() {
             const scrollToTopBtn = document.getElementById('scroll-to-top');
             if (scrollToTopBtn) {
@@ -194,12 +234,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 scrollToTopBtn.addEventListener('click', e => {
                     e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({top: 0, behavior: 'smooth'});
                 });
             }
         },
 
-        // --- 10. Active Navigation Link on Scroll ---
+        // --- 11. Active Navigation Link on Scroll ---
         handleActiveNavOnScroll() {
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.main-nav a');
@@ -224,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
 
-        // --- 11. Update Copyright Year ---
+        // --- 12. Update Copyright Year ---
         updateCopyrightYear() {
             const yearSpan = document.getElementById('current-year');
             if (yearSpan) {

@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanja Tattoo Academy - Курси тату для початківців та профі</title>
+    <meta name="description" content="Навчіться мистецтву татуювання з нуля. Онлайн-курси від Tanja Tattoo Academy з підтримкою ментора, домашніми завданнями та практикою.">
+
+    <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <header class="main-header" id="main-header">
+        <div class="container header-content">
+            <a href="#hero" class="logo">Tanja<span>Tattoo</span></a>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="#about">Про курс</a></li>
+                    <li><a href="#tariffs">Тарифи</a></li>
+                    <li><a href="#curriculum">Програма</a></li>
+                    <li><a href="#works">Роботи учнів</a></li>
+                    <li><a href="#mentor">Ментор</a></li>
+                </ul>
+                <a href="{% url 'login' %}" class="btn btn-secondary btn-login-mobile">Увійти</a>
+            </nav>
+            <div class="header-actions">
+                 <a href="{% url 'login' %}" class="btn btn-login">Увійти</a>
+                 <button class="menu-toggle" id="menu-toggle" aria-label="Відкрити меню" aria-expanded="false">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-bg-parallax"></div>
+            <div class="container hero-content">
+                <h1 class="animate-on-scroll" data-animation="fade-in-up">Стань <span>тату-майстром</span> з нуля</h1>
+                <p class="animate-on-scroll" data-animation="fade-in-up" data-delay="100">Опануй затребувану професію з повною підтримкою ментора, отримай усі необхідні інструменти та почни заробляти на творчості.</p>
+                <div class="animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+                    <a href="#tariffs" class="btn">Обрати свій тариф</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container about-content">
+                <div class="about-text animate-on-scroll" data-animation="fade-in-left">
+                    <h3>Що таке Tanja Tattoo Academy?</h3>
+                    <p>Це не просто курс, а повна система навчання, яка перетворить вас з новачка на впевненого тату-майстра. Ми розробили унікальну програму, що поєднує глибоку теорію, практичні домашні завдання на штучній шкірі та постійний зворотний зв'язок від досвідченого ментора.</p>
+                    <p>Ви навчитеся всьому: від вибору обладнання та стандартів безпеки до створення унікальних дизайнів та роботи з клієнтами. Наша мета — ваш успіх.</p>
+                </div>
+                <div class="about-video animate-on-scroll" data-animation="fade-in-right">
+                    <img src="{% static 'imgs/preview.jpg' %}" alt="Прев'ю курсу з тату">
+                    <div class="play-button" id="play-preview-video" aria-label="Дивитись відео-прев'ю">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tariffs">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Оберіть свій шлях</h2>
+                <div class="tariffs-grid">
+                    <div class="tariff-card animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+                        <div class="tariff-header">
+                            <h3>Base</h3>
+                            <p class="tariff-desc">Для самостійного старту</p>
+                        </div>
+                        <div class="tariff-price-wrapper">
+                            <div class="price-full">
+                                <span class="price-amount">$300</span>
+                            </div>
+                            <div class="price-parts">
+                                <span class="price-amount">$80<span class="price-period">/міс</span></span>
+                                <span class="price-note">4 платежі</span>
+                            </div>
+                        </div>
+                        <ul class="tariff-features">
+                            <li><i class="fas fa-check"></i>Доступ до 30+ відеолекцій</li>
+                            <li><i class="fas fa-check"></i>Домашні завдання</li>
+                            <li><i class="fas fa-check"></i>Перевірка ДЗ ментором</li>
+                            <li><i class="fas fa-check"></i>Приватний чат з ментором</li>
+                            <li><i class="fas fa-check"></i>Доступ до курсу назавжди</li>
+                            <li class="disabled"><i class="fas fa-times"></i>Готовий бокс для старту</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary">Обрати Base</a>
+                    </div>
+
+                    <div class="tariff-card pro animate-on-scroll" data-animation="fade-in-up" data-delay="300">
+                        <div class="tariff-header">
+                            <h3>Pro</h3>
+                            <p class="tariff-desc">Все для швидкого результату</p>
+                        </div>
+                        <div class="tariff-price-wrapper">
+                            <div class="price-full">
+                                <span class="price-amount">$600</span>
+                            </div>
+                            <div class="price-parts">
+                                <span class="price-amount">$155<span class="price-period">/міс</span></span>
+                                <span class="price-note">4 платежі</span>
+                            </div>
+                        </div>
+                        <ul class="tariff-features">
+                            <li><i class="fas fa-star"></i><b>Все, що в тарифі Base</b></li>
+                            <li><i class="fas fa-check"></i><b>Готовий бокс для старту</b></li>
+                            <li><i class="fas fa-check"></i>Пріоритетна перевірка ДЗ</li>
+                            <li><i class="fas fa-check"></i>Додаткові матеріали</li>
+                            <li class="disabled"><i class="fas fa-times"></i>Персональна практика</li>
+                        </ul>
+                        <a href="#" class="btn">Обрати Pro</a>
+                    </div>
+
+                    <div class="tariff-card animate-on-scroll" data-animation="fade-in-up" data-delay="400">
+                         <div class="tariff-header">
+                            <h3>Master</h3>
+                            <p class="tariff-desc">Персональний супровід</p>
+                        </div>
+                        <div class="tariff-price-wrapper">
+                            <div class="price-full">
+                                <span class="price-amount">$1000</span>
+                            </div>
+                             <div class="price-parts">
+                                <span class="price-amount">$255<span class="price-period">/міс</span></span>
+                                <span class="price-note">4 платежі</span>
+                            </div>
+                        </div>
+                        <ul class="tariff-features">
+                            <li><i class="fas fa-crown"></i><b>Все, що в тарифі Pro</b></li>
+                            <li><i class="fas fa-check"></i><b>Персональна практика</b></li>
+                            <li><i class="fas fa-check"></i>Особиста консультація</li>
+                            <li><i class="fas fa-check"></i>Допомога з портфоліо</li>
+                            <li><i class="fas fa-check"></i>Сертифікат про закінчення</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary">Обрати Master</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gifting">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Ваш Доступ до Майстерності: Просто, Швидко та Назавжди</h2>
+                <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">
+                    Ми розробили систему, яка дає вам максимальну гнучкість та цінність, незалежно від того, купуєте ви курс для себе чи в подарунок.
+                </p>
+                <div class="gifting-process">
+                    <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="100">
+                        <div class="gifting-icon"><i class="fas fa-receipt"></i></div>
+                        <h3>1. Купівля та Код</h3>
+                        <p>Після оплати ви миттєво отримуєте на email унікальний «Код Підписки». Це ваш персональний ключ до курсу.</p>
+                    </div>
+                    <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+                        <div class="gifting-icon"><i class="fas fa-user-plus"></i></div>
+                        <h3>2. Реєстрація та Активація</h3>
+                        <p>Пройдіть просту реєстрацію на платформі та активуйте свій код. Це відкриє вам повний доступ до всіх матеріалів вашого тарифу.</p>
+                    </div>
+                    <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="300">
+                        <div class="gifting-icon"><i class="fas fa-shipping-fast"></i></div>
+                        <h3>3. Тату-Бокс Вже в Дорозі!</h3>
+                        <p>Якщо ваш тариф включає бокс, після активації коду заповніть адресу доставки. Через пару днів все необхідне буде вже у вас!</p>
+                    </div>
+                </div>
+                 <div class="gifting-benefits animate-on-scroll" data-animation="fade-in-up" data-delay="400">
+                    <h3>Ваші Пожиттєві Привілеї</h3>
+                    <ul>
+                        <li><i class="fas fa-bolt"></i> <strong>Швидкий фідбек:</strong> Оперативна перевірка ДЗ та відповіді на питання.</li>
+                        <li><i class="fas fa-headset"></i> <strong>Підтримка після курсу:</strong> Залишайтеся на зв'язку з ментором і ставте запитання.</li>
+                        <li><i class="fas fa-infinity"></i> <strong>Безкоштовні оновлення:</strong> Отримуйте всі майбутні оновлення курсу без доплат.</li>
+                        <li><i class="fas fa-gift"></i> <strong>Ідеальний подарунок:</strong> Код можна подарувати — він безстроковий і не має терміну дії.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="curriculum">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Програма курсу</h2>
+                <div class="lesson-list animate-on-scroll" data-animation="fade-in-up">
+                    <div class="lesson-item" id="open-first-lesson">
+                        <div class="lesson-header">
+                            <span class="lesson-title">1. Вступ. Все про професію тату-майстра</span>
+                            <span class="lesson-status">
+                                Дивитись безкоштовно <i class="fas fa-play-circle"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="lesson-item locked">
+                        <div class="lesson-header">
+                            <span class="lesson-title">2. Обладнання. Як обрати та налаштувати?</span>
+                            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+                        </div>
+                    </div>
+                     <div class="lesson-item locked">
+                        <div class="lesson-header">
+                            <span class="lesson-title">3. Стерильність та безпека. Основа роботи</span>
+                            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+                        </div>
+                    </div>
+                    <div class="lesson-item locked">
+                        <div class="lesson-header">
+                            <span class="lesson-title">4. Контури. Техніки та практика</span>
+                            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+                        </div>
+                    </div>
+                     <div class="lesson-item locked">
+                        <div class="lesson-header">
+                            <span class="lesson-title">5. Закрас та тіні. Створюємо об'єм</span>
+                            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="works">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Роботи наших учнів</h2>
+                <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">Це результати, яких досягають студенти ще під час навчання на штучній шкірі.</p>
+                <div class="work-gallery">
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in"><img src="{% static 'imgs/img1.jpg' %}" alt="Робота учня Тамара"></div>
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="100"><img src="{% static 'imgs/img2.jpg' %}" alt="Робота учня Антон"></div>
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="200"><img src="{% static 'imgs/img3.jpg' %}" alt="Робота учня Валентина"></div>
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in"><img src="{% static 'imgs/img4.jpg' %}" alt="Робота учня Юлія"></div>
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="100"><img src="{% static 'imgs/img5.jpg' %}" alt="Робота учня Артур"></div>
+                    <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="200"><img src="{% static 'imgs/img6.jpg' %}" alt="Робота учня Світлана"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mentor">
+            <div class="container">
+                 <h2 class="animate-on-scroll" data-animation="fade-in-up">Ваш ментор</h2>
+                 <div class="mentor-content">
+                     <div class="mentor-photo animate-on-scroll" data-animation="fade-in-right">
+                         <img src="{% static 'imgs/tanja_foto.jpg' %}" alt="Фото ментора Tanja">
+                     </div>
+                     <div class="mentor-bio animate-on-scroll" data-animation="fade-in-left">
+                         <h3>Tanja</h3>
+                         <span class="title">Тату-майстриня з 15-річним досвідом</span>
+                         <p>Привіт! Я Таня, і я допоможу тобі пройти шлях від першого дотику голки до шкіри до твоїх перших задоволених клієнтів. Я вірю, що талант — це лише 10% успіху, а решта — практика та правильні знання. Я зібрала весь свій досвід, помилки та лайфхаки в цьому курсі, щоб твій старт був максимально ефективним та безпечним. Я буду з тобою на кожному етапі, перевірятиму твої роботи та відповідатиму на всі питання.</p>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="marketing-faq">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Залишились Сумніви? Розвіємо їх!</h2>
+                <div class="faq-container animate-on-scroll" data-animation="fade-in-up">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>А що, якщо в мене не вийде? Я боюся витратити гроші даремно.</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Цей курс створений саме для того, щоб у вас вийшло. Вся програма побудована покроково, від найпростішого до складного. Зворотний зв'язок від ментора не дасть вам звернути з правильного шляху, а постійна практика на штучній шкірі виробить впевненість. Це не просто витрати, а інвестиція у реальний навик, який залишиться з вами назавжди і зможе приносити дохід.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Чи зможу я навчитися онлайн так само добре, як на "живих" курсах?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Онлайн-формат дає навіть переваги! Ви можете переглядати уроки скільки завгодно разів у зручному для вас темпі, чого не зробиш на оффлайн-занятті. Ви отримуєте персональну увагу ментора до ваших робіт, а не ділите його з групою. Доступ до курсу назавжди дозволяє повернутися до будь-якої теми навіть через рік. Це сучасний та ефективний підхід до навчання.</p>
+                        </div>
+                    </div>
+                     <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Чи точно мені вистачить того, що входить до тату-боксу?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Абсолютно. Тату-бокс — це не випадковий набір, а ретельно підібраний комплект професійного обладнання, яким користується сама Таня. У ньому є все, щоб ви не лише пройшли всі практичні завдання на курсі, а й змогли впевнено розпочати роботу з першими клієнтами, не думаючи про додаткові закупівлі.</p>
+                        </div>
+                    </div>
+                     <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Коли я зможу почати заробляти?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Ваш заробіток безпосередньо залежить від вашої старанності. Багато наших учнів починають брати перші замовлення на прості тату ще під час проходження курсу, відпрацювавши навички на штучній шкірі. Після виконання всіх домашніх завдань ви матимете не тільки навички, а й портфоліо, яке дозволить вам впевнено назвати свою першу ціну за роботу.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta">
+            <div class="container animate-on-scroll" data-animation="fade-in-up">
+                <h2>Готові Почати Свій Шлях?</h2>
+                <p class="section-subtitle">Не відкладайте мрію на потім. Зробіть найціннішу інвестицію — у себе та свої навички. Оберіть свій тариф і зробіть перший крок до нової, творчої професії вже сьогодні.</p>
+                <a href="#tariffs" class="btn">Хочу на курс!</a>
+            </div>
+        </section>
+
+        <section id="request-form-section">
+            <div class="container">
+                <h2 class="animate-on-scroll" data-animation="fade-in-up">Залишити заявку</h2>
+                <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">
+                    Заповніть форму, і ми зв'яжемося з вами для консультації та відповіді на всі ваші запитання.
+                </p>
+                <form action="" method="POST" class="request-form animate-on-scroll" data-animation="fade-in-up">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Як до вас звертатися?</label>
+                        <input type="text" id="name" name="name" placeholder="Ваше ім'я" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_method">Соц. мережа куди найкраще написати</label>
+                        <input type="text" id="contact_method" name="contact_method" placeholder="Telegram, Instagram, Viber..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_details">Ваш нік або номер телефону</label>
+                        <input type="text" id="contact_details" name="contact_details" placeholder="@username або +380 XX XXX XX XX" required>
+                    </div>
+                    <button type="submit" class="btn">Відправити заявку</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            </div>
+            <p class="footer-copyright">© <span id="current-year">2025</span> Tanja Tattoo Academy. Всі права захищено.</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="lesson-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal" aria-label="Закрити модальне вікно">×</button>
+            <div class="video-container">
+                <iframe id="video-iframe" src="" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="lesson-details">
+                <h3>1. Вступ. Все про професію тату-майстра</h3>
+                <p>У цьому уроці ми поговоримо про те, хто такий тату-майстер, які перспективи відкриває ця професія, та що потрібно для успішного старту. Розвіємо популярні міфи та налаштуємось на продуктивне навчання.</p>
+                <div class="homework-section">
+                    <h4>Домашнє завдання</h4>
+                    <p>Щоб завантажити ДЗ та задати питання ментору, будь ласка, придбайте курс.</p>
+                    <a href="#tariffs" class="btn modal-action-btn">Обрати тариф</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="scroll-to-top" class="scroll-to-top" aria-label="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>

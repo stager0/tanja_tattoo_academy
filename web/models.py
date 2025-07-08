@@ -1,3 +1,6 @@
-from django.db import models
+from web.custom_auth_user_manager import EmailAbstractUser
 
-# Create your models here.
+
+class UserModel(EmailAbstractUser):
+    def __str__(self):
+        return self.email

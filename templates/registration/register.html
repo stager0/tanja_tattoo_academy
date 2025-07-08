@@ -19,7 +19,11 @@
             <a href="../index.html" class="logo">Tanja<span>Tattoo</span></a>
             <h2>Створення акаунту</h2>
             <p class="auth-subtitle">Заповніть форму, щоб почати свій шлях тату-майстра</p>
-            <form action="#">
+            <form action="{% url 'register' %}" method="post">
+              {% csrf_token %}
+              {% if form.errors %}
+                <p style="color: red">Invalid Data {{ form.errors }}</p>
+              {% endif %}
                 <div class="input-row">
                     <div class="input-group">
                         <label for="first_name">Ім'я</label>
@@ -36,21 +40,25 @@
                 </div>
                 <div class="input-group">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" name="password" required placeholder="Мінімум 8 символів">
+                    <input type="password" id="password" name="password1" required placeholder="Мінімум 8 символів">
+                </div>
+                <div class="input-group">
+                    <label for="password">Повтор пароля</label>
+                    <input type="password" id="password" name="password2" required placeholder="Мінімум 8 символів">
                 </div>
                 <div class="input-group">
                     <label for="phone">Телефон (необов'язково)</label>
-                    <input type="tel" id="phone" name="phone" placeholder="+380 12 345 6789">
+                    <input type="tel" id="phone" name="phone" placeholder="+380123456789">
                 </div>
                 <div class="input-group">
                     <label for="subscription_code">Код підписки</label>
-                    <input type="text" id="subscription_code" name="subscription_code" required placeholder="XXXX-XXXX-XXXX">
+                    <input type="text" id="subscription_code" name="code" required placeholder="XXXX-XXXX-XXXX">
                 </div>
 
                 <button type="submit" class="btn">Зареєструватись</button>
             </form>
             <div class="form-footer">
-                <p>Вже маєте акаунт? <a href="login.html">Увійти</a></p>
+                <p>Вже маєте акаунт? <a href="{% url "login" %}">Увійти</a></p>
             </div>
         </div>
     </div>

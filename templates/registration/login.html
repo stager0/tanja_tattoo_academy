@@ -2,40 +2,47 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вхід - Tanja Tattoo Academy</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вхід - Tanja Tattoo Academy</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'auth.css' %}">
+  <link rel="stylesheet" href="{% static 'auth.css' %}">
 </head>
 <body>
 
-    <div class="auth-container">
-        <div class="auth-box">
-            <a href="index.html" class="logo">Tanja<span>Tattoo</span></a>
-            <h2>Вхід до кабінету</h2>
-            <p class="auth-subtitle">Введіть ваші дані, щоб отримати доступ до курсу</p>
-            <form action="#">
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="example@email.com">
-                </div>
-                <div class="input-group">
-                    <label for="password">Пароль</label>
-                    <input type="password" id="password" name="password" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn">Увійти</button>
-            </form>
-            <div class="form-footer">
-                <p>Ще не маєте акаунту? <a href="{% url 'register' %}">Зареєструватись</a></p>
-                <a href="#" class="forgot-password">Забули пароль?</a>
-            </div>
-        </div>
+<div class="auth-container">
+  <div class="auth-box">
+    <a href="../index.html" class="logo">Tanja<span>Tattoo</span></a>
+    <h2>Вхід до кабінету</h2>
+
+    <p class="auth-subtitle">Введіть ваші дані, щоб отримати доступ до курсу</p>
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      {% if form.errors %}
+        <p style="color: red">Invalid Credentials</p>
+      {% endif %}
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="username" required placeholder="example@email.com">
+      </div>
+      <div class="input-group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn">Увійти</button>
+    </form>
+    <div class="form-footer">
+      <p>Ще не маєте акаунту? <a href="{% url 'register' %}">Зареєструватись</a></p>
+      <a href="{% url 'change_password_request' %}" class="forgot-password">Забули пароль?</a>
     </div>
+  </div>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,80 @@
+{% extends 'base-admin.html' %}
+{% load static %}
+
+{% block title %}Список учнів - {{ block.super }}{% endblock %}
+{% block header_title %}Список учнів{% endblock %}
+
+{% block content %}
+<div class="list-controls">
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Пошук за іменем або email...">
+    </div>
+    <div class="filters">
+        <select class="filter-select" aria-label="Фільтр по прогресу">
+            <option value="">Весь прогрес</option>
+            <option value="low">Низький (< 30%)</option>
+            <option value="medium">Середній (30-80%)</option>
+            <option value="high">Високий (> 80%)</option>
+        </select>
+    </div>
+    <div class="view-switcher">
+        <button class="btn-icon view-btn active" id="view-grid-btn" aria-label="Вигляд сіткою"><i class="fas fa-th-large"></i></button>
+        <button class="btn-icon view-btn" id="view-list-btn" aria-label="Вигляд списком"><i class="fas fa-bars"></i></button>
+    </div>
+</div>
+
+<div class="students-container view-grid">
+    <div class="admin-grid students-grid">
+        <div class="admin-item-card student-card">
+            <div class="admin-item-header">
+                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
+                <div class="info">
+                    <strong>Таня Іванова</strong>
+                    <p>tanya.ivanova@email.com</p>
+                </div>
+            </div>
+            <div class="student-card-progress">
+                <div class="progress-info">
+                    <span>Прогрес</span>
+                    <span>75%</span>
+                </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill success" style="width: 75%;"></div></div>
+            </div>
+            <div class="student-card-stats">
+                <div><span>Тариф:</span><strong>Pro</strong></div>
+                <div><span>Остання активність:</span><strong>сьогодні</strong></div>
+            </div>
+            <div class="student-card-actions">
+                <a href="#" class="btn btn-secondary">Профіль</a>
+                <a href="#" class="btn">Чат</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="students-list-view">
+        <div class="list-header">
+            <span>Учень</span>
+            <span>Прогрес</span>
+            <span>Тариф</span>
+            <span>Активність</span>
+            <span style="text-align: right;">Дії</span>
+        </div>
+        <div class="admin-item-card list-item">
+            <div class="student-info-cell">
+                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
+                <div><strong>Таня Іванова</strong><p>tanya.ivanova@email.com</p></div>
+            </div>
+            <div class="student-progress">
+                <div class="progress-bar-bg"><div class="progress-bar-fill success" style="width: 75%;"></div></div>
+                <span>75%</span>
+            </div>
+            <div>Pro</div>
+            <div>сьогодні</div>
+            <div class="item-actions" style="justify-content: flex-end;">
+                <a href="#" class="btn btn-sm">Чат</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

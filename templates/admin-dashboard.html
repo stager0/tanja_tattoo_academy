@@ -1,0 +1,72 @@
+{% extends 'base-admin.html' %}
+{% load static %}
+
+{% block title %}Дашборд Ментора - {{ block.super }}{% endblock %}
+{% block header_title %}Дашборд Ментора{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard-grid">
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <i class="fas fa-inbox"></i>
+            <h3>Завдання на перевірку (3)</h3>
+        </div>
+        <div class="admin-list">
+            <div class="list-item">
+                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
+                <div class="item-info">
+                    <strong>Таня Іванова</strong>
+                    <p>Урок 4: Закрас та тіні</p>
+                </div>
+                <a href="#" class="btn btn-sm">Перевірити</a>
+            </div>
+            <div class="list-item">
+                <img class="avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="Avatar">
+                <div class="item-info">
+                    <strong>Іван Петренко</strong>
+                    <p>Урок 3: Контури</p>
+                </div>
+                <a href="#" class="btn btn-sm">Перевірити</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <i class="fas fa-chart-line"></i>
+            <h3>Прогрес студентів</h3>
+        </div>
+        <div class="admin-list">
+            <div class="list-item">
+                <div class="item-info" style="width: 100%;">
+                    <strong>Олена Коваленко 📉</strong>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill error" style="width: 15%;"></div></div>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="item-info" style="width: 100%;">
+                    <strong>Таня Іванова 🏆</strong>
+                     <div class="progress-bar-bg"><div class="progress-bar-fill success" style="width: 75%;"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-card full-width">
+        <div class="admin-card-header">
+            <i class="fas fa-comments"></i>
+            <h3>Останні повідомлення</h3>
+        </div>
+        <div class="admin-list">
+            <div class="list-item">
+                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
+                <div class="item-info">
+                    <strong>Таня Іванова</strong>
+                    <p>"І ще питання, подивіться, будь ласка..."</p>
+                </div>
+                <a href="#" class="btn btn-sm">До чату</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

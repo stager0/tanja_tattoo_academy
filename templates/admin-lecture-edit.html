@@ -1,27 +1,26 @@
 {% extends 'base-admin.html' %}
 {% load static %}
 
-{% block title %}Створення лекції - {{ block.super }}{% endblock %}
-{% block header_title %}Створення нової лекції{% endblock %}
+{% block title %}Редагування лекції - {{ block.super }}{% endblock %}
+{% block header_title %}Редагування лекції{% endblock %}
 
 {% block content %}
   <div class="card">
     <a href="{% url 'admin_lecture_list' %}" class="back-link"><i class="fas fa-arrow-left"></i> До списку лекцій</a>
 
-    <form id="create-lecture-form" style="margin-top: 20px;">
+    <form id="edit-lecture-form" style="margin-top: 20px;">
+      <input type="hidden" id="lecture-id" value="1">
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange);">Основна частина</h4>
       <div class="form-grid">
         <div class="input-group">
           <label for="lecture-title">Назва лекції</label>
-          <input type="text" id="lecture-title" name="lecture-title" required
-                 placeholder="Наприклад, 'Урок 5: Робота з кольором'">
+          <input type="text" id="lecture-title" name="lecture-title" required>
         </div>
 
         <div class="input-group">
           <label for="lecture-video-url">Посилання на відео уроку</label>
-          <input type="url" id="lecture-video-url" name="lecture-video-url" required
-                 placeholder="https://www.youtube.com/watch?v=...">
+          <input type="url" id="lecture-video-url" name="lecture-video-url" required>
         </div>
       </div>
 
@@ -37,12 +36,11 @@
       </h4>
       <div class="input-group">
         <label for="homework-description">Опис домашнього завдання</label>
-        <textarea id="homework-description" name="homework-description" rows="5"
-                  placeholder="Опишіть, що саме учень має зробити..."></textarea>
+        <textarea id="homework-description" name="homework-description" rows="5"></textarea>
       </div>
 
       <div class="btn-group" style="margin-top: 30px; display: flex; gap: 15px;">
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Зберегти лекцію</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Зберегти зміни</button>
         <a href="{% url 'admin_lecture_list' %}" class="btn btn-secondary">Скасувати</a>
       </div>
     </form>
@@ -67,21 +65,39 @@
                       ['clean']
                   ]
               },
-              placeholder: 'Почніть писати текст лекції тут...'
+              placeholder: 'Редагуйте текст лекції тут...'
           });
 
           quill.getModule('toolbar').addHandler('image', () => { /* ... логика загрузки фото ... */
           });
 
-          document.getElementById('create-lecture-form').addEventListener('submit', function (event) {
+          // --- Имитация загрузки данных с бэкенда ---
+          const lectureId = document.getElementById('lecture-id').value;
+          const lectureTitleInput = document.getElementById('lecture-title');
+          const videoUrlInput = document.getElementById('lecture-video-url');
+          const homeworkInput = document.getElementById('homework-description');
+
+          const existingData = {
+              title: 'Урок 4: Закрас та тіні',
+              videoUrl: 'https://www.youtube.com/watch?v=example123',
+              content: '<p>Це <strong>існуючий</strong> текст лекції...</p>',
+              homework: 'Використовуючи тренувальний фрагмент шкіри №4...'
+          };
+
+          lectureTitleInput.value = existingData.title;
+          videoUrlInput.value = existingData.videoUrl;
+          quill.root.innerHTML = existingData.content;
+          homeworkInput.value = existingData.homework;
+
+          document.getElementById('edit-lecture-form').addEventListener('submit', function (event) {
               event.preventDefault();
-              const title = document.getElementById('lecture-title').value;
-              const videoUrl = document.getElementById('lecture-video-url').value;
+              const title = lectureTitleInput.value;
+              const videoUrl = videoUrlInput.value;
               const lectureContent = quill.root.innerHTML;
-              const homework = document.getElementById('homework-description').value;
+              const homework = homeworkInput.value;
 
               console.log({title, videoUrl, lectureContent, homework});
-              alert('Лекцію створено (імітація).');
+              alert(`Лекцію з ID ${lectureId} оновлено (імітація).`);
               window.location.href = "{% url 'admin_lecture_list' %}";
           });
       });

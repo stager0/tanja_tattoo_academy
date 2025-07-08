@@ -1,0 +1,54 @@
+{% extends 'base-admin.html' %}
+{% load static %}
+
+{% block title %}Завдання на перевірку - {{ block.super }}{% endblock %}
+{% block header_title %}Завдання на перевірку{% endblock %}
+
+{% block content %}
+<div class="filter-tabs">
+    <a href="#" class="filter-tab active">Очікують <span class="tab-counter">3</span></a>
+    <a href="#" class="filter-tab">Зараховані <span class="tab-counter">12</span></a>
+    <a href="#" class="filter-tab">Всі</a>
+</div>
+
+<div class="admin-grid">
+    <div class="admin-item-card review-card">
+        <div class="admin-item-header">
+            <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
+            <div class="info">
+                <strong>Таня Іванова</strong>
+                <p>Урок 4: Закрас та тіні</p>
+            </div>
+        </div>
+        <div class="submission-preview">
+            <img src="{% static 'imgs/img1.jpg' %}" alt="Homework Thumbnail">
+        </div>
+        <div class="submission-comment">
+            <p>"Мені здається, тіні вийшли трохи грубими. Що можна покращити?"</p>
+        </div>
+        <div class="admin-item-footer">
+            <span class="date">1 годину тому</span>
+            <a href="#" class="btn btn-sm">Перевірити</a>
+        </div>
+    </div>
+    <div class="admin-item-card review-card">
+        <div class="admin-item-header">
+            <img class="avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="Avatar">
+            <div class="info">
+                <strong>Іван Петренко</strong>
+                <p>Урок 3: Контури</p>
+            </div>
+        </div>
+        <div class="submission-preview">
+            <img src="{% static 'imgs/img4.jpg' %}" alt="Homework Thumbnail">
+        </div>
+        <div class="submission-comment">
+             <p>"Все зробив по інструкції, перевірте, будь ласка."</p>
+        </div>
+        <div class="admin-item-footer">
+            <span class="date">5 годин тому</span>
+            <a href="{% url 'admin_review_task' %}" class="btn btn-sm">Перевірити</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

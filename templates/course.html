@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Урок 4: Закрас та тіні - {{ block.super }}{% endblock %}
+
+{% block header_title %}Мій курс{% endblock %}
+
+{% block content %}
+<div class="course-wrapper">
+    <aside class="lessons-sidebar">
+        <div class="lessons-sidebar-header">
+            <h3>Зміст курсу</h3>
+            <button class="lessons-toggle-btn"><i class="fas fa-chevron-down"></i></button>
+        </div>
+        <div class="lessons-list">
+            <a href="#" class="lesson-item">
+                <span class="lesson-status"><i class="fas fa-check-circle"></i></span>
+                <div class="lesson-item-info"><h5>1. Вступ</h5><p>Професія тату-майстра</p></div>
+            </a>
+            <a href="#" class="lesson-item">
+                <span class="lesson-status"><i class="fas fa-check-circle"></i></span>
+                <div class="lesson-item-info"><h5>2. Обладнання</h5><p>Вибір та налаштування</p></div>
+            </a>
+            <a href="#" class="lesson-item">
+                <span class="lesson-status"><i class="fas fa-check-circle"></i></span>
+                <div class="lesson-item-info"><h5>3. Контури</h5><p>Техніки та практика</p></div>
+            </a>
+            <a href="#" class="lesson-item active">
+                <span class="lesson-status"><i class="fas fa-play-circle"></i></span>
+                <div class="lesson-item-info"><h5>4. Закрас та тіні</h5><p>Створення об'єму</p></div>
+            </a>
+            <a href="#" class="lesson-item">
+                <span class="lesson-status"><i class="far fa-circle"></i></span>
+                <div class="lesson-item-info"><h5>5. Кольорознавство</h5><p>Робота з кольором</p></div>
+            </a>
+        </div>
+    </aside>
+
+    <div class="lesson-content">
+        <div class="lesson-card">
+            <div class="video-player">
+                <i class="fas fa-play"></i>
+            </div>
+            <div class="lesson-text">
+                <h2>Урок 4: Закрас та тіні. Створюємо об'єм</h2>
+                <p>На цьому уроці ми переходимо до одного з найважливіших етапів - створення об'єму та глибини в татуюванні. Правильний закрас та м'які тіні відрізняють роботу професіонала.</p>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <div class="task-header">
+                <i class="fas fa-tasks"></i>
+                <h3>Завдання до уроку</h3>
+            </div>
+            <div class="task-description">
+                <p>Використовуючи тренувальний фрагмент шкіри №4 та ескіз "Троянда", виконайте щільний закрас пелюсток та нанесіть тіні, як показано у відео.</p>
+            </div>
+            <div class="task-submission">
+                 <h4><i class="fas fa-upload"></i> Відправити на перевірку</h4>
+                 <form>
+                    <div class="file-upload-area">
+                        <i class="fas fa-camera"></i>
+                        <p>Натисніть або перетягніть сюди фото вашої роботи</p>
+                        <input type="file" style="display: none;" accept="image/*">
+                    </div>
+                    <div class="input-group">
+                        <label for="hw-comment">Ваш коментар (необов'язково)</label>
+                        <textarea id="hw-comment" class="autoresize-textarea" placeholder="Ваш коментар або питання для ментора..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">Відправити завдання</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

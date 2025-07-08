@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Чат з ментором - {{ block.super }}{% endblock %}
+{% block header_title %}Чат з ментором{% endblock %}
+
+{% block content %}
+  <div class="chat-container">
+    <div class="chat-messages">
+      <div class="message received">
+        <img src="{% static 'imgs/tanja_foto.jpg' %}" alt="Mentor Avatar" class="message-avatar">
+        <div class="message-bubble">
+          <p>Привіт! Як успіхи з останнім завданням по контурах?</p>
+          <div class="message-time">10:30</div>
+        </div>
+      </div>
+
+      <div class="message sent">
+        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="User Avatar" class="message-avatar">
+        <div class="message-bubble">
+          <p>Вітаю! Наче все добре. Ось, відправив вам на перевірку.</p>
+          <div class="message-time">11:15</div>
+        </div>
+      </div>
+
+      <div class="message sent">
+        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="User Avatar" class="message-avatar">
+        <div class="message-bubble">
+          <p>І ще питання, подивіться, будь ласка, на це фото. Тут тіні правильно лежать?</p>
+          <div class="message-attachment">
+            <img src="{% static 'imgs/img1.jpg' %}" alt="Homework Image">
+          </div>
+          <div class="message-time">11:16</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <form class="chat-form">
+        <button type="button" class="btn-icon" aria-label="Прикріпити фото">
+          <i class="fas fa-paperclip"></i>
+        </button>
+        <textarea class="autoresize-textarea" placeholder="Напишіть повідомлення..." rows="1"></textarea>
+        <button type="submit" class="btn-icon send-btn" aria-label="Надіслати">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -20,19 +20,34 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         form.save()
-        code_obj = form.cleaned_data["code"]
-        code_obj.is_activated = True
-        code_obj.activated_date = timezone.now()
-        code_obj.save()
         code_obj = form.cleaned_data.get("code")
         if code_obj:
             code_obj.is_activated = True
             code_obj.activated_date = timezone.now()
             code_obj.save()
 
-        return redirect("login")
         email = form.cleaned_data.get("email", "")
         full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
         if email and full_name:
             send_after_register_email(email=email, full_name=full_name)
         return super().form_valid(form)
+
+class ChangePasswordRequestView(generic.FormView):
+    form_class = PasswordChangeRequestForm
+    template_name = "registration/change_password_request.html"
+    success_url = reverse_lazy("email_sent_info")
+
+    def form_valid(self, form):
+        if form.cleaned_data["email"] is not None and form.cleaned_data["full_name"] is not None:
+            email = form.cleaned_data["email"]
+            full_name = form.cleaned_data["full_name"]
+            code = generate_reset_password_code()
+            ResetCode.objects.create(
+                user_email=email,
+                code=code,
+            )
+            send_password_change_email(email=email, full_name=full_name, activation_code=code)
+            return super().form_valid(form)
+
+        else:
+            return super().form_valid(form)

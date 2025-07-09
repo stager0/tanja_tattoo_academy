@@ -14,11 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
+from web.views import RegisterView, ChangePasswordRequestView, ChangePasswordView
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="index.html"), name="index"),
     path('admin/', admin.site.urls),
-    path("", include("web.urls"))
+    path("platform/", include("web.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/register/", RegisterView.as_view(), name="register"),
+    path("accounts/change_password_request/", ChangePasswordRequestView.as_view(), name="change_password_request"),
+    path("accounts/change_password/", ChangePasswordView.as_view(), name="change_password"),
+    path("accounts/email_sent_info/", TemplateView.as_view(template_name="registration/change_password_email_send_info.html"), name="email_sent_info"),
+    path("accounts/change_password_success/", TemplateView.as_view(template_name="registration/change_password_success.html"), name="change_password_success")
 ]

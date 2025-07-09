@@ -32,6 +32,7 @@ class RegisterView(CreateView):
             send_after_register_email(email=email, full_name=full_name)
         return super().form_valid(form)
 
+
 class ChangePasswordRequestView(generic.FormView):
     form_class = PasswordChangeRequestForm
     template_name = "registration/change_password_request.html"
@@ -51,3 +52,39 @@ class ChangePasswordRequestView(generic.FormView):
 
         else:
             return super().form_valid(form)
+
+
+class ChangePasswordView(generic.FormView):
+    form_class = ChangePasswordForm
+    template_name = "registration/change_password.html"
+    success_url = reverse_lazy("change_password_success")
+
+    def form_valid(self, form):
+        code = form.cleaned_data.get("code", "")
+        password = form.cleaned_data.get("password1", "")
+
+        if password and code:
+            try:
+                code_obj = ResetCode.objects.get(code=code)
+                if code_obj.is_activated is True:
+                    raise ValueError("Нажаль ваш код вже активований.")
+
+                if code_obj.created_date + timedelta(minutes=15) < timezone.now():
+                    raise ValueError("Нажаль ваш код прострочений.")
+
+                user = get_user_model().objects.get(email=code_obj.user_email)
+
+                if user:
+                    user.set_password(password)
+                    user.save()
+                return super().form_valid(form)
+
+            except get_user_model().DoesNotExist:
+                raise ValueError("Користувача з таким email немає")
+
+        else:
+            raise ValueError("Неправильний код або пароль.")
+
+
+class DashboardView(LoginRequiredMixin, generic.TemplateView):
+    template_name = "dashboard.html"

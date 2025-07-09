@@ -15,13 +15,13 @@ app_name = "Tanja Tattoo"
 
 
 def send_password_change_email(email: str, full_name: str, activation_code: str) -> None:
-    reset_link = f"https://127.0.0.1:8000/accounts/email_sent_info/{activation_code}"
+    reset_link = urljoin(os.getenv("URL_BASE"), "/accounts/change_password/")
     data = {
         'Messages': [
             {
                 "From": {
                     "Email": "andriishtaher@gmail.com",
-                    "Name": "Andrii Shtaher"
+                    "Name": "Tanja Tattoo"
                 },
                 "To": [
                     {
@@ -31,16 +31,16 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
                 ],
                 "Subject": f"Код для скидання пароля - {app_name}",
                 "TextPart": f"""
-                    Вітаємо, {full_name},
+                    Вітаємо, {full_name}!
 
                     Ми отримали запит на скидання пароля для вашого акаунту в {app_name}.
 
-                    Ваш код: {activation_code}
+                    Ваш код для відновлення: {activation_code}
                     Цей код дійсний протягом 15 хвилин.
 
-                    Або перейдіть за посиланням: {reset_link}
+                    Щоб скинути пароль, перейдіть за посиланням: {reset_link}
 
-                    Якщо ви не надсилали запит, просто проігноруйте цей лист.
+                    Якщо ви не надсилали цей запит, просто проігноруйте даний лист.
                 """,
                 "HTMLPart": f"""
                     <!DOCTYPE html>
@@ -74,20 +74,30 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
                                             <td bgcolor="#1E1E1E" style="padding: 40px 30px; border-radius: 12px; border-top: 4px solid #FF8C00;">
                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
-                                                        <td style="color: #FF8C00; font-family: 'Montserrat', Arial, sans-serif; font-size: 24px; font-weight: 700; text-align: center;">
-                                                            Ваш код для відновлення
+                                                        <td style="color: #FF8C00; font-family: 'Montserrat', Arial, sans-serif; font-size: 24px; font-weight: 700; text-align: center; padding-bottom: 25px;">
+                                                            Запит на відновлення пароля
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 20px 0 30px 0; color: #E0E0E0; font-family: 'Montserrat', Arial, sans-serif; font-size: 16px; line-height: 1.6; text-align: center;">
-                                                            Будь ласка, використайте цей код, щоб завершити процес скидання пароля.
+                                                        <td style="color: #E0E0E0; font-family: 'Montserrat', Arial, sans-serif; font-size: 18px; line-height: 1.6; text-align: center; padding-bottom: 15px;">
+                                                            Вітаємо, {full_name}!
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="center" style="padding: 10px 0 20px 0;">
+                                                        <td style="padding: 0 0 15px 0; color: #E0E0E0; font-family: 'Montserrat', Arial, sans-serif; font-size: 16px; line-height: 1.6; text-align: center;">
+                                                            Ми отримали запит на скидання пароля. Використайте код нижче, щоб продовжити.
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="center" style="padding: 15px 0 25px 0;">
                                                             <p style="font-family: 'Montserrat', Arial, sans-serif; font-size: 32px; font-weight: 700; color: #FF8C00; background-color: #2a2a2a; margin: 0; padding: 15px 35px; border-radius: 8px; letter-spacing: 5px; display: inline-block;">
                                                                 {activation_code}
                                                             </p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align: center; padding-bottom: 25px;">
+                                                             <a href="{reset_link}" style="color: #FF8C00; text-decoration: underline; font-size: 14px;">Або перейдіть за цим посиланням, щоб скинути пароль</a>
                                                         </td>
                                                     </tr>
                                                     <tr>

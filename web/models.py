@@ -77,3 +77,8 @@ class StartBox(models.Model):
     user = models.ForeignKey(UserModel, related_name="start_boxes", on_delete=models.SET_NULL)
     phone = models.CharField(max_length=20)
     comments = models.CharField(max_length=200, blank=True, null=True)
+
+
+class LecturesCounter(models.Model):
+    lecture = models.ForeignKey(Lecture, related_name="counter", on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, related_name="counter", on_delete=models.CASCADE)

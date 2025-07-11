@@ -53,3 +53,9 @@ class HomeWork(models.Model):
     was_checked = models.BooleanField(default=False, null=True, blank=True)
     image = models.ImageField(upload_to="homework_images")
     text = models.CharField(max_length=512, null=True, blank=True, default="Користувач відправив дз без запитань.")
+
+
+class HomeWorkReview(models.Model):
+    homework = models.ForeignKey(HomeWork, related_name="reviews", on_delete=models.CASCADE)
+    is_approved = models.BooleanField(default=False, blank=True, null=True)
+    data = models.DateTimeField(default=timezone.now, null=True, blank=True)

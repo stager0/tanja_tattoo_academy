@@ -162,12 +162,63 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         return super().form_valid(form)
 
 
+@method_decorator(redirect_superuser, name="dispatch")
 class ProfileView(LoginRequiredMixin, generic.FormView):
     template_name = "profile.html"
-    # model = get_user_model()
-    # form_class = ProfileForm
+    model = get_user_model()
+    form_class = ProfileForm
+    success_url = reverse_lazy("profile")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        context["user"] = user
+
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        user = self.request.user
+        password = getattr(user, "password", None)
+
+        if not password:
+            raise ValueError("User has no password set")
+
+        kwargs["hashed_current_password"] = password
+        print(user.password)
+        return kwargs
 
 
+    def form_valid(self, form):
+        new_password = form.cleaned_data.get("new_password", "")
+        first_name = form.cleaned_data.get("first_name", "")
+        last_name = form.cleaned_data.get("last_name", "")
+        email = form.cleaned_data.get("email", "")
+        phone = form.cleaned_data.get("phone", "")
+        avatar = form.cleaned_data.get("avatar", "")
+
+        user = self.request.user
+        if new_password:
+            user.set_password(new_password)
+        if first_name:
+            user.first_name = first_name
+        if last_name:
+            user.last_name = last_name
+        if email:
+            user.email = email
+        if phone:
+            user.phone = phone
+        if avatar:
+            user.avatar = avatar
+
+        user.save()
+
+        return super().form_valid(form)
+
+
+@method_decorator(redirect_superuser, name="dispatch")
 class CourseView(LoginRequiredMixin, generic.ListView):
     template_name = "course.html"
     model = Lecture

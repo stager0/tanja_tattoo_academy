@@ -3,11 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = {
         // Инициализация всех модулей
         init() {
+            // Старые модули
             this.sidebar.init();
             this.viewSwitcher.init();
             this.profileAvatar.init();
             this.courseSidebar.init();
             this.autoResizeTextarea.init();
+
+            // НОВЫЕ модули для чата
+            this.imageModal.init();
+            this.chatUpload.init();
         },
 
         // Модуль для управления боковой панелью (меню)
@@ -89,13 +94,99 @@ document.addEventListener('DOMContentLoaded', () => {
             init() {
                 document.querySelectorAll('.autoresize-textarea').forEach(textarea => {
                     textarea.addEventListener('input', this.resize, false);
-                    this.resize({ target: textarea }); // initial resize
+                    this.resize({ target: textarea });
                 });
             },
             resize(event) {
                 const textarea = event.target;
                 textarea.style.height = 'auto';
                 textarea.style.height = (textarea.scrollHeight) + 'px';
+            }
+        },
+
+        // НОВЫЙ МОДУЛЬ: Модальное окно для изображений
+        imageModal: {
+            init() {
+                this.modal = document.getElementById('imageModal');
+                if (!this.modal) return;
+                this.modalImage = document.getElementById('modalImage');
+                this.closeBtn = this.modal.querySelector('.modal-close-btn');
+                this.addEventListeners();
+            },
+            addEventListeners() {
+                document.body.addEventListener('click', (event) => {
+                    if (event.target.matches('.message-attachment img')) {
+                        this.open(event.target.src);
+                    }
+                });
+                this.closeBtn.addEventListener('click', () => this.close());
+                this.modal.addEventListener('click', (event) => {
+                    if (event.target === this.modal) this.close();
+                });
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && this.modal.classList.contains('is-open')) {
+                        this.close();
+                    }
+                });
+            },
+            open(src) {
+                this.modalImage.src = src;
+                this.modal.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+            },
+            close() {
+                this.modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+            }
+        },
+
+        // НОВЫЙ МОДУЛЬ: Предпросмотр загружаемого файла в чате
+        chatUpload: {
+            init() {
+                this.fileInput = document.getElementById('file-upload-input');
+                this.previewContainer = document.getElementById('upload-preview-container');
+                this.addEventListeners();
+            },
+            addEventListeners() {
+                if (!this.fileInput || !this.previewContainer) return;
+                this.fileInput.addEventListener('change', (event) => this.showPreview(event));
+            },
+            showPreview(event) {
+                this.clearPreview(false);
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const previewElement = document.createElement('div');
+                previewElement.className = 'upload-preview';
+
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'upload-preview-image';
+
+                const info = document.createElement('span');
+                info.className = 'upload-preview-info';
+                info.textContent = file.name;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'upload-preview-remove';
+                removeBtn.innerHTML = '&times;';
+                removeBtn.type = 'button';
+                removeBtn.onclick = () => this.clearPreview(true);
+
+                previewElement.appendChild(img);
+                previewElement.appendChild(info);
+                previewElement.appendChild(removeBtn);
+                this.previewContainer.appendChild(previewElement);
+                this.previewContainer.classList.add('visible');
+            },
+            clearPreview(resetInput) {
+                if (resetInput) {
+                    this.fileInput.value = '';
+                }
+                if (this.previewContainer) {
+                    this.previewContainer.innerHTML = '';
+                    this.previewContainer.classList.remove('visible');
+                }
             }
         }
     };

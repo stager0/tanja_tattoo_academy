@@ -7,44 +7,54 @@
 {% block content %}
   <div class="chat-container">
     <div class="chat-messages">
-      <div class="message received">
-        <img src="{% static 'imgs/tanja_foto.jpg' %}" alt="Mentor Avatar" class="message-avatar">
-        <div class="message-bubble">
-          <p>Привіт! Як успіхи з останнім завданням по контурах?</p>
-          <div class="message-time">10:30</div>
-        </div>
-      </div>
-
-      <div class="message sent">
-        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="User Avatar" class="message-avatar">
-        <div class="message-bubble">
-          <p>Вітаю! Наче все добре. Ось, відправив вам на перевірку.</p>
-          <div class="message-time">11:15</div>
-        </div>
-      </div>
-
-      <div class="message sent">
-        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="User Avatar" class="message-avatar">
-        <div class="message-bubble">
-          <p>І ще питання, подивіться, будь ласка, на це фото. Тут тіні правильно лежать?</p>
-          <div class="message-attachment">
-            <img src="{% static 'imgs/img1.jpg' %}" alt="Homework Image">
-          </div>
-          <div class="message-time">11:16</div>
-        </div>
-      </div>
+      {% if messages %}
+        {% for msg in messages %}
+          {% if msg.user in admin_ids %}
+            <div class="message received">
+              <img src="{% static 'imgs/tanja_foto.jpg' %}" alt="Mentor Avatar" class="message-avatar">
+              <div class="message-bubble">
+                <p>{{ msg.text }}</p>
+                <div class="message-time">{{ msg.send_time }}</div>
+              </div>
+            </div>
+          {% elif not msg.user in admin_ids %}
+            <div class="message sent">
+              <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop"
+                   alt="User Avatar"
+                   class="message-avatar">
+              <div class="message-bubble">
+                <p>{{ msg.text }}</p>
+                {% if msg.image %}
+                  <div class="message-attachment">
+                    <img src="{{ msg.image.url }}" alt="Homework Image">
+                  </div>
+                {% endif %}
+                <div class="message-time">{{ msg.send_time }}</div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
 
     <div class="chat-input-area">
-      <form class="chat-form">
-        <button type="button" class="btn-icon" aria-label="Прикріпити фото">
-          <i class="fas fa-paperclip"></i>
-        </button>
-        <textarea class="autoresize-textarea" placeholder="Напишіть повідомлення..." rows="1"></textarea>
+      <div id="upload-preview-container"></div>
+      <form class="chat-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="file-upload-input" class="btn-icon" aria-label="Прикріпити фото">
+            <i class="fas fa-paperclip"></i>
+        </label>
+        <input type="file" id="file-upload-input" name="image" accept="image/*" style="display: none;">
+        <textarea class="autoresize-textarea" name="text" placeholder="Напишіть повідомлення..." rows="1"></textarea>
         <button type="submit" class="btn-icon send-btn" aria-label="Надіслати">
           <i class="fas fa-paper-plane"></i>
         </button>
       </form>
     </div>
+  </div>
+
+  <div id="imageModal" class="image-modal">
+    <span class="modal-close-btn">&times;</span>
+    <img class="modal-content" id="modalImage">
   </div>
 {% endblock %}

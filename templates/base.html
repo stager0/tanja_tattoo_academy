@@ -37,14 +37,14 @@
             </div>
             <div class="header-right">
                 <div class="header-icons">
-                    <a href="#" aria-label="Сповіщення"><i class="fas fa-bell"></i></a>
+                    <a href="#" aria-label="Сповіщення"><i class="fas fa-bell" style="color: red">{{ new_sms }}</i></a>
                 </div>
                 <div class="user-profile">
                     <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop"
                          alt="User Avatar">
                     <div class="user-info">
-                        <span class="user-name">Таня Іванова</span>
-                        <span class="user-role">Учень</span>
+                        <span class="user-name">{{ user.get_full_name }}</span>
+                        <span class="user-role">{% if user.is_superuser %}Ментор{% else %}Учень{% endif %}</span>
                     </div>
                 </div>
             </div>

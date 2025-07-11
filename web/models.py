@@ -29,3 +29,10 @@ class UserModel(EmailAbstractUser):
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+
+# for chat
+class Message(models.Model):
+    text = models.CharField(max_length=512, null=False, blank=False)
+    user_id = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="message_images/", blank=True, null=True)
+    date = models.DateTimeField(default=timezone.now, null=True, blank=True)

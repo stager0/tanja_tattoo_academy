@@ -115,9 +115,42 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
 class ChatView(LoginRequiredMixin, generic.FormView):
     form_class = ChatForm
     template_name = "chat.html"
-    model = Message
-    # form_class = ChatForm
+    success_url = reverse_lazy("chat")
 
+    def get_chat(self):
+        user = self.request.user
+        try:
+            return Chat.objects.get(user=user)
+        except Chat.DoesNotExist:
+            raise ValueError("Current user's chat was not found.")
+
+    def get_messages(self):
+        chat = self.get_chat()
+        return Message.objects.filter(chat=chat).order_by("date")
+
+    def get_context_data(self, **kwargs):
+        queryset = self.get_messages()
+        context = super().get_context_data(**kwargs)
+
+        messages = []
+        for message in queryset:
+            message_dict = model_to_dict(message)
+            message_dict["send_time"] = localtime(message.date).strftime("%H:%M")
+            messages.append(message_dict)
+
+        context["messages"] = messages
+        context["user"] = self.request.user
+        context["admin_ids"] = UserModel.objects.filter(is_superuser=True).values_list("id", flat=True)
+
+        return context
+
+    def form_valid(self, form):
+        message = form.save(commit=False)
+        message.chat = self.get_chat()
+        message.user = self.request.user
+        message.save()
+
+        return super().form_valid(form)
 
 class ProfileView(LoginRequiredMixin, generic.FormView):
     template_name = "profile.html"

@@ -68,3 +68,8 @@ class ChangePasswordForm(forms.Form):
             raise forms.ValidationError("Паролі не співпадають.")
 
         return cleaned_data
+
+class ChatForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ["text", "image"]

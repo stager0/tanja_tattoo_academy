@@ -45,3 +45,11 @@ class Lecture(models.Model):
     lecture = models.CharField(max_length=712, blank=True, null=True, default="До цього уроку наразі немає лекції.")
     homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
 
+
+# Users homeworks
+class HomeWork(models.Model):
+    lecture = models.ForeignKey(Lecture, related_name="home_works", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(UserModel, related_name="home_works", on_delete=models.CASCADE)
+    was_checked = models.BooleanField(default=False, null=True, blank=True)
+    image = models.ImageField(upload_to="homework_images")
+    text = models.CharField(max_length=512, null=True, blank=True, default="Користувач відправив дз без запитань.")

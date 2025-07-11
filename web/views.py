@@ -10,7 +10,16 @@ from django.views.generic import CreateView
 from web.email_sender import send_password_change_email, send_after_register_email
 from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm
 from web.generators import generate_reset_password_code
-from web.models import ResetCode, Message, Lecture, HomeWork, StartBox
+from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel
+
+
+def redirect_superuser(view_func):
+    wraps(view_func)
+    def _wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_superuser:
+            return redirect("/platform/admin_dashboard")
+        return view_func(request, *args, **kwargs)
+    return _wrapper
 
 
 class RegisterView(CreateView):

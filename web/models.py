@@ -4,14 +4,18 @@ from django.utils import timezone
 
 from .custom_auth_user_manager import EmailAbstractUser
 
-
+# used for change password.
 class ResetCode(models.Model):
     code = models.CharField(max_length=6, validators=[MinLengthValidator(6)])
     user_email = models.EmailField(blank=False, null=False)
     is_activated = models.BooleanField(default=False, blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
+    def __str__(self):
+        return self.code
 
+
+# subscribe code
 class Code(models.Model):
     code = models.CharField(max_length=14, unique=True, validators=[MinLengthValidator(14)])
     is_activated = models.BooleanField(default=False, null=True, blank=True)
@@ -19,6 +23,7 @@ class Code(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
+# user
 class UserModel(EmailAbstractUser):
     code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE)
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
@@ -59,3 +64,11 @@ class HomeWorkReview(models.Model):
     homework = models.ForeignKey(HomeWork, related_name="reviews", on_delete=models.CASCADE)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(default=timezone.now, null=True, blank=True)
+
+
+class StartBox(models.Model):
+    full_name = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
+    user = models.ForeignKey(UserModel, related_name="start_boxes", on_delete=models.SET_NULL)
+    phone = models.CharField(max_length=20)
+    comments = models.CharField(max_length=200, blank=True, null=True)

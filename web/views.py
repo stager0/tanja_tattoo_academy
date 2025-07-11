@@ -10,7 +10,7 @@ from django.views.generic import CreateView
 from web.email_sender import send_password_change_email, send_after_register_email
 from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm
 from web.generators import generate_reset_password_code
-from web.models import ResetCode, Message, Lecture, HomeWork
+from web.models import ResetCode, Message, Lecture, HomeWork, StartBox
 
 
 class RegisterView(CreateView):
@@ -19,8 +19,7 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        form.save()
-        code_obj = form.cleaned_data.get("code")
+        code_obj = form.cleaned_data.get("code", None)
         if code_obj:
             code_obj.is_activated = True
             code_obj.activated_date = timezone.now()
@@ -30,6 +29,8 @@ class RegisterView(CreateView):
         full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
         if email and full_name:
             send_after_register_email(email=email, full_name=full_name)
+
+        self.object = form.save()
         return super().form_valid(form)
 
 
@@ -98,21 +99,37 @@ class ChatView(LoginRequiredMixin, generic.ListView):
 
 class ProfileView(LoginRequiredMixin, generic.FormView):
     template_name = "profile.html"
-    model = get_user_model()
+    # model = get_user_model()
     # form_class = ProfileForm
 
 
 class CourseView(LoginRequiredMixin, generic.ListView):
     template_name = "course.html"
-   # model = Lecture
+    model = Lecture
    # form_class = LecturePlatformUserForm
 
 
 class AdminReviewListView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-review-list.html"
-    # model = HomeWork
+    model = HomeWork
 
 
-class AdminReviewTaskView(LoginRequiredMixin, generic.ListView):
+class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
     template_name = "admin-review-task.html"
-    # model = HomeWork
+    model = HomeWork
+    # form_name = ReviewForm
+
+
+class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
+    template_name = "admin-dashboard.html"
+
+
+class AdminStudentsView(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-students.html"
+    model = get_user_model()
+
+
+# class AdminBoxesView(LoginRequiredMixin, generic.ListView):
+  #  template_name = "admin-boxes.html"
+   # model = StartBox
+

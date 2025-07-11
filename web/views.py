@@ -10,7 +10,7 @@ from django.views.generic import CreateView
 from web.email_sender import send_password_change_email, send_after_register_email
 from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm
 from web.generators import generate_reset_password_code
-from web.models import ResetCode
+from web.models import ResetCode, Message, Lecture, HomeWork
 
 
 class RegisterView(CreateView):
@@ -106,3 +106,8 @@ class CourseView(LoginRequiredMixin, generic.ListView):
     template_name = "course.html"
    # model = Lecture
    # form_class = LecturePlatformUserForm
+
+
+class AdminReviewListView(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-review-list.html"
+    # model = HomeWork

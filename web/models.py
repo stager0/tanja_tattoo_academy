@@ -25,7 +25,7 @@ class Code(models.Model):
 
 # user
 class UserModel(EmailAbstractUser):
-    code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE)
+    code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
 
     def __str__(self):
@@ -33,6 +33,11 @@ class UserModel(EmailAbstractUser):
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+class Chat(models.Model):
+    user = models.ForeignKey(UserModel, related_name="chats", on_delete=models.CASCADE)
+    created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
 # for chat

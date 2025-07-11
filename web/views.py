@@ -225,6 +225,49 @@ class CourseView(LoginRequiredMixin, generic.ListView):
    # form_class = LecturePlatformUserForm
 
 
+@method_decorator(redirect_superuser, name="dispatch")
+class BoxApplicationView(LoginRequiredMixin, generic.FormView):
+    template_name = "box-application.html"
+    model = StartBox
+    form_class = BoxApplicationForm
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+
+        context["tariff"] = user.code.tariff
+
+        if StartBox.objects.filter(user=user) and user.code.tariff != "base":
+            context["sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
+        elif not StartBox.objects.filter(user=user) and user.code.tariff != "base":
+            context["sms"] = "Заповніть анкету нижче, і ми відправимо вам набір з усім необхідним для початку роботи."
+        elif user.code.tariff == "base":
+            context["sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
+        return context
+
+
+    def form_valid(self, form):
+        if self.request.user.code.tariff != "base" and self.request.user.code.start_box_coupon_is_activated is False:
+            full_name = form.cleaned_data.get("full_name", "")
+            phone = form.cleaned_data.get("phone", "")
+            address = form.cleaned_data.get("address", "")
+            comments = form.cleaned_data.get("comments", "")
+
+            user = self.request.user
+
+            StartBox.objects.create(
+                full_name=full_name,
+                phone=phone,
+                address=address,
+                comments=comments,
+                user=user
+            )
+
+            user.code.start_box_coupon_is_activated = True
+            return super().form_valid(form)
+        return redirect("box_application")
+
+
 class AdminReviewListView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-review-list.html"
     model = HomeWork

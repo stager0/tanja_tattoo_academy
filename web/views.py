@@ -195,3 +195,9 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
     model = StartBox
     form_name = BoxApplicationForm
 
+
+class AdminLectureList(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-lecture-list.html"
+    model = Lecture
+
+

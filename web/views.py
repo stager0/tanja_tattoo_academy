@@ -25,6 +25,10 @@ class RegisterView(CreateView):
             code_obj.activated_date = timezone.now()
             code_obj.save()
 
+            Chat.objects.create(
+                user=self.request.user
+            )
+
         email = form.cleaned_data.get("email", "")
         full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
         if email and full_name:

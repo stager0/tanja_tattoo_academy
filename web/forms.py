@@ -69,6 +69,43 @@ class ChangePasswordForm(forms.Form):
 
         return cleaned_data
 
+
+class BoxApplicationForm(forms.Form):
+    pass
+
+class ProfileForm(forms.Form):
+    avatar = forms.ImageField(required=False)
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    email = forms.EmailField(required=False)
+    current_password = forms.CharField(required=False)
+    new_password = forms.CharField(required=False)
+    confirm_new_password = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        self.current_hashed_password = kwargs.pop("current_hashed_password", "")
+        super().__init__(*args, **kwargs)
+
+    def clean_current_password(self):
+        if self.current_hashed_password and self.current_password:
+            if not check_password(self.current_password, self.current_hashed_password):
+                raise ValueError("Passwords are not equal.")
+            else:
+                return self.current_password
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get("new_password", "")
+        new_password_confirm = cleaned_data.get("confirm_new_password", "")
+
+        if new_password != new_password_confirm or new_password is None or new_password_confirm is None:
+            raise ValueError("Passwords are not equal.")
+        if new_password and new_password_confirm:
+            validate_password(new_password)
+        return cleaned_data
+
+
 class ChatForm(forms.ModelForm):
     class Meta:
         model = Message

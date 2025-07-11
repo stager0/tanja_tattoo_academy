@@ -32,3 +32,6 @@ urlpatterns = [
     path("accounts/email_sent_info/", TemplateView.as_view(template_name="registration/change_password_email_send_info.html"), name="email_sent_info"),
     path("accounts/change_password_success/", TemplateView.as_view(template_name="registration/change_password_success.html"), name="change_password_success")
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

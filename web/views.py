@@ -152,6 +152,7 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
         return super().form_valid(form)
 
+
 class ProfileView(LoginRequiredMixin, generic.FormView):
     template_name = "profile.html"
     # model = get_user_model()
@@ -184,7 +185,13 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
     model = get_user_model()
 
 
-# class AdminBoxesView(LoginRequiredMixin, generic.ListView):
-  #  template_name = "admin-boxes.html"
-   # model = StartBox
+class AdminBoxesView(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-boxes.html"
+    model = StartBox
+
+
+class BoxApplicationView(LoginRequiredMixin, generic.FormView):
+    template_name = "box-application.html"
+    model = StartBox
+    form_name = BoxApplicationForm
 

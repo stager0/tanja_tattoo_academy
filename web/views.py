@@ -111,3 +111,8 @@ class CourseView(LoginRequiredMixin, generic.ListView):
 class AdminReviewListView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-review-list.html"
     # model = HomeWork
+
+
+class AdminReviewTaskView(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-review-task.html"
+    # model = HomeWork

@@ -210,3 +210,7 @@ class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
     template_name = "admin-lecture-edit.html"
     model = Lecture
 
+
+class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
+    template_name = "admin-all-chats.html"
+    model = Chat

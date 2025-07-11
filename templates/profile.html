@@ -5,65 +5,103 @@
 {% block header_title %}Налаштування профілю{% endblock %}
 
 {% block content %}
-<div class="profile-grid">
+  <div class="profile-grid">
     <div class="card profile-avatar-card">
-        <div class="avatar-upload">
-            <img src="{% static 'imgs/lerner.jpg' %}" alt="User Avatar" id="avatar-preview">
-            <label for="avatar-input" class="avatar-edit-overlay">
-                <i class="fas fa-camera"></i>
-            </label>
-            <input type="file" id="avatar-input" hidden accept="image/*">
-        </div>
-        <h3>Таня Іванова</h3>
-        <p class="text-medium">tanya.ivanova@email.com</p>
+      <div class="avatar-upload">
+        <img src="{{ user.avatar.url }}" alt="User Avatar" id="avatar-preview">
+        <label for="avatar-input" class="avatar-edit-overlay">
+          <i class="fas fa-camera"></i>
+        </label>
+        <input type="file" id="avatar-input" name="avatar" hidden accept="image/*">
+      </div>
+      <h3>{{ user.get_full_name }}</h3>
+      <p class="text-medium">{{ user.email }}</p>
     </div>
 
     <div class="card">
-        <h3>Особисті дані</h3>
-        <form method="POST" class="form-body-separator">
-            {% csrf_token %}
-            <div class="form-grid">
-                <div class="input-group">
-                    <label for="first_name">Ім'я</label>
-                    <input type="text" id="first_name" name="first_name" value="Таня">
-                </div>
-                <div class="input-group">
-                    <label for="last_name">Прізвище</label>
-                    <input type="text" id="last_name" name="last_name" value="Іванова">
-                </div>
-                 <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="tanya.ivanova@email.com" disabled>
-                </div>
-                <div class="input-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" name="phone" value="+380 12 345 6789">
-                </div>
-            </div>
-            <button type="submit" class="btn" style="margin-top: 10px;">Зберегти зміни</button>
-        </form>
-    </div>
-</div>
-
-<div class="card" style="margin-top: 30px;">
-    <h3>Зміна паролю</h3>
-    <form method="POST" class="form-body-separator">
+      <h3>Особисті дані</h3>
+      <form method="POST" class="form-body-separator">
         {% csrf_token %}
         <div class="form-grid">
-            <div class="input-group">
-                <label for="current_password">Поточний пароль</label>
-                <input type="password" id="current_password" name="current_password">
-            </div>
-            <div class="input-group">
-                <label for="new_password">Новий пароль</label>
-                <input type="password" id="new_password" name="new_password">
-            </div>
-            <div class="input-group">
-                <label for="confirm_new_password">Підтвердьте новий пароль</label>
-                <input type="password" id="confirm_new_password" name="confirm_new_password">
-            </div>
+          <div class="input-group">
+            <label for="first_name">Ім'я</label>
+            <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+          </div>
+          <div class="input-group">
+            <label for="last_name">Прізвище</label>
+            <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+          </div>
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}" disabled>
+          </div>
+          <div class="input-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" name="phone" value="{{ user.phone }}">
+          </div>
         </div>
-        <button type="submit" class="btn btn-secondary" style="margin-top: 10px;">Оновити пароль</button>
+        <button type="submit" class="btn" style="margin-top: 10px;">Зберегти зміни</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 30px;">
+    <h3>Зміна паролю</h3>
+    <form method="POST" class="form-body-separator">
+      {% csrf_token %}
+
+      {# Блок для вывода общих ошибок формы (например, "Пароли не совпадают") #}
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+          {% for error in form.non_field_errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="form-grid">
+        {# --- Поле "Поточний пароль" --- #}
+        <div class="input-group">
+          <label for="{{ form.current_password.id_for_label }}">Поточний пароль</label>
+          <input type="password"
+                 name="current_password"
+                 id="current_password"
+                 class="{% if form.current_password.errors %}input-error{% endif %}">
+
+          {# Вывод ошибок для этого конкретного поля #}
+          {% for error in form.current_password.errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# --- Поле "Новий пароль" --- #}
+        <div class="input-group">
+          <label for="{{ form.new_password1.id_for_label }}">Новий пароль</label>
+          <input type="password"
+                 name="new_password"
+                 id="new_password"
+                 class="{% if form.new_password1.errors %}input-error{% endif %}">
+
+          {% for error in form.new_password1.errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+
+        {# --- Поле "Підтвердьте новий пароль" --- #}
+        <div class="input-group">
+          <label for="{{ form.new_password2.id_for_label }}">Підтвердьте новий пароль</label>
+          <input type="password"
+                 name="confirm_new_password"
+                 id="confirm_new_password"
+                 class="{% if form.new_password2.errors %}input-error{% endif %}">
+
+          {% for error in form.new_password2.errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-secondary" style="margin-top: 10px;">Оновити пароль</button>
     </form>
-</div>
+  </div>
 {% endblock %}

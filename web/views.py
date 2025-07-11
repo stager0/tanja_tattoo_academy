@@ -90,8 +90,26 @@ class ChangePasswordView(generic.FormView):
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "dashboard.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-class ChatView(LoginRequiredMixin, generic.ListView):
+        user = self.request.user
+        try:
+            chat = Chat.objects.get(user=user)
+            new_sms = Message.objects.filter(chat=chat).count()
+        except Chat.DoesNotExist:
+            raise ValueError("Current user's chat was not found.")
+        except Message.DoesNotExist:
+            raise ValueError("Current user's message was not fount.")
+
+        context["user"] = user
+        context["new_sms"] = new_sms
+
+        return context
+
+
+class ChatView(LoginRequiredMixin, generic.FormView):
+    form_class = ChatForm
     template_name = "chat.html"
     model = Message
     # form_class = ChatForm

@@ -88,3 +88,21 @@ class ChangePasswordView(generic.FormView):
 
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "dashboard.html"
+
+
+class ChatView(LoginRequiredMixin, generic.ListView):
+    template_name = "chat.html"
+    model = Message
+    # form_class = ChatForm
+
+
+class ProfileView(LoginRequiredMixin, generic.FormView):
+    template_name = "profile.html"
+    model = get_user_model()
+    # form_class = ProfileForm
+
+
+class CourseView(LoginRequiredMixin, generic.ListView):
+    template_name = "course.html"
+   # model = Lecture
+   # form_class = LecturePlatformUserForm

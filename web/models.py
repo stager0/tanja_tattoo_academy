@@ -36,3 +36,12 @@ class Message(models.Model):
     user_id = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="message_images/", blank=True, null=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
+
+
+# Lectures
+class Lecture(models.Model):
+    lecture_name = models.CharField(max_length=100)
+    video_url = models.URLField(unique=True)
+    lecture = models.CharField(max_length=712, blank=True, null=True, default="До цього уроку наразі немає лекції.")
+    homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
+

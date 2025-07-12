@@ -22,6 +22,16 @@ def redirect_superuser(view_func):
     return _wrapper
 
 
+def count_new_messages(user_chat_obj: Chat, user: UserModel) -> int | None:
+    try:
+        new_messages = Message.objects.filter(chat=user_chat_obj).filter(is_read_user=False).filter(~Q(user_id=user.id)).count()
+    except Chat.DoesNotExist:
+        raise ValueError("Current user's chat was not found.")
+    except Message.DoesNotExist:
+        raise ValueError("Current user's message was not fount.")
+    return new_messages if new_messages else None
+
+
 class RegisterView(CreateView):
     form_class = CustomRegisterForm
     template_name = "registration/register.html"

@@ -281,6 +281,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
         context = super().get_context_data(**kwargs)
 
         context["tariff"] = user.code.tariff
+        context["user"] = user
 
         if StartBox.objects.filter(user=user) and user.code.tariff != "base":
             context["sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
@@ -288,6 +289,12 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
             context["sms"] = "Заповніть анкету нижче, і ми відправимо вам набір з усім необхідним для початку роботи."
         elif user.code.tariff == "base":
             context["sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
+
+        if not user.is_superuser:
+            chat = Chat.objects.get(user=user)
+            new_sms = count_new_messages(user_chat_obj=chat, user=user)
+            context["new_sms"] = new_sms
+
         return context
 
 

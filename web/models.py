@@ -18,12 +18,19 @@ class ResetCode(models.Model):
         return self.code
 
 
+class SubscribeChoices(models.TextChoices):
+    base = "base"
+    pro = "pro"
+    master = "master"
+
 # subscribe code
 class Code(models.Model):
     code = models.CharField(max_length=14, unique=True, validators=[MinLengthValidator(14)])
     is_activated = models.BooleanField(default=False, null=True, blank=True)
     activated_date = models.DateTimeField(null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    tariff = models.CharField(choices=SubscribeChoices.choices, max_length=10, default="base") #------------> DELETE
+    start_box_coupon_is_activated = models.BooleanField(default=False, null=True, blank=True)
 
 
 def profile_avatar(instance, filename):

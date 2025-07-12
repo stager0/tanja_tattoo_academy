@@ -185,6 +185,12 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
         return super().form_valid(form)
 
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        chat = Chat.objects.get(user=user)
+        Message.objects.filter(chat=chat).filter(is_read_user=False).update(is_read_user=True)
+        return super().dispatch(request, *args, **kwargs)
+
 
 @method_decorator(redirect_superuser, name="dispatch")
 class ProfileView(LoginRequiredMixin, generic.FormView):

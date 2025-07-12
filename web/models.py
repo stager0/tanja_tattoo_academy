@@ -1,6 +1,9 @@
+import os
+
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 from .custom_auth_user_manager import EmailAbstractUser
 
@@ -23,10 +26,18 @@ class Code(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
+def profile_avatar(instance, filename):
+    filename_end = filename.split(".")[-1]
+    if filename_end not in ["png", "jpeg", "jpg"]:
+        raise ValueError("File must be photo!")
+    filename_slug = slugify(instance.get_full_name()) or "user"
+    return f"user_avatars/{instance.id}_{filename_slug}.{filename_end}"
+
 # user
 class UserModel(EmailAbstractUser):
     code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
+    avatar = models.ImageField(upload_to=profile_avatar, blank=True, default="user_avatars/base_icon.png")
 
     def __str__(self):
         return self.email

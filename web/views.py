@@ -257,7 +257,17 @@ class ProfileView(LoginRequiredMixin, generic.FormView):
 class CourseView(LoginRequiredMixin, generic.ListView):
     template_name = "course.html"
     model = Lecture
-   # form_class = LecturePlatformUserForm
+    # form_class = LecturePlatformUserForm
+
+    def get_context_data(self, *, object_list = ..., **kwargs):
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+        if not user.is_superuser:
+            chat = Chat.objects.get(user=user)
+            new_sms = count_new_messages(user_chat_obj=chat, user=user)
+            context["new_sms"] = new_sms
+
+        return context
 
 
 @method_decorator(redirect_superuser, name="dispatch")

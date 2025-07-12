@@ -205,6 +205,11 @@ class ProfileView(LoginRequiredMixin, generic.FormView):
         user = self.request.user
         context["user"] = user
 
+        if not user.is_superuser:
+            chat = Chat.objects.get(user=user)
+            new_sms = count_new_messages(user_chat_obj=chat, user=user)
+            context["new_sms"] = new_sms
+
         return context
 
     def get_form_kwargs(self):

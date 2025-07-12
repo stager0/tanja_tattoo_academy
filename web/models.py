@@ -60,10 +60,13 @@ class Chat(models.Model):
 
 # for chat
 class Message(models.Model):
+    chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
     text = models.CharField(max_length=512, null=False, blank=False)
-    user_id = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
     image = models.ImageField(upload_to="message_images/", blank=True, null=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    is_read_user = models.BooleanField(default=False, blank=True, null=True)
+    is_read_admin = models.BooleanField(default=False, blank=True, null=True)
 
 
 # Lectures

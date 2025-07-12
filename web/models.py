@@ -72,7 +72,9 @@ class Message(models.Model):
 # Lectures
 class Lecture(models.Model):
     lecture_name = models.CharField(max_length=100)
-    video_url = models.URLField(unique=True)
+    under_name = models.CharField(max_length=60)
+    position_number = models.IntegerField(blank=True, null=True)
+    video_url = models.URLField(unique=False)
     lecture = models.CharField(max_length=712, blank=True, null=True, default="До цього уроку наразі немає лекції.")
     homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
 

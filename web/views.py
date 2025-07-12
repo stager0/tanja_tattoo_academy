@@ -110,6 +110,20 @@ class ChangePasswordView(generic.FormView):
             raise ValueError("Неправильний код або пароль.")
 
 
+class IndexView(generic.FormView):
+    template_name = "index.html"
+    form_class = IndexForm
+    success_url = reverse_lazy("index")
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user if self.request.user.is_authenticated else None
+        context = super().get_context_data(**kwargs)
+
+        context["user"] = user
+        return context
+
+
+@method_decorator(redirect_superuser, name="dispatch")
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "dashboard.html"
 

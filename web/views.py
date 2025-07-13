@@ -232,6 +232,14 @@ class ChatView(LoginRequiredMixin, generic.FormView):
             Message.objects.filter(chat=chat).filter(is_read_user=False).update(is_read_user=True)
         return super().dispatch(request, *args, **kwargs)
 
+    def get_template_names(self):
+        if self.request.user.is_superuser:
+            return ["chat-admin.html"]
+        return ["chat.html"]
+
+    def get_success_url(self):
+        chat_id = self.kwargs["pk"]
+        return reverse("chat", args=[chat_id])
 
 @method_decorator(redirect_superuser, name="dispatch")
 class ProfileView(LoginRequiredMixin, generic.FormView):

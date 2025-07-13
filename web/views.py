@@ -213,14 +213,23 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         message = form.save(commit=False)
         message.chat = self.get_chat()
         message.user = self.request.user
+        if self.request.user.is_superuser:
+            message.is_read_admin = True
+        else:
+            message.is_read_user = True
         message.save()
 
         return super().form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
-        chat = Chat.objects.get(user=user)
-        Message.objects.filter(chat=chat).filter(is_read_user=False).update(is_read_user=True)
+        if user.is_superuser:
+            pk=self.kwargs["pk"]
+            chat = Chat.objects.get(pk=pk)
+            Message.objects.filter(chat=chat).filter(is_read_admin=False).update(is_read_admin=True)
+        elif not user.is_superuser:
+            chat = Chat.objects.get(user=user)
+            Message.objects.filter(chat=chat).filter(is_read_user=False).update(is_read_user=True)
         return super().dispatch(request, *args, **kwargs)
 
 

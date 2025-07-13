@@ -315,6 +315,25 @@ class CourseView(LoginRequiredMixin, generic.ListView):
             chat = Chat.objects.get(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
+        lectures = Lecture.objects.all().order_by("position_number")
+        context["lectures"] = lectures
+        homework_review_count = HomeWorkReview.objects.filter(
+            homework__user=user,
+            homework__was_checked=True,
+            is_approved=True
+        ).count()
+        context["homework_review_count"] = homework_review_count
+        context["homework_review_count_plus_1"] = homework_review_count + 1
+        context["chat_pk"] = get_object_or_404(Chat, user=user).pk
+        context["current_id"] = self.kwargs["pk"] if self.kwargs["pk"] else 1
+
+        pk = self.kwargs.get("pk")
+        if pk:
+            try:
+                lecture_data = Lecture.objects.get(pk=pk)
+                context["lecture"] = lecture_data
+            except Exception:
+                raise Lecture.DoesNotExist
 
         return context
 

@@ -356,6 +356,12 @@ class CourseView(LoginRequiredMixin, generic.ListView):
 
         return super().form_valid(form)
 
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        if pk and Lecture.objects.filter(pk=pk).exists():
+            return reverse("course", kwargs={"pk": pk + 1})
+        return reverse("course", kwargs={"pk": 1})
+
 @method_decorator(redirect_superuser, name="dispatch")
 class BoxApplicationView(LoginRequiredMixin, generic.FormView):
     template_name = "box-application.html"
@@ -380,6 +386,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
             chat = Chat.objects.get(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
+            context["chat_pk"] = get_object_or_404(Chat, user=user).pk
 
         return context
 

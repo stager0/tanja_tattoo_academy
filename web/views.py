@@ -21,6 +21,14 @@ def redirect_superuser(view_func):
         return view_func(request, *args, **kwargs)
     return _wrapper
 
+def redirect_user(view_func):
+    wraps(view_func)
+    def _wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and not request.user.is_superuser:
+            return redirect("/platform/dashboard/")
+        return view_func(request, *args, **kwargs)
+    return _wrapper
+
 
 def count_new_messages(user_chat_obj: Chat, user: UserModel) -> int | None:
     try:

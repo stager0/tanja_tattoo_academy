@@ -100,6 +100,7 @@ class StartBox(models.Model):
     user = models.ForeignKey(UserModel, related_name="start_boxes", on_delete=models.SET_NULL)
     phone = models.CharField(max_length=20)
     comments = models.CharField(max_length=200, blank=True, null=True)
+    is_sent = models.BooleanField(default=False, blank=True, null=True)
 
 
 class LecturesCounter(models.Model):

@@ -148,7 +148,11 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
             raise ValueError("Current user's message was not fount.")
 
         context["user"] = user
+        context["chat_pk"] = get_object_or_404(Chat, user=user).pk
         context["new_sms"] = new_sms
+        context["lesson"] = lesson
+        context["next_lesson"] = next_lesson
+        context["percent_done"] = int(((next_lesson - 1) / lectures_count) * 100)
 
         return context
 

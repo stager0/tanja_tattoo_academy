@@ -337,6 +337,24 @@ class CourseView(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    def form_valid(self, form):
+        text = form.cleaned_data.get("text", "")
+        image = form.cleaned_data.get("image", "")
+        user = self.request.user
+        lecture_pk = self.kwargs.get("pk", "")
+        lecture_obj = Lecture.objects.get(pk=lecture_pk)
+
+        if not text and image:
+            return reverse("course", kwargs={"pk": 1})
+
+        homework = HomeWork.objects.create(
+            lecture=lecture_obj,
+            user=user,
+            image=image if image else None,
+            text=text if text else None
+        )
+
+        return super().form_valid(form)
 
 @method_decorator(redirect_superuser, name="dispatch")
 class BoxApplicationView(LoginRequiredMixin, generic.FormView):

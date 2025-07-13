@@ -194,7 +194,17 @@ class ChatView(LoginRequiredMixin, generic.FormView):
             messages.append(message_dict)
 
         context["messages"] = messages
+        if not user.is_superuser:
+            chat_pk = get_object_or_404(Chat, user=user).pk
+            context["interlocutor_avatar"] = UserModel.objects.filter(is_superuser=True).first().avatar.url
+
+        if user.is_superuser:
+            chat_pk = self.kwargs["pk"]
+            context["interlocutor_avatar"] = Chat.objects.get(pk=chat_pk).user.avatar.url
+
+        context["chat_pk"] = chat_pk
         context["user"] = self.request.user
+
         context["admin_ids"] = UserModel.objects.filter(is_superuser=True).values_list("id", flat=True)
 
         return context

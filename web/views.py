@@ -139,13 +139,18 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        try:
+        if not user.is_superuser:
             chat = Chat.objects.get(user=user)
-            new_sms = Message.objects.filter(chat=chat).count()
-        except Chat.DoesNotExist:
-            raise ValueError("Current user's chat was not found.")
-        except Message.DoesNotExist:
-            raise ValueError("Current user's message was not fount.")
+            new_sms = count_new_messages(user_chat_obj=chat, user=user)
+            next_lesson = HomeWorkReview.objects.filter(
+                homework__user=user,
+                homework__was_checked=True,
+                is_approved=True
+            ).count() + 1
+
+            lesson = Lecture.objects.get(position_number=next_lesson)
+
+            lectures_count = Lecture.objects.count()
 
         context["user"] = user
         context["chat_pk"] = get_object_or_404(Chat, user=user).pk

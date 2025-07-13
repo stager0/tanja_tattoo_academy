@@ -165,12 +165,16 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
 class ChatView(LoginRequiredMixin, generic.FormView):
     form_class = ChatForm
     template_name = "chat.html"
-    success_url = reverse_lazy("chat")
 
     def get_chat(self):
         user = self.request.user
+
         try:
-            return Chat.objects.get(user=user)
+            if user.is_superuser:
+                pk = self.kwargs["pk"]
+                return Chat.objects.get(pk=pk)
+            elif not user.is_superuser:
+                return Chat.objects.get(user=user)
         except Chat.DoesNotExist:
             raise ValueError("Current user's chat was not found.")
 
@@ -180,6 +184,7 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         queryset = self.get_messages()
+        user = self.request.user
         context = super().get_context_data(**kwargs)
 
         messages = []

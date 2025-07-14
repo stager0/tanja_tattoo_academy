@@ -479,6 +479,12 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
         context["count_of_waiting"] = count_of_waiting
 
         return context
+
+    def get_success_url(self):
+        return reverse("admin_review_list") + "?type=waiting_for_a_check"
+
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "admin-dashboard.html"
 

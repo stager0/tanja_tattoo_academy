@@ -1,16 +1,26 @@
+import json
 from datetime import timedelta
+from functools import wraps
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField
+from django.db.models.functions import Cast
+from django.forms import model_to_dict
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.utils.timezone import localtime
 from django.views import generic
 from django.views.generic import CreateView
 
 from web.email_sender import send_password_change_email, send_after_register_email
-from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm
+from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm, BoxApplicationForm, \
+    ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm, LectureCreateForm
 from web.generators import generate_reset_password_code
-from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel
+from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview
 
 
 def redirect_superuser(view_func):
@@ -600,6 +610,21 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        box_id = self.request.POST.get("mark_as_sent")
+        if box_id:
+            try:
+                box = StartBox.objects.get(pk=box_id)
+                box.is_sent = True
+                box.sent_date = timezone.now()
+                box.save()
+            except StartBox.DoesNotExist:
+                pass
+
+        return HttpResponseRedirect(reverse("admin_boxes") + "?type=active")
+
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminLectureList(LoginRequiredMixin, generic.ListView):
     template_name = "admin-lecture-list.html"
     model = Lecture

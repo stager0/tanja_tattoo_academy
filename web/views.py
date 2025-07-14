@@ -688,6 +688,17 @@ class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
 
         return context
 
+
+@method_decorator(redirect_user, name="dispatch")
+class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Lecture
+    template_name = "admin_lecture_delete.html"
+
+    def get_success_url(self):
+        return reverse("admin_lecture_list")
+
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-all-chats.html"
     model = Chat

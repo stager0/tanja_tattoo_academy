@@ -651,6 +651,19 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
 class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "admin-lecture-create.html"
     model = Lecture
+    form_class = LectureEditForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        position_number = Lecture.objects.values_list("position_number", flat=True)
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+
+        context["count_of_waiting"] = count_of_waiting
+        context["position_number"] = max(position_number) + 1
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
 
 
 class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):

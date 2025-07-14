@@ -465,7 +465,20 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
     model = HomeWork
     # form_name = ReviewForm
 
+        pk = self.kwargs.get("pk")
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        if pk:
+            try:
+                homework = HomeWork.objects.get(pk=pk)
+                context["homework"] = homework
+            except HomeWork.DoesNotExist:
+                return reverse("admin_review_list") + "?type=waiting_for_a_check"
 
+        context["count_of_new_messages"] = count_of_new_messages
+        context["count_of_waiting"] = count_of_waiting
+
+        return context
 class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "admin-dashboard.html"
 

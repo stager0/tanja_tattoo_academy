@@ -640,7 +640,14 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    def post(self, request, *args, **kwargs):
+        if "delete" in request.POST:
+            Lecture.objects.get(pk=request.POST.get("pk")).delete()
+            return redirect("admin_lecture_list")
+        return super().get(request, *args, **kwargs)
 
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "admin-lecture-create.html"
     model = Lecture

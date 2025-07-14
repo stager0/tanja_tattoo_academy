@@ -452,6 +452,13 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
         approved = HomeWork.objects.filter(was_checked=True, id__in=approved_ids).count()
         all_ = HomeWork.objects.count()
 
+        context["type"] = self.request.GET.get("type")
+        context["count_of_waiting"] = count_of_waiting
+        context["count_of_approved"] = approved
+        context["all"] = all_
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
 
 class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
     template_name = "admin-review-task.html"

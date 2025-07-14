@@ -665,7 +665,11 @@ class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
 
         return context
 
+    def get_success_url(self):
+        return reverse("admin_lecture_list")
 
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
     template_name = "admin-lecture-edit.html"
     model = Lecture

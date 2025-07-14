@@ -460,10 +460,33 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
 
         return context
 
-class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
+
+@method_decorator(redirect_user, name="dispatch")
+class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
     template_name = "admin-review-task.html"
     model = HomeWork
-    # form_name = ReviewForm
+    form_class = ReviewTaskForm
+
+    def form_valid(self, form):
+        review_text = form.cleaned_data.get("review_text")
+        pk = self.kwargs.get("pk")
+        homework = HomeWork.objects.get(pk=pk)
+
+        action = self.request.POST.get("action")
+
+        HomeWorkReview.objects.create(
+            homework=homework,
+            review_text=review_text,
+            is_approved=True if action == "approve" else False,
+        )
+
+        homework.was_checked = True
+        homework.save()
+
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
         pk = self.kwargs.get("pk")
         count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
@@ -498,9 +521,24 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
 
         return context
 
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminStudentsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-students.html"
     model = get_user_model()
+    model = UserModel
+    context_object_name = "users"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+
+        context["count_of_waiting"] = count_of_waiting
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
+
 
 
 class AdminBoxesView(LoginRequiredMixin, generic.ListView):

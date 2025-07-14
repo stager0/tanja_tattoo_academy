@@ -488,6 +488,15 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):
 class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
     template_name = "admin-dashboard.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+
+        context["count_of_waiting"] = count_of_waiting
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
 
 class AdminStudentsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-students.html"

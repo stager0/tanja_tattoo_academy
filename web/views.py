@@ -148,7 +148,10 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
                 is_approved=True
             ).count() + 1
 
-            lesson = Lecture.objects.get(position_number=next_lesson)
+            if Lecture.objects.count() >= next_lesson:
+                lesson = Lecture.objects.get(position_number=next_lesson)
+            else:
+                lesson = None
 
             lectures_count = Lecture.objects.count()
 
@@ -160,6 +163,12 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context["percent_done"] = int(((next_lesson - 1) / lectures_count) * 100)
 
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        user.last_activity = timezone.now()
+        user.save()
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ChatView(LoginRequiredMixin, generic.FormView):
@@ -433,6 +442,15 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
         else:
             return queryset
 
+    def get_context_data(
+        self, *, object_list = ..., **kwargs
+    ):
+        context = super().get_context_data(**kwargs)
+        approved_ids = HomeWorkReview.objects.filter(is_approved=True).values_list("homework_id", flat=True)
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        approved = HomeWork.objects.filter(was_checked=True, id__in=approved_ids).count()
+        all_ = HomeWork.objects.count()
 
 
 class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):

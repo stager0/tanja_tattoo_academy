@@ -702,3 +702,25 @@ class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
 class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-all-chats.html"
     model = Chat
+    context_object_name = "chats"
+
+    def get_queryset(self):
+        subquery_get_last_message = Message.objects.filter(
+            chat=OuterRef("pk"),
+        ).order_by("-id").values("text")[:1][:15]
+
+        queryset = Chat.objects.annotate(
+            message_count=Count(
+                'messages',
+                filter=Q(messages__is_read_admin=False)
+            ),
+            last_message_date=Max("messages__date"),
+            last_message=Subquery(subquery_get_last_message)
+        ).order_by('-message_count', '-last_message_date')
+
+        q = self.request.GET.get("q")
+        if q:
+            queryset = queryset.filter(Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(user__email__icontains=q))
+
+        return queryset
+

@@ -587,11 +587,18 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
         elif self.request.GET.get("type") == "sent":
             return queryset.filter(is_sent=True)
 
-class BoxApplicationView(LoginRequiredMixin, generic.FormView):
-    template_name = "box-application.html"
-    model = StartBox
-    form_name = BoxApplicationForm
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
 
+        context["count_of_new_messages"] = count_of_new_messages
+        context["count_of_waiting"] = count_of_waiting
+        context["filter"] = self.request.GET.get("type")
+        context["active_count"] = StartBox.objects.filter(is_sent=False).count()
+        context["sent_count"] = StartBox.objects.filter(is_sent=True).count()
+
+        return context
 
 class AdminLectureList(LoginRequiredMixin, generic.ListView):
     template_name = "admin-lecture-list.html"

@@ -413,9 +413,26 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
         return redirect("box_application")
 
 
+@method_decorator(redirect_user, name="dispatch")
 class AdminReviewListView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-review-list.html"
     model = HomeWork
+    context_object_name = "homeworks"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query_param = self.request.GET.get("type")
+        if query_param == "waiting_for_a_check":
+            return queryset.filter(was_checked=False)
+
+        elif query_param == "approved":
+            queryset = queryset.filter(was_checked=True)
+            approved_hw_ids = HomeWorkReview.objects.filter(is_approved=True).values_list("homework_id", flat=True)
+            return queryset.filter(was_checked=True, id__in=approved_hw_ids)
+
+        else:
+            return queryset
+
 
 
 class AdminReviewTaskView(LoginRequiredMixin, generic.DetailView):

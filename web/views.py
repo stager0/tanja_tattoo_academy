@@ -628,6 +628,17 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
 class AdminLectureList(LoginRequiredMixin, generic.ListView):
     template_name = "admin-lecture-list.html"
     model = Lecture
+    context_object_name = "lectures"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+
+        context["count_of_waiting"] = count_of_waiting
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
 
 
 class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):

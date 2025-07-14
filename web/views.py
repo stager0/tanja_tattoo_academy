@@ -195,6 +195,8 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         queryset = self.get_messages()
         user = self.request.user
         context = super().get_context_data(**kwargs)
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
 
         messages = []
         for message in queryset:
@@ -215,6 +217,9 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         context["user"] = self.request.user
 
         context["admin_ids"] = UserModel.objects.filter(is_superuser=True).values_list("id", flat=True)
+
+        context["count_of_new_messages"] = count_of_new_messages
+        context["count_of_waiting"] = count_of_waiting
 
         return context
 
@@ -267,6 +272,7 @@ class ProfileView(LoginRequiredMixin, generic.FormView):
             chat = Chat.objects.get(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
+            context["chat_pk"] = get_object_or_404(Chat, user=user).pk
 
         return context
 
@@ -280,6 +286,7 @@ class ProfileView(LoginRequiredMixin, generic.FormView):
             raise ValueError("User has no password set")
 
         kwargs["hashed_current_password"] = password
+        kwargs["user_id"] = user.id
         print(user.password)
         return kwargs
 
@@ -312,12 +319,12 @@ class ProfileView(LoginRequiredMixin, generic.FormView):
 
 
 @method_decorator(redirect_superuser, name="dispatch")
-class CourseView(LoginRequiredMixin, generic.ListView):
+class CourseView(LoginRequiredMixin, generic.FormView):
     template_name = "course.html"
     model = Lecture
-    # form_class = LecturePlatformUserForm
+    form_class = LectureHomeworkUserForm
 
-    def get_context_data(self, *, object_list = ..., **kwargs):
+    def get_context_data(self, **kwargs):
         user = self.request.user
         context = super().get_context_data(**kwargs)
         if not user.is_superuser:
@@ -570,7 +577,15 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
 class AdminBoxesView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-boxes.html"
     model = StartBox
+    context_object_name = "boxes"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        if self.request.GET.get("type") == "active":
+            return queryset.filter(is_sent=False)
+        elif self.request.GET.get("type") == "sent":
+            return queryset.filter(is_sent=True)
 
 class BoxApplicationView(LoginRequiredMixin, generic.FormView):
     template_name = "box-application.html"

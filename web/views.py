@@ -525,7 +525,6 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
 @method_decorator(redirect_user, name="dispatch")
 class AdminStudentsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-students.html"
-    model = get_user_model()
     model = UserModel
     context_object_name = "users"
 
@@ -539,8 +538,35 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
 
         return context
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        all_lectures = Lecture.objects.count()
+        search_query = self.request.GET.get("q")
+        progres_query = self.request.GET.get("progress")
 
+        homeworks_done_counter_query = HomeWorkReview.objects.filter(
+            homework__user_id=OuterRef("pk"),
+            is_approved=True
+        ).values("homework__user_id").annotate(c=Count("id")).values("c")
 
+        queryset = queryset.filter(is_superuser=False).annotate(
+            progress=Cast(Subquery(homeworks_done_counter_query), FloatField()) * 100 / all_lectures
+        )
+
+        if search_query:
+            queryset = queryset.filter(Q(email__icontains=search_query) | Q(first_name__icontains=search_query) | Q(last_name__icontains=search_query))
+
+        if progres_query:
+            if progres_query == "low":
+                queryset = queryset.filter(Q(progress__lte=30) | Q(progress=None))
+            if progres_query == "medium":
+                queryset = queryset.filter(progress__gte=30).filter(progress__lte=80)
+            if progres_query == "high":
+                queryset = queryset.filter(progress__gte=80)
+
+        return queryset
+
+@method_decorator(redirect_user, name="dispatch")
 class AdminBoxesView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-boxes.html"
     model = StartBox

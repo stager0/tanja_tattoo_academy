@@ -8,37 +8,40 @@
   <div class="card">
     <a href="{% url 'admin_lecture_list' %}" class="back-link"><i class="fas fa-arrow-left"></i> До списку лекцій</a>
 
-    <form id="create-lecture-form" style="margin-top: 20px;">
+    <form id="create-lecture-form" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+      {% csrf_token %}
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange);">Основна частина</h4>
       <div class="form-grid">
         <div class="input-group">
-          <label for="lecture-title">Назва лекції</label>
-          <input type="text" id="lecture-title" name="lecture-title" required
-                 placeholder="Наприклад, 'Урок 5: Робота з кольором'">
+          <label for="{{ form.lecture_name.id_for_label }}">Назва лекції</label>
+          {{ form.lecture_name }}
         </div>
-
         <div class="input-group">
-          <label for="lecture-video-url">Посилання на відео уроку</label>
-          <input type="url" id="lecture-video-url" name="lecture-video-url" required
-                 placeholder="https://www.youtube.com/watch?v=...">
+          <label for="{{ form.video_url.id_for_label }}">Посилання на відео уроку</label>
+          {{ form.video_url }}
+        </div>
+        <div class="input-group">
+          <label for="{{ form.under_name.id_for_label }}">Підзаголовок</label>
+          {{ form.under_name }}
+        </div>
+        <div class="input-group">
+            <label for="{{ form.position_number.id_for_label }}">Порядковий номер</label>
+          <label for="position_number"></label><input type="number" id="position_number" name="position_number" placeholder="{{ position_number }}">
         </div>
       </div>
 
       <div class="input-group" style="margin-top: 10px; margin-bottom: 30px;">
         <label>Зміст лекції</label>
-        <div class="quill-editor-wrapper">
-          <div id="editor-container"></div>
-        </div>
+        {{ form.lecture }}
       </div>
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange); border-top: 1px solid var(--border-color); padding-top: 30px;">
         <i class="fas fa-tasks"></i> Завдання до уроку
       </h4>
       <div class="input-group">
-        <label for="homework-description">Опис домашнього завдання</label>
-        <textarea id="homework-description" name="homework-description" rows="5"
-                  placeholder="Опишіть, що саме учень має зробити..."></textarea>
+        <label>Опис домашнього завдання</label>
+        {{ form.homework }}
       </div>
 
       <div class="btn-group" style="margin-top: 30px; display: flex; gap: 15px;">
@@ -50,40 +53,51 @@
 {% endblock %}
 
 {% block scripts %}
+  {{ block.super }}
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
   <script>
-      document.addEventListener('DOMContentLoaded', function () {
-          const quill = new Quill('#editor-container', {
-              theme: 'snow',
-              // --- ИСПРАВЛЕННАЯ ПОЛНАЯ ПАНЕЛЬ ИНСТРУМЕНТОВ ---
-              modules: {
-                  toolbar: [
-                      [{'header': [1, 2, 3, false]}],
-                      ['bold', 'italic', 'underline', 'link'],
-                      [{'list': 'ordered'}, {'list': 'bullet'}],
-                      ['image'],
-                      ['clean']
-                  ]
-              },
-              placeholder: 'Почніть писати текст лекції тут...'
-          });
+    document.addEventListener('DOMContentLoaded', function () {
 
-          quill.getModule('toolbar').addHandler('image', () => { /* ... логика загрузки фото ... */
-          });
+      // Эта функция находит поле Django и заменяет его на редактор Quill
+      function createQuillEditor(textareaSelector, placeholder, isSimpleToolbar = false) {
+        const textarea = document.querySelector(textareaSelector);
+        if (!textarea) return null;
 
-          document.getElementById('create-lecture-form').addEventListener('submit', function (event) {
-              event.preventDefault();
-              const title = document.getElementById('lecture-title').value;
-              const videoUrl = document.getElementById('lecture-video-url').value;
-              const lectureContent = quill.root.innerHTML;
-              const homework = document.getElementById('homework-description').value;
+        const editorDiv = document.createElement('div');
+        textarea.parentNode.insertBefore(editorDiv, textarea);
+        textarea.style.display = 'none';
 
-              console.log({title, videoUrl, lectureContent, homework});
-              alert('Лекцію створено (імітація).');
-              window.location.href = "{% url 'admin_lecture_list' %}";
-          });
+        const toolbarOptions = isSimpleToolbar
+          ? [ ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean'] ]
+          : [ [{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean'] ];
+
+        const quill = new Quill(editorDiv, {
+            theme: 'snow',
+            modules: { toolbar: toolbarOptions },
+            placeholder: placeholder
+        });
+
+        quill.root.innerHTML = textarea.value;
+
+        return { quill, textarea };
+      }
+
+      // Инициализируем редакторы для полей лекции и домашнего задания
+      const lectureEditor = createQuillEditor('#id_lecture', 'Почніть писати текст лекції тут...');
+      const homeworkEditor = createQuillEditor('#id_homework', 'Опишіть домашнє завдання тут...', true);
+
+      // Перед отправкой формы, копируем HTML-контент из редакторов обратно в скрытые поля
+      const createForm = document.getElementById('create-lecture-form');
+      createForm.addEventListener('submit', function () {
+        if (lectureEditor) {
+          lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
+        }
+        if (homeworkEditor) {
+          homeworkEditor.textarea.value = homeworkEditor.quill.root.innerHTML;
+        }
       });
+    });
   </script>
 {% endblock %}

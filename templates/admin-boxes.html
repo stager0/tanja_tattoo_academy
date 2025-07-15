@@ -5,56 +5,61 @@
 {% block header_title %}Заявки на бокси{% endblock %}
 
 {% block content %}
-<div class="filter-tabs">
-    <a href="#pending" class="filter-tab active">На відправку <span class="tab-counter">2</span></a>
-    <a href="#sent" class="filter-tab">Відправлені <span class="tab-counter">5</span></a>
-</div>
+  <div class="filter-tabs">
+    <a href="{% url 'admin_boxes' %}?type=active" class="filter-tab {% if filter == "active" %}active{% endif %}">На
+      відправку <span
+          class="tab-counter">{{ active_count }}</span></a>
+    <a href="{% url 'admin_boxes' %}?type=sent" class="filter-tab {% if filter == "sent" %}active{% endif %}">Відправлені
+      <span
+          class="tab-counter">{{ sent_count }}</span></a>
+  </div>
 
-<div class="admin-grid">
-    <div class="admin-item-card application-card-admin">
+  <div class="admin-grid">
+    {% for box in boxes %}
+      <div class="admin-item-card application-card-admin">
         <div class="admin-item-header">
-            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar" class="avatar">
-            <div class="info">
-                <strong>Таня Іванова</strong>
-                <p>Заявка від 3 липня 2025</p>
-            </div>
+          <img src="{{ box.user.avatar.url }}" alt="Avatar" class="avatar">
+          <div class="info">
+            <strong>{{ box.user.get_full_name }}</strong>
+            <p>Заявка від {{ box.sent_date|date:"m-d-y H:i" }}</p>
+          </div>
         </div>
         <div class="admin-item-body">
-            <div class="info-item">
-                <strong>Адреса:</strong>
-                <span>Україна, м. Київ, вул. Хрещатик, 1, кв. 2, 01001</span>
-            </div>
-            <div class="info-item">
-                <strong>Телефон:</strong>
-                <span>+380 12 345 6789</span>
-            </div>
+          <div class="info-item">
+            <strong>Адреса:</strong>
+            <span>{{ box.address }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Телефон:</strong>
+            <span>{{ box.phone }}</span>
+          </div>
+          <div class="info-item">
+            <strong>ФІО отримувача:</strong>
+            <span>{{ box.full_name }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Коментарі:</strong>
+            <span>{{ box.comments }}</span>
+          </div>
+          {% if box.is_sent %}
+          <div class="info-item">
+            <strong>Статус:</strong>
+            <span>Вже відправлено: <strong>{{ box.sent_date|date:"d-m-y H:i" }}</strong></span>
+          </div>
+          {% endif %}
         </div>
-        <div class="admin-item-footer">
-            <button class="btn mark-as-sent-btn" style="width: 100%;">Позначити як відправлений</button>
-        </div>
-    </div>
+        {% if not box.is_sent %}
+          <div class="admin-item-footer">
+          <form method="post">
+            {% csrf_token %}
+            <button class="btn mark-as-sent-btn" name="mark_as_sent" value="{{ box.pk }}" style="width: 100%;">Позначити
+              як відправлений
+            </button>
+          </form>
+        {% endif %}
 
-    <div class="admin-item-card application-card-admin">
-        <div class="admin-item-header">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop" alt="Avatar" class="avatar">
-            <div class="info">
-                <strong>Іван Петренко</strong>
-                <p>Заявка від 2 липня 2025</p>
-            </div>
         </div>
-        <div class="admin-item-body">
-           <div class="info-item">
-               <strong>Адреса:</strong>
-               <span>Україна, м. Львів, пл. Ринок, 10, 79008</span>
-           </div>
-           <div class="info-item">
-               <strong>Телефон:</strong>
-               <span>+380 98 765 4321</span>
-           </div>
-       </div>
-       <div class="admin-item-footer">
-           <button class="btn mark-as-sent-btn" style="width: 100%;">Позначити як відправлений</button>
-       </div>
-    </div>
-</div>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}

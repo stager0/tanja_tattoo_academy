@@ -8,26 +8,26 @@
 <div class="progress-card-detailed">
     <div class="progress-info">
         <h3>Прогрес курсу</h3>
-        <span class="progress-percentage">75%</span>
+        <span class="progress-percentage">{{ percent_done }}%</span>
     </div>
     <div class="progress-bar-bg">
-        <div class="progress-bar-fill" style="width: 75%;"></div>
+        <div class="progress-bar-fill" style="width: {{ percent_done }}%;"></div>
     </div>
 </div>
 
 <div class="dashboard-grid">
-    <a href="{% url 'course' %}" class="dashboard-card">
+    <a href="{% url 'course' pk=lesson.position_number %}" class="dashboard-card">
         <div class="card-icon"><i class="fas fa-play-circle"></i></div>
         <h3>Продовжити навчання</h3>
-        <p>Наступний урок: "Закрас та тіні".</p>
+        <p>Наступний урок: "{{ lesson.lecture_name }}".</p>
         <div class="btn">
             Перейти до лекції <i class="fas fa-arrow-right"></i>
         </div>
     </a>
-    <a href="{% url 'chat' %}" class="dashboard-card">
+    <a href="{% url 'chat' chat_pk  %}" class="dashboard-card">
         <div class="card-icon"><i class="fas fa-comments"></i></div>
         <h3>Чат з ментором</h3>
-        <p>У вас {{ new_sms }} нове повідомлення від ментора.</p>
+        <p>У вас {% if new_sms %}{{ new_sms }}{% else %}немає {% endif %}{% if new_sms == 1 %} нове повідомлення{% else %} нових повідомлення{% endif %} від ментора.</p>
         <div class="btn btn-secondary">Відкрити чат</div>
     </a>
     <a href="{% url 'profile' %}" class="dashboard-card">

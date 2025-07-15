@@ -5,76 +5,149 @@
 {% block header_title %}Список учнів{% endblock %}
 
 {% block content %}
-<div class="list-controls">
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="Пошук за іменем або email...">
-    </div>
-    <div class="filters">
-        <select class="filter-select" aria-label="Фільтр по прогресу">
-            <option value="">Весь прогрес</option>
-            <option value="low">Низький (< 30%)</option>
-            <option value="medium">Середній (30-80%)</option>
-            <option value="high">Високий (> 80%)</option>
-        </select>
-    </div>
-    <div class="view-switcher">
-        <button class="btn-icon view-btn active" id="view-grid-btn" aria-label="Вигляд сіткою"><i class="fas fa-th-large"></i></button>
-        <button class="btn-icon view-btn" id="view-list-btn" aria-label="Вигляд списком"><i class="fas fa-bars"></i></button>
-    </div>
-</div>
+  <form method="GET" action="{% url 'admin_students' %}" class="list-controls">
 
-<div class="students-container view-grid">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" name="q" placeholder="Пошук за іменем або email..." value="{{ request.GET.q }}">
+    </div>
+
+    <div class="filters">
+      <div class="custom-select-wrapper">
+        <select name="progress" class="filter-select" aria-label="Фільтр по прогресу">
+          <option value="">Весь прогрес</option>
+          <option value="low" {% if request.GET.progress == 'low' %}selected{% endif %}>Низький (< 30%)</option>
+          <option value="medium" {% if request.GET.progress == 'medium' %}selected{% endif %}>Середній (30-80%)</option>
+          <option value="high" {% if request.GET.progress == 'high' %}selected{% endif %}>Високий (> 80%)</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-apply-filter">
+      <i class="fas fa-filter"></i> Застосувати
+    </button>
+    <input type="hidden" name="view" id="view-mode-input" value="{{ request.GET.view|default:'grid' }}">
+
+    <div class="view-switcher">
+      <button type="button" class="btn-icon view-btn {% if request.GET.view != 'list' %}active{% endif %}"
+              id="view-grid-btn" aria-label="Вигляд сіткою"><i class="fas fa-th-large"></i></button>
+      <button type="button" class="btn-icon view-btn {% if request.GET.view == 'list' %}active{% endif %}"
+              id="view-list-btn" aria-label="Вигляд списком"><i class="fas fa-bars"></i></button>
+    </div>
+  </form>
+
+  <div class="students-container {% if request.GET.view == 'list' %}view-list{% else %}view-grid{% endif %}">
+
     <div class="admin-grid students-grid">
-        <div class="admin-item-card student-card">
+      {% for user in users %}
+        {% if not user.is_superuser %}
+          <div class="admin-item-card student-card">
             <div class="admin-item-header">
-                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
-                <div class="info">
-                    <strong>Таня Іванова</strong>
-                    <p>tanya.ivanova@email.com</p>
-                </div>
+              <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
+              <div class="info">
+                <strong>{{ user.get_full_name }}</strong>
+                <p>{{ user.email }}</p>
+              </div>
             </div>
             <div class="student-card-progress">
-                <div class="progress-info">
-                    <span>Прогрес</span>
-                    <span>75%</span>
-                </div>
-                <div class="progress-bar-bg"><div class="progress-bar-fill success" style="width: 75%;"></div></div>
+              <div class="progress-info">
+                <span>Прогрес</span>
+                <span>{{ user.progress|default:0 }}%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+              </div>
             </div>
             <div class="student-card-stats">
-                <div><span>Тариф:</span><strong>Pro</strong></div>
-                <div><span>Остання активність:</span><strong>сьогодні</strong></div>
+              <div><span>Тариф:</span><strong>{{ user.code.tariff|default:"N/A" }}</strong></div>
+              <div>
+                <span>Остання активність:</span><strong>{{ user.last_activity|date:"d-m-y H:i"|default:"Немає даних" }}</strong>
+              </div>
             </div>
             <div class="student-card-actions">
-                <a href="#" class="btn btn-secondary">Профіль</a>
-                <a href="#" class="btn">Чат</a>
+              {% if user.chats.pk %}
+                <a href="{% url 'chat' user.pk %}" class="btn btn-sm">Чат</a>
+              {% else %}
+                <span class="btn btn-sm disabled">No Chat</span>
+              {% endif %}
             </div>
+          </div>
+        {% endif %}
+      {% empty %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center;">
+          <p>Не знайдено учнів, які відповідають вашому запиту.</p>
         </div>
+      {% endfor %}
     </div>
 
     <div class="students-list-view">
-        <div class="list-header">
-            <span>Учень</span>
-            <span>Прогрес</span>
-            <span>Тариф</span>
-            <span>Активність</span>
-            <span style="text-align: right;">Дії</span>
-        </div>
-        <div class="admin-item-card list-item">
+      <div class="list-header">
+        <span>Учень</span>
+        <span>Прогрес</span>
+        <span>Тариф</span>
+        <span>Остання активність</span>
+        <span style="text-align: right;">Дії</span>
+      </div>
+      {% for user in users %}
+        {% if not user.is_superuser %}
+          <div class="admin-item-card list-item">
             <div class="student-info-cell">
-                <img class="avatar" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop" alt="Avatar">
-                <div><strong>Таня Іванова</strong><p>tanya.ivanova@email.com</p></div>
+              <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
+              <div><strong>{{ user.get_full_name }}</strong>
+                <p>{{ user.email }}</p></div>
             </div>
             <div class="student-progress">
-                <div class="progress-bar-bg"><div class="progress-bar-fill success" style="width: 75%;"></div></div>
-                <span>75%</span>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+              </div>
+              <span>{% if user.progress is not None %}{{ user.progress }}%{% else %}0.0%{% endif %}</span>
             </div>
-            <div>Pro</div>
-            <div>сьогодні</div>
+            <div>{{ user.code.tariff|default:"N/A" }}</div>
+            <div>{{ user.last_activity|date:"d-m-y H:i"|default:"Немає даних" }}</div>
             <div class="item-actions" style="justify-content: flex-end;">
-                <a href="#" class="btn btn-sm">Чат</a>
+              {% if user.chats.pk %}
+                <a href="{% url 'chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
+              {% else %}
+                <span class="btn btn-sm disabled">No Chat</span>
+              {% endif %}
             </div>
-        </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
-</div>
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const container = document.querySelector('.students-container');
+          const gridBtn = document.getElementById('view-grid-btn');
+          const listBtn = document.getElementById('view-list-btn');
+          const viewInput = document.getElementById('view-mode-input'); // Находим скрытое поле
+
+          // Проверяем, что все элементы существуют на странице
+          if (!container || !gridBtn || !listBtn || !viewInput) {
+              return;
+          }
+
+          const setView = (view) => {
+              // Меняем классы для мгновенного отображения
+              container.classList.remove('view-grid', 'view-list');
+              container.classList.add(`view-${view}`);
+
+              gridBtn.classList.toggle('active', view === 'grid');
+              listBtn.classList.toggle('active', view === 'list');
+
+              // Запоминаем выбор в скрытом поле для следующей отправки формы
+              viewInput.value = view;
+          };
+
+          // Вешаем обработчики на кнопки. Они не отправляют форму, а только меняют вид.
+          gridBtn.addEventListener('click', () => setView('grid'));
+          listBtn.addEventListener('click', () => setView('list'));
+      });
+  </script>
 {% endblock %}

@@ -23,11 +23,11 @@
         </nav>
         <nav class="admin-menu">
             <h5>Меню Ментора</h5>
-            <a href="{% url 'admin_review_list' %}" id="nav-admin-review"><i class="fas fa-tasks"></i> Завдання на перевірку <span class="notification-badge">3</span></a>
-            <a href="{% url 'admin_all_chats' %}" id="nav-admin-chats"><i class="fas fa-comments"></i> Усі чати</a>
+            <a href="{% url 'admin_review_list' %}?type=waiting_for_a_check" id="nav-admin-review"><i class="fas fa-tasks"></i> Завдання на перевірку <span class="notification-badge">{{ count_of_waiting }}</span></a>
+            <a href="{% url 'admin_all_chats' %}" id="nav-admin-chats"><i class="fas fa-comments"></i> Усі чати <span class="notification-badge">{{ count_of_new_messages }}</span></a>
             <a href="{% url 'admin_lecture_list' %}" id="nav-admin-lectures"><i class="fas fa-book-open"></i> Керування лекціями</a>
             <a href="{% url 'admin_students' %}" id="nav-admin-students"><i class="fas fa-users"></i> Усі учні</a>
-            <a href="{% url 'admin_boxes' %}" id="nav-admin-boxes"><i class="fas fa-shipping-fast"></i> Бокси на відправку</a>
+            <a href="{% url 'admin_boxes' %}?type=active" id="nav-admin-boxes"><i class="fas fa-shipping-fast"></i> Бокси на відправку</a>
         </nav>
     </aside>
     <main class="main-content">
@@ -38,7 +38,7 @@
             </div>
             <div class="header-right">
                 <div class="user-profile">
-                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop"
+                    <img src="{{ user.avatar.url }}"
                          alt="Admin Avatar">
                     <div class="user-info"><span class="user-name">Ментор Таня</span><span
                             class="user-role">Адміністратор</span>

@@ -7,8 +7,8 @@
 {% block content %}
 <div class="form-container">
     <div class="eligibility-card success">
-      <h4><i class="fas fa-check-circle"></i> Ваш тариф "Pro" включає стартовий бокс!</h4>
-      <p>Заповніть анкету нижче, і ми відправимо вам набір з усім необхідним для початку роботи.</p>
+      <h4><i class="fas fa-check-circle"></i> {% if tariff == "pro" or tariff == "master" %}Ваш тариф "{{ tariff }}" включає стартовий бокс!{% elif tariff == "base" %} Нажаль ваш тариф "{{ tariff }}" не включає стартовий бокс!{% endif %}</h4>
+      <p>{{ sms }}</p>
     </div>
 
     <div class="card">
@@ -17,11 +17,11 @@
         {% csrf_token %}
         <div class="input-group">
           <label for="full_name">Повне ім'я (ПІБ)</label>
-          <input type="text" id="full_name" name="full_name" value="Іванова Тетяна" required>
+          <input type="text" id="full_name" name="full_name" value="{{ user.get_full_name }}" required>
         </div>
         <div class="input-group">
-          <label for="phone_number">Номер телефону</label>
-          <input type="tel" id="phone_number" name="phone_number" value="+380 12 345 6789" required>
+          <label for="phone">Номер телефону</label>
+          <input type="tel" id="phone" name="phone" placeholder="+380 12 345 6789" required>
         </div>
         <div class="input-group">
           <label for="address">Адреса доставки</label>

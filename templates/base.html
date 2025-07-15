@@ -2,58 +2,67 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Tanja Tattoo Academy{% endblock %}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'platform-student.css' %}">
-    <link rel="stylesheet" href="{% static 'platform-student-responsive.css' %}">
-    {% block styles %}{% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Tanja Tattoo Academy{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'platform-student.css' %}">
+  <link rel="stylesheet" href="{% static 'platform-student-responsive.css' %}">
+  {% block styles %}{% endblock %}
 </head>
 <body>
 <div class="platform-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <a href="{% url 'dashboard' %}" class="logo">Tanja<span>Tattoo</span></a>
-        </div>
-        <nav class="main-menu">
-            <a href="{% url 'dashboard' %}" id="nav-dashboard"><i class="fas fa-home"></i> Головна</a>
-            <a href="{% url 'course' %}" id="nav-course"><i class="fas fa-book-open"></i> Мій курс</a>
-            <a href="{% url 'box_application' %}" id="nav-box"><i class="fas fa-box"></i> Заявка на бокс</a>
-            <a href="{% url 'chat' %}" id="nav-chat"><i class="fas fa-comments"></i> Чат з ментором</a>
-            <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
-        </nav>
-    </aside>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="{% url 'dashboard' %}" class="logo">Tanja<span>Tattoo</span></a>
+    </div>
+    <nav class="main-menu">
+      <a href="{% url 'dashboard' %}" id="nav-dashboard"><i class="fas fa-home"></i> Головна</a>
+      {% if next_lesson %}
+        <a href="{% url 'course' pk=next_lesson %}" id="nav-course">
+          <i class="fas fa-book-open"></i> Мій курс
+        </a>
+      {% else %}
+        <a href="{% url 'course' pk=1 %}" id="nav-course">
+          <i class="fas fa-book-open"></i> Мій курс
+        </a>
+      {% endif %}<a href="{% url 'box_application' %}" id="nav-box"><i class="fas fa-box"></i> Заявка на бокс</a>
+      <a href="{% url 'chat' chat_pk %}" id="nav-chat"><i class="fas fa-comments"></i> Чат з ментором</a>
+      <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
+    </nav>
+  </aside>
 
-    <main class="main-content">
-        <header class="platform-header">
-            <div class="header-left">
-                <button class="mobile-menu-toggle" aria-label="Відкрити меню"><i class="fas fa-bars"></i></button>
-                <h2 class="header-title">{% block header_title %}Вітаємо!{% endblock %}</h2>
-            </div>
-            <div class="header-right">
-                <div class="header-icons">
-                    <a href="#" aria-label="Сповіщення"><i class="fas fa-bell" style="color: red">{{ new_sms }}</i></a>
-                </div>
-                <div class="user-profile">
-                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop"
-                         alt="User Avatar">
-                    <div class="user-info">
-                        <span class="user-name">{{ user.get_full_name }}</span>
-                        <span class="user-role">{% if user.is_superuser %}Ментор{% else %}Учень{% endif %}</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="page-content">
-            {% block content %}{% endblock %}
+  <main class="main-content">
+    <header class="platform-header">
+      <div class="header-left">
+        <button class="mobile-menu-toggle" aria-label="Відкрити меню"><i class="fas fa-bars"></i></button>
+        <h2 class="header-title">{% block header_title %}Вітаємо!{% endblock %}</h2>
+      </div>
+      <div class="header-right">
+        <div class="header-icons">
+          <a href="{% url 'chat' chat_pk %}" aria-label="Сповіщення"><i class="fas fa-bell" style="color: red">
+            {% if new_sms %}{{ new_sms }}{% endif %}</i></a>
         </div>
-    </main>
+        <div class="user-profile">
+          <img src="{{ user.avatar.url }}"
+               alt="User Avatar">
+          <div class="user-info">
+            <span class="user-name">{{ user.get_full_name }}</span>
+            <span class="user-role">{% if user.is_superuser %}Ментор{% else %}Учень{% endif %}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-content">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
 </div>
 <div class="sidebar-overlay"></div>
 <script src="{% static 'platform.js' %}"></script>

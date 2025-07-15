@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}Чат з ментором - {{ block.super }}{% endblock %}
@@ -11,15 +12,20 @@
         {% for msg in messages %}
           {% if msg.user in admin_ids %}
             <div class="message received">
-              <img src="{% static 'imgs/tanja_foto.jpg' %}" alt="Mentor Avatar" class="message-avatar">
+              <img src="{{ interlocutor_avatar }}" alt="Mentor Avatar" class="message-avatar">
               <div class="message-bubble">
                 <p>{{ msg.text }}</p>
+                {% if msg.image %}
+                  <div class="message-attachment">
+                    <img src="{{ msg.image.url }}" alt="Homework Image">
+                  </div>
+                {% endif %}
                 <div class="message-time">{{ msg.send_time }}</div>
               </div>
             </div>
-          {% elif not msg.user in admin_ids %}
+          {% elif msg.user not in admin_ids %}
             <div class="message sent">
-              <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?w=100&h=100&fit=crop"
+              <img src="{{ user.avatar.url }}"
                    alt="User Avatar"
                    class="message-avatar">
               <div class="message-bubble">
@@ -57,4 +63,16 @@
     <span class="modal-close-btn">&times;</span>
     <img class="modal-content" id="modalImage">
   </div>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.querySelector('.chat-messages');
+
+        if (chatMessages) {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    });
+</script>
 {% endblock %}

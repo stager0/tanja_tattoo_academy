@@ -67,6 +67,7 @@ class Message(models.Model):
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     is_read_user = models.BooleanField(default=False, blank=True, null=True)
     is_read_admin = models.BooleanField(default=False, blank=True, null=True)
+    from_admin = models.BooleanField(default=False, blank=True, null=True)
 
 
 # Lectures

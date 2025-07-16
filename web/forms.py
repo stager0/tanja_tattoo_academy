@@ -1,10 +1,14 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 
-from web.models import Code
+from web.models import Code, Message, StartBox, UserModel, HomeWork, HomeWorkReview, Lecture
 from web.validators import validate_phone_number, validate_subscribe_code
 
 
@@ -70,29 +74,47 @@ class ChangePasswordForm(forms.Form):
         return cleaned_data
 
 
-class BoxApplicationForm(forms.Form):
-    pass
+class BoxApplicationForm(forms.ModelForm):
+    class Meta:
+        model = StartBox
+        fields = ("full_name", "phone", "address", "comments")
+
 
 class ProfileForm(forms.Form):
     avatar = forms.ImageField(required=False)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     email = forms.EmailField(required=False)
+    phone = forms.CharField(required=False)
     current_password = forms.CharField(required=False)
     new_password = forms.CharField(required=False)
     confirm_new_password = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
-        self.current_hashed_password = kwargs.pop("current_hashed_password", "")
+        self.current_hashed_password = kwargs.pop("hashed_current_password", "")
+        self.user_id = kwargs.pop("user_id", "")
         super().__init__(*args, **kwargs)
 
     def clean_current_password(self):
-        if self.current_hashed_password and self.current_password:
-            if not check_password(self.current_password, self.current_hashed_password):
-                raise ValueError("Passwords are not equal.")
-            else:
-                return self.current_password
+        current_password = self.cleaned_data.get("current_password", "")
+        new_password = self.cleaned_data.get("new_password", "")
 
+        if self.current_hashed_password and current_password and new_password:
+            if not check_password(current_password, self.current_hashed_password):
+                raise forms.ValidationError("Недійсний пароль.")
+            elif check_password(current_password, self.current_hashed_password):
+                return current_password
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get("avatar", "")
+
+        if avatar:
+            if avatar.name.split(".")[-1] not in ["jpg", "jpeg", "png", "webp"]:
+                raise forms.ValidationError("Аватар повинен бути фото формату.")
+            user_avatar = UserModel.objects.get(id=self.user_id).avatar.path
+            if os.path.isfile(user_avatar):
+                os.remove(user_avatar)
+        return avatar
 
     def clean(self):
         cleaned_data = super().clean()
@@ -100,7 +122,7 @@ class ProfileForm(forms.Form):
         new_password_confirm = cleaned_data.get("confirm_new_password", "")
 
         if new_password != new_password_confirm or new_password is None or new_password_confirm is None:
-            raise ValueError("Passwords are not equal.")
+            raise forms.ValidationError("Паролі не співпадають")
         if new_password and new_password_confirm:
             validate_password(new_password)
         return cleaned_data

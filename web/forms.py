@@ -110,3 +110,10 @@ class ChatForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = ["text", "image"]
+
+
+class IndexForm(forms.Form):
+    name = forms.CharField(required=True, max_length=70)
+    contact_method = forms.CharField(required=True, max_length=70)
+    contact_details = forms.CharField(required=True, max_length=80)
+

@@ -118,6 +118,15 @@ class IndexForm(forms.Form):
     contact_details = forms.CharField(required=True, max_length=80)
 
 
+class LectureHomeworkUserForm(forms.ModelForm):
+    image = forms.ImageField(required=True)
+    text = forms.CharField(required=True)
+
+    class Meta:
+        model = HomeWork
+        fields = ["image", "text"]
+
+
 class LectureCreateForm(forms.ModelForm):
     class Meta:
         model = Lecture

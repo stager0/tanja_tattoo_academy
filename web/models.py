@@ -35,7 +35,7 @@ class Code(models.Model):
 
 def profile_avatar(instance, filename):
     filename_end = filename.split(".")[-1]
-    if filename_end not in ["png", "jpeg", "jpg"]:
+    if filename_end not in ["jpg", "jpeg", "png", "webp"]:
         raise ValueError("File must be photo!")
     filename_slug = slugify(instance.get_full_name()) or "user"
     return f"user_avatars/{instance.id}_{filename_slug}.{filename_end}"
@@ -45,6 +45,7 @@ class UserModel(EmailAbstractUser):
     code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
     avatar = models.ImageField(upload_to=profile_avatar, blank=True, default="user_avatars/base_icon.png")
+    last_activity = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.email

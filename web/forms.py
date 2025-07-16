@@ -133,6 +133,20 @@ class ReviewTaskForm(forms.ModelForm):
         fields = ["review_text"]
 
 
+class LectureEditForm(forms.ModelForm):
+    class Meta:
+        model = Lecture
+        fields = ["lecture_name", "under_name", "position_number", "video_url", "lecture", "homework"]
+        widgets = {
+            'lecture_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'under_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'position_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'video_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://googleusercontent.com/...'}),
+            'lecture': forms.Textarea(),
+            'homework': forms.Textarea(),
+        }
+
+
 class LectureCreateForm(forms.ModelForm):
     class Meta:
         model = Lecture

@@ -117,3 +117,8 @@ class IndexForm(forms.Form):
     contact_method = forms.CharField(required=True, max_length=70)
     contact_details = forms.CharField(required=True, max_length=80)
 
+
+class LectureCreateForm(forms.ModelForm):
+    class Meta:
+        model = Lecture
+        fields = ["lecture_name", "under_name", "position_number", "video_url", "lecture", "homework"]

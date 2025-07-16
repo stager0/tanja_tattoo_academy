@@ -55,7 +55,7 @@ class UserModel(EmailAbstractUser):
 
 
 class Chat(models.Model):
-    user = models.ForeignKey(UserModel, related_name="chats", on_delete=models.CASCADE)
+    user = models.OneToOneField(UserModel, related_name="chats", on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
@@ -86,12 +86,14 @@ class HomeWork(models.Model):
     lecture = models.ForeignKey(Lecture, related_name="home_works", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(UserModel, related_name="home_works", on_delete=models.CASCADE)
     was_checked = models.BooleanField(default=False, null=True, blank=True)
-    image = models.ImageField(upload_to="homework_images")
+    image = models.ImageField(upload_to="homework_images", default="system_files/not_found.jpeg", null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     text = models.CharField(max_length=512, null=True, blank=True, default="Користувач відправив дз без запитань.")
 
 
 class HomeWorkReview(models.Model):
     homework = models.ForeignKey(HomeWork, related_name="reviews", on_delete=models.CASCADE)
+    review_text = models.CharField(max_length=155, blank=True, null=True)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
@@ -99,10 +101,11 @@ class HomeWorkReview(models.Model):
 class StartBox(models.Model):
     full_name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-    user = models.ForeignKey(UserModel, related_name="start_boxes", on_delete=models.SET_NULL)
+    user = models.ForeignKey(UserModel, related_name="start_boxes", on_delete=models.SET_NULL, null=True)
     phone = models.CharField(max_length=20)
     comments = models.CharField(max_length=200, blank=True, null=True)
     is_sent = models.BooleanField(default=False, blank=True, null=True)
+    sent_date = models.DateTimeField(blank=True, null=True)
 
 
 class LecturesCounter(models.Model):

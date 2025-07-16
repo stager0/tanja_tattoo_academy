@@ -127,6 +127,12 @@ class LectureHomeworkUserForm(forms.ModelForm):
         fields = ["image", "text"]
 
 
+class ReviewTaskForm(forms.ModelForm):
+    class Meta:
+        model = HomeWorkReview
+        fields = ["review_text"]
+
+
 class LectureCreateForm(forms.ModelForm):
     class Meta:
         model = Lecture

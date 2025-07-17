@@ -354,13 +354,20 @@ class CourseView(LoginRequiredMixin, generic.FormView):
             chat = Chat.objects.get(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
-        lectures = Lecture.objects.all().order_by("position_number")
+
+
+        lectures = Lecture.objects.order_by("position_number")
         context["lectures"] = lectures
         homework_review_count = HomeWorkReview.objects.filter(
             homework__user=user,
             homework__was_checked=True,
             is_approved=True
         ).count()
+        paginator = Paginator(lectures, 10)
+        current_page = self.request.GET.get("page")
+        page_obj = paginator.get_page(current_page)
+
+        context["page_obj"] = page_obj
         context["homework_review_count"] = homework_review_count
         context["homework_review_count_plus_1"] = homework_review_count + 1
         context["chat_pk"] = get_object_or_404(Chat, user=user).pk
@@ -376,14 +383,25 @@ class CourseView(LoginRequiredMixin, generic.FormView):
 
         return context
 
+    def get(self, request, *args, **kwargs):
+        lectures = Lecture.objects.order_by("position_number")
+        paginator = Paginator(lectures, 10)
+        current_task = self.kwargs["pk"]
+        current_page = self.request.GET.get("page") if self.request.GET.get("page") else None
+        if paginator.get_page(current_task) != current_page or current_task > 10 and not current_page:
+            url = reverse("course", kwargs={"pk": current_task})
+            return HttpResponseRedirect(f"{url}?page={paginator.get_page(current_task)}")
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form):
         text = form.cleaned_data.get("text", "")
         image = form.cleaned_data.get("image", "")
         user = self.request.user
         lecture_pk = self.kwargs.get("pk", "")
-        lecture_obj = Lecture.objects.get(pk=lecture_pk)
+        if lecture_pk:
+            lecture_obj = Lecture.objects.get(pk=lecture_pk)
 
-        if not text and image:
+        if not text and not image or lecture_pk:
             return reverse("course", kwargs={"pk": 1})
 
         homework = HomeWork.objects.create(
@@ -400,6 +418,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         if pk and Lecture.objects.filter(pk=pk).exists():
             return reverse("course", kwargs={"pk": pk + 1})
         return reverse("course", kwargs={"pk": 1})
+
 
 @method_decorator(redirect_superuser, name="dispatch")
 class BoxApplicationView(LoginRequiredMixin, generic.FormView):

@@ -140,6 +140,19 @@ class IndexView(generic.FormView):
         context["user"] = user
         return context
 
+    def form_valid(self, form):
+        name = form.cleaned_data.get("name", "")
+        contact_method = form.cleaned_data.get("contact_method", "")
+        contact_details = form.cleaned_data.get("contact_details", "")
+
+        if name and contact_method and contact_details:
+            if self.request.POST:
+                # send_telegramm_index_form(name=name, contact_method=contact_method, contact_details=contact_details)
+                print(name, contact_details, contact_method)
+                return HttpResponseRedirect("answer_to_form")
+
+        return super().form_valid(form)
+
 
 @method_decorator(redirect_superuser, name="dispatch")
 class DashboardView(LoginRequiredMixin, generic.TemplateView):

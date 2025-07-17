@@ -50,6 +50,36 @@ def count_new_messages(user_chat_obj: Chat, user: UserModel) -> int | None:
     return new_messages if new_messages else None
 
 
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            tariff = self.request.POST.get("action")
+            price = SubscribeTariff.objects.get(name=f"{tariff.lower()}")
+            order = Order.objects.create(
+                total_sum=Decimal(price.price),
+            )
+
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[{
+                    'price_data': {
+                        'currency': 'eur',
+                        'product_data': {
+                            'name': f"Оплата за підписку '{price.name}' для \n Tanja Tattoo Academy"
+                        },
+                        'unit_amount': int(price.price * 100)
+                    },
+                    'quantity': 1
+                }],
+                mode='payment',
+                success_url=request.build_absolute_uri(reverse("success_pay")),
+                cancel_url=request.build_absolute_uri(reverse("cancel_pay")),
+                metadata={"order_id": order.pk, "tariff": tariff}
+            )
+            return redirect(checkout_session.url, code=303)
+        except Exception as e:
+            print(e)
+            return redirect(reverse("error_pay"))
+
 class RegisterView(CreateView):
     form_class = CustomRegisterForm
     template_name = "registration/register.html"

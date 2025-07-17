@@ -80,6 +80,47 @@ class CreateCheckoutSessionView(View):
             print(e)
             return redirect(reverse("error_pay"))
 
+
+@method_decorator(csrf_exempt, name="dispatch")
+class Webhook(View):
+    def post(self, request, *args, **kwargs):
+        payload = request.body
+        signature_header = request.headers.get("Stripe-Signature")
+        webhook_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+        try:
+            event = stripe.Webhook.construct_event(payload, signature_header, webhook_secret)
+        except (ValueError, stripe.error.SignatureVerificationError) as e:
+            return HttpResponse(status=400)
+
+        if event["type"] == "checkout.session.completed":
+            try:
+                order = Order.objects.get(pk=event["data"]["object"]["metadata"]["order_id"])
+                email = event["data"]["object"]["customer_details"]["email"]
+                session_id = event["data"]["object"]["id"]
+                order.user_email = email
+                order.session_id = session_id
+                order.is_paid = True
+                order.save()
+
+                new_code = Code.objects.create(
+                    code=generate_subscribe_code(),
+                    order=order,
+                    tariff=event["data"]["object"]["metadata"]["tariff"]
+                )
+                full_name = event["data"]["object"]["customer_details"]["name"]
+
+            except Exception as e:
+                order.delete()
+                new_code.delete()
+                return redirect(reverse("error_pay"))
+            else:
+                print(email, new_code.code, full_name)
+                send_email_subscribe_code(email=email, code=new_code.code, full_name=full_name)
+
+        return HttpResponse(status=200)
+
+
 class RegisterView(CreateView):
     form_class = CustomRegisterForm
     template_name = "registration/register.html"

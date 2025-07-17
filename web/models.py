@@ -36,7 +36,8 @@ class Code(models.Model):
     is_activated = models.BooleanField(default=False, null=True, blank=True)
     activated_date = models.DateTimeField(null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    tariff = models.CharField(choices=SubscribeChoices.choices, max_length=10, default="base") #------------> DELETE
+    order = models.OneToOneField("Order", null=True, blank=True, on_delete=models.CASCADE, related_name="codes")
+    tariff = models.CharField(choices=SubscribeChoices.choices, max_length=10, default="base")
     start_box_coupon_is_activated = models.BooleanField(default=False, null=True, blank=True)
 
 
@@ -118,3 +119,10 @@ class StartBox(models.Model):
 class LecturesCounter(models.Model):
     lecture = models.ForeignKey(Lecture, related_name="counter", on_delete=models.CASCADE)
     user = models.ForeignKey(UserModel, related_name="counter", on_delete=models.CASCADE)
+
+
+class Order(models.Model):
+    total_sum = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False, null=True, blank=True)
+    user_email = models.EmailField(null=True, blank=True)
+    session_id = models.CharField(max_length=100, null=True, blank=True)

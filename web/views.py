@@ -532,9 +532,40 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
         count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+        waiting_for_check = HomeWork.objects.filter(was_checked=False).select_related("lecture", "user").order_by(
+            "-date")[:3]
+
+        latest_ids = (
+            Message.objects.values("chat_id").filter(is_read_admin=False).annotate(latest_id=Max("id")).values_list(
+                "latest_id", flat=True)
+        )
+
+        last_messages = Message.objects.filter(id__in=latest_ids).select_related("user").order_by("-date")
+        lectures_count = Lecture.objects.count()
+
+        query_counting = HomeWorkReview.objects.filter(
+            homework__user_id=OuterRef("pk"),
+            is_approved=True
+        ).select_related("homework__user").values("homework__user_id").annotate(
+            c=Count("id")
+        ).values("c")
+
+        users_with_progress = UserModel.objects.filter(is_superuser=False).annotate(
+            progress=(
+                    Cast(Subquery(query_counting), IntegerField()) * 100 / lectures_count
+            )
+        )
+
+        min_user_progress = users_with_progress.order_by("progress").first()
+
+        max_user_progress = users_with_progress.order_by("-progress").first()
 
         context["count_of_waiting"] = count_of_waiting
+        context["waiting_for_check"] = waiting_for_check
         context["count_of_new_messages"] = count_of_new_messages
+        context["last_messages"] = last_messages
+        context["min_progress"] = min_user_progress
+        context["max_progress"] = max_user_progress
 
         return context
 
@@ -571,7 +602,8 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
         )
 
         if search_query:
-            queryset = queryset.filter(Q(email__icontains=search_query) | Q(first_name__icontains=search_query) | Q(last_name__icontains=search_query))
+            queryset = queryset.filter(Q(email__icontains=search_query) | Q(first_name__icontains=search_query) | Q(
+                last_name__icontains=search_query))
 
         if progres_query:
             if progres_query == "low":
@@ -581,7 +613,8 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
             if progres_query == "high":
                 queryset = queryset.filter(progress__gte=80)
 
-        return queryset
+        return queryset.select_related("chats", "code")
+
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminBoxesView(LoginRequiredMixin, generic.ListView):
@@ -593,9 +626,9 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
         queryset = super().get_queryset()
 
         if self.request.GET.get("type") == "active":
-            return queryset.filter(is_sent=False)
+            return queryset.filter(is_sent=False).select_related("user")
         elif self.request.GET.get("type") == "sent":
-            return queryset.filter(is_sent=True)
+            return queryset.filter(is_sent=True).select_related("user")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -716,11 +749,12 @@ class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
             ),
             last_message_date=Max("messages__date"),
             last_message=Subquery(subquery_get_last_message)
-        ).order_by('-message_count', '-last_message_date')
+        ).order_by('-message_count', '-last_message_date').select_related("user")
 
         q = self.request.GET.get("q")
         if q:
-            queryset = queryset.filter(Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(user__email__icontains=q))
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(user__email__icontains=q))
 
         return queryset
 

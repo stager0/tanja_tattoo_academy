@@ -626,6 +626,26 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
         homework.was_checked = True
         homework.save()
 
+        chat = homework.user.chats
+        if chat:
+            if action == "approve":
+                Message.objects.create(
+                    chat=chat,
+                    text=f"✅ Ваше завдання було прийняте ментором! 🎉      💬 Коментар ментора: {review_text}",
+                    user=self.request.user,
+                    is_read_admin=True,
+                    from_admin=True
+                )
+            else:
+                Message.objects.create(
+                    chat=chat,
+                    text=f"❌ На жаль, завдання не було прийняте ментором. 😔     💬 Коментар ментора: '{review_text}' P.S: Не засмучуйтесь, спробуйте ще раз — у вас все вийде! 💪",
+                    user=self.request.user,
+                    is_read_admin=True,
+                    from_admin=True
+                )
+
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):

@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Tanja Tattoo Academy{% endblock %}</title>
+  <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -32,7 +34,13 @@
           <i class="fas fa-book-open"></i> Мій курс
         </a>
       {% endif %}<a href="{% url 'box_application' %}" id="nav-box"><i class="fas fa-box"></i> Заявка на бокс</a>
-      <a href="{% url 'chat' chat_pk %}" id="nav-chat"><i class="fas fa-comments"></i> Чат з ментором</a>
+      <a href="{% url 'chat' chat_pk %}" id="nav-chat">
+        <i class="fas fa-comments"></i>
+        Чат з ментором
+        {% if new_sms %}
+          <span class="notification-badge">{{ new_sms }}</span>
+        {% endif %}
+      </a>
       <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
     </nav>
   </aside>

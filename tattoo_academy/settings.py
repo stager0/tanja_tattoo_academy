@@ -129,6 +129,12 @@ AUTH_USER_MODEL = "web.UserModel"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+import stripe
+stripe.api_key = STRIPE_SECRET_KEY
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [

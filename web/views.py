@@ -1,48 +1,61 @@
-import json
+import os
 from datetime import timedelta
+from decimal import Decimal
 from functools import wraps
 
+import stripe.checkout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField
+from django.contrib.auth.models import AnonymousUser
+from django.core.paginator import Paginator
+from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, Min, IntegerField
 from django.db.models.functions import Cast
-from django.forms import model_to_dict
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.utils.timezone import localtime
-from django.views import generic
+from django.views import generic, View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView
+from dotenv import load_dotenv
 
-from web.email_sender import send_password_change_email, send_after_register_email
+from web.email_sender import send_password_change_email, send_after_register_email, send_email_subscribe_code
 from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm, BoxApplicationForm, \
     ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm, LectureCreateForm
-from web.generators import generate_reset_password_code
-from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview
+from web.generators import generate_reset_password_code, generate_subscribe_code
+from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
+    SubscribeTariff, Order, Code
+
+load_dotenv()
 
 
 def redirect_superuser(view_func):
     wraps(view_func)
+
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_superuser:
             return redirect("/platform/admin_dashboard")
         return view_func(request, *args, **kwargs)
+
     return _wrapper
+
 
 def redirect_user(view_func):
     wraps(view_func)
+
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.is_superuser:
             return redirect("/platform/dashboard/")
         return view_func(request, *args, **kwargs)
+
     return _wrapper
 
 
 def count_new_messages(user_chat_obj: Chat, user: UserModel) -> int | None:
     try:
-        new_messages = Message.objects.filter(chat=user_chat_obj).filter(is_read_user=False).filter(~Q(user_id=user.id)).count()
+        new_messages = Message.objects.filter(chat=user_chat_obj).filter(is_read_user=False).filter(
+            ~Q(user_id=user.id)).count()
     except Chat.DoesNotExist:
         raise ValueError("Current user's chat was not found.")
     except Message.DoesNotExist:
@@ -239,11 +252,12 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         if not user.is_superuser:
             chat = Chat.objects.get(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
-            next_lesson = HomeWorkReview.objects.filter(
+            lectures_done_ids = HomeWorkReview.objects.filter(
                 homework__user=user,
                 homework__was_checked=True,
                 is_approved=True
-            ).count() + 1
+            ).values_list("homework__lecture_id", flat=True)
+            next_lesson = Lecture.objects.filter(~Q(id__in=lectures_done_ids)).first().pk
 
             if Lecture.objects.count() >= next_lesson:
                 lesson = Lecture.objects.get(position_number=next_lesson)
@@ -265,7 +279,13 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         user = self.request.user
         user.last_activity = timezone.now()
         user.save()
-        return super().dispatch(request, *args, **kwargs)
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Chat.DoesNotExist:
+            Chat.objects.create(
+                user=self.request.user
+            )
+            return super().dispatch(request, *args, **kwargs)
 
 
 class ChatView(LoginRequiredMixin, generic.FormView):

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.handleHeaderScroll();
             this.handleMobileMenu();
             this.handleFaqAccordion();
-            this.handleModal();
+            this.handleModals(); // UPDATED: Replaced handleModal with a more generic handler
             this.handleScrollAnimations();
             this.handleScrollToTop();
             this.handleActiveNavOnScroll();
@@ -42,15 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     navContainer.classList.toggle('active');
                     toggleButton.setAttribute('aria-expanded', !isExpanded);
 
-                    // Меняем иконку (опционально)
                     const icon = toggleButton.querySelector('i');
                     if (icon) {
                         if (navContainer.classList.contains('active')) {
                             icon.classList.remove('fa-list');
-                            icon.classList.add('fa-times'); // Или fa-chevron-up, fa-arrow-up
+                            icon.classList.add('fa-times');
                         } else {
                             icon.classList.remove('fa-times');
-                            icon.classList.add('fa-list'); // Или fa-chevron-down, fa-arrow-down
+                            icon.classList.add('fa-list');
                         }
                     }
                 });
@@ -125,46 +124,71 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         },
 
-        // --- 6. Modal Logic ---
-        handleModal() {
-            const modal = document.getElementById('lesson-modal');
-            const closeModalBtn = document.getElementById('close-modal');
-            const openFirstLessonBtn = document.getElementById('open-first-lesson');
-            const playPreviewVideoBtn = document.getElementById('play-preview-video');
+        // --- 6. NEW: Generic Modal Logic ---
+        handleModals() {
+            const modalTriggers = document.querySelectorAll('.modal-trigger');
             const videoIframe = document.getElementById('video-iframe');
             const youtubeVideoId = 'dQw4w9WgXcQ'; // Placeholder video
+            let currentOpenModal = null;
 
-            if (!modal) return;
-
-            const openModal = () => {
-                if (videoIframe) {
-                    videoIframe.src = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`;
-                }
+            const openModal = (modal) => {
+                if (!modal) return;
                 modal.classList.add('visible');
                 document.body.style.overflow = 'hidden';
+                currentOpenModal = modal;
+
+                // Autoplay video if it's the lesson modal
+                if (modal.id === 'lesson-modal' && videoIframe) {
+                    videoIframe.src = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`;
+                }
             };
 
             const closeModal = () => {
-                if (videoIframe) {
+                if (!currentOpenModal) return;
+
+                // Stop video if it's the lesson modal
+                if (currentOpenModal.id === 'lesson-modal' && videoIframe) {
                     videoIframe.src = '';
                 }
-                modal.classList.remove('visible');
+
+                currentOpenModal.classList.remove('visible');
                 document.body.style.overflow = '';
+                currentOpenModal = null;
             };
 
-            if (openFirstLessonBtn) openFirstLessonBtn.addEventListener('click', openModal);
-            if (playPreviewVideoBtn) playPreviewVideoBtn.addEventListener('click', openModal);
-            if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-
-            modal.addEventListener('click', e => {
-                if (e.target === modal) closeModal();
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const modalId = trigger.dataset.modalTarget;
+                    const modal = document.getElementById(modalId);
+                    openModal(modal);
+                });
             });
 
+            document.querySelectorAll('.modal').forEach(modal => {
+                // Close on overlay click
+                modal.addEventListener('click', e => {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+
+                // Close on close button click
+                const closeModalBtn = modal.querySelector('.close-modal');
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeModal);
+                }
+            });
+
+            // Close on Escape key press
             document.addEventListener('keydown', e => {
-                if (e.key === 'Escape' && modal.classList.contains('visible')) closeModal();
+                if (e.key === 'Escape' && currentOpenModal) {
+                    closeModal();
+                }
             });
 
-            this.modalInstance = {openModal, closeModal};
+            // Make closeModal available to other methods
+            this.closeModal = closeModal;
         },
 
         // --- 7. Smooth scrolling for tariff button inside modal ---
@@ -173,20 +197,21 @@ document.addEventListener('DOMContentLoaded', function () {
             if (modalTariffBtn) {
                 modalTariffBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (this.modalInstance) {
-                        this.modalInstance.closeModal();
+                    // Use the globally available closeModal method
+                    if (this.closeModal) {
+                        this.closeModal();
                     }
                     setTimeout(() => {
                         const tariffsSection = document.getElementById('tariffs');
                         if (tariffsSection) {
-                            tariffsSection.scrollIntoView({behavior: 'smooth'});
+                            tariffsSection.scrollIntoView({ behavior: 'smooth' });
                         }
-                    }, 300);
+                    }, 300); // Wait for modal close animation
                 });
             }
         },
 
-        // --- 8. Pricing Toggle for Tariffs --- NEW FUNCTION ---
+        // --- 8. Pricing Toggle for Tariffs ---
         handlePricingToggle() {
             const pricingSwitch = document.getElementById('pricing-switch');
             const tariffsSection = document.getElementById('tariffs');
@@ -215,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             observer.unobserve(entry.target);
                         }
                     });
-                }, {threshold: 0.1});
+                }, { threshold: 0.1 });
 
                 revealElements.forEach(el => revealObserver.observe(el));
             }
@@ -234,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 scrollToTopBtn.addEventListener('click', e => {
                     e.preventDefault();
-                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             }
         },

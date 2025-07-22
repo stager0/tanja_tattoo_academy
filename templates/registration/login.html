@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Вхід - Tanja Tattoo Academy</title>
+  <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,7 @@
       {% csrf_token %}
       {% if form.errors %}
         <p style="color: red">Invalid Credentials</p>
+        {{ form.errors }}
       {% endif %}
       <div class="input-group">
         <label for="email">Email</label>

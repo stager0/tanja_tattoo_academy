@@ -606,3 +606,57 @@
 .lesson-item.active .lesson-item-info p {
     color: #F5F5F5;
 }
+
+/* --- Pagination Styles --- */
+.pagination-nav {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+    /* UPDATED: Allow pagination to wrap */
+    flex-wrap: wrap;
+}
+
+.pagination li a,
+.pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-small);
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    border: 1px solid var(--border-color);
+}
+
+.pagination li a:hover {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    transform: translateY(-3px);
+}
+
+.pagination li.active span {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: var(--text-light);
+    box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+.pagination li.disabled span {
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    cursor: not-allowed;
+    border-color: transparent;
+}

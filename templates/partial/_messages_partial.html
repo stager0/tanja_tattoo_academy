@@ -1,0 +1,65 @@
+{% if messages %}
+  {% if not user.is_superuser %}
+    {% for msg in messages %}
+      {% if msg.from_admin %}
+        <div class="message received">
+          <img src="{{ msg.user.avatar.url }}" alt="Mentor Avatar" class="message-avatar">
+          <div class="message-bubble">
+            <p>{{ msg.text|safe }}</p>
+            {% if msg.image %}
+              <div class="message-attachment">
+                <img src="{{ msg.image.url }}" alt="Homework Image">
+              </div>
+            {% endif %}
+            <div class="message-time">{{ msg.date }}</div>
+          </div>
+        </div>
+      {% elif not msg.from_admin %}
+        <div class="message sent">
+          <img src="{{ msg.user.avatar.url }}"
+               alt="User Avatar"
+               class="message-avatar">
+          <div class="message-bubble">
+            <p>{{ msg.text }}</p>
+            {% if msg.image %}
+              <div class="message-attachment">
+                <img src="{{ msg.image.url }}" alt="Homework Image">
+              </div>
+            {% endif %}
+            <div class="message-time">{{ msg.date }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% elif user.is_superuser %}
+    {% for msg in messages %}
+      {% if not msg.from_admin %}
+        <div class="message received">
+          <img src="{{ msg.user.avatar.url }}" alt="User Avatar" class="message-avatar">
+          <div class="message-bubble">
+            <p>{{ msg.text }}</p>
+            {% if msg.image %}
+              <div class="message-attachment">
+                <img src="{{ msg.image.url }}" alt="Homework Image">
+              </div>
+            {% endif %}
+            <div class="message-time">{{ msg.date }}</div>
+          </div>
+        </div>
+      {% elif msg.from_admin %}
+        <div class="message sent">
+          <img src="{{ user.avatar.url }}" alt="Mentor Avatar" class="message-avatar">
+          <div class="message-bubble">
+            <p>{{ msg.text }}</p>
+            {% if msg.image %}
+              <div class="message-attachment">
+                <img src="{{ msg.image.url }}" alt="Homework Image">
+              </div>
+            {% endif %}
+            <div class="message-time">{{ msg.date }}</div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}

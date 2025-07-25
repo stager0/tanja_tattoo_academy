@@ -816,8 +816,17 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
                 box.is_sent = True
                 box.sent_date = timezone.now()
                 box.save()
+                chat = Chat.objects.get(user=box.user.chats.user)
             except StartBox.DoesNotExist:
                 pass
+            else:
+                Message.objects.create(
+                    chat=chat,
+                    text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚 Посилка вже в дорозі до тебе за вказаною адресою!",
+                    user=box.user,
+                    is_read_admin=True,
+                    from_admin=True
+                )
 
         return HttpResponseRedirect(reverse("admin_boxes") + "?type=active")
 

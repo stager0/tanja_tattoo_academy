@@ -377,6 +377,20 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         chat_id = self.kwargs["pk"]
         return reverse("chat", args=[chat_id])
 
+
+def get_part_of_messages(request, pk):
+    chat = get_object_or_404(Chat, pk=pk)
+    messages = Message.objects.filter(chat=chat).order_by("date")
+    paginator = Paginator(messages, 20)
+    current_page = request.GET.get("page", None)
+    page_obj = paginator.get_page(current_page)
+    messages = page_obj.object_list
+
+    html = render_to_string("partial/_messages_partial.html", {"messages": messages, "user": request.user})
+    return HttpResponse(html)
+
+
+
 @method_decorator(redirect_superuser, name="dispatch")
 class ProfileView(LoginRequiredMixin, generic.FormView):
     template_name = "profile.html"

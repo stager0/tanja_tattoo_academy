@@ -872,6 +872,12 @@ class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
 
         return context
 
+    def get_initial(self):
+        initial = super().get_initial()
+        last_position_number = int(Lecture.objects.aggregate(max_position=Max("position_number"))["max_position"] or 1)
+        initial["position_number"] = last_position_number + 1
+        return initial
+
     def get_success_url(self):
         return reverse("admin_lecture_list")
 

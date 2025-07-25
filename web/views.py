@@ -311,18 +311,18 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
     def get_context_data(self, **kwargs):
         queryset = self.get_messages()
+
+        paginator = Paginator(queryset, 20)
+        page_obj = paginator.get_page(paginator.num_pages)
+        queryset = page_obj.object_list
+
         user = self.request.user
         context = super().get_context_data(**kwargs)
         count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
         count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
 
-        messages = []
-        for message in queryset:
-            message_dict = model_to_dict(message)
-            message_dict["send_time"] = localtime(message.date).strftime("%H:%M")
-            messages.append(message_dict)
-
-        context["messages"] = messages
+        context["messages"] = queryset
+        context["page_obj"] = page_obj
         if not user.is_superuser:
             chat_pk = get_object_or_404(Chat, user=user).pk
             context["interlocutor_avatar"] = UserModel.objects.filter(is_superuser=True).first().avatar.url
@@ -347,6 +347,7 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         message.user = self.request.user
         if self.request.user.is_superuser:
             message.is_read_admin = True
+            message.from_admin = True
         else:
             message.is_read_user = True
         message.save()
@@ -355,8 +356,11 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
+        if isinstance(user, AnonymousUser) or not user.is_authenticated:
+            return redirect("login")
+
         if user.is_superuser:
-            pk=self.kwargs["pk"]
+            pk = self.kwargs["pk"]
             chat = Chat.objects.get(pk=pk)
             Message.objects.filter(chat=chat).filter(is_read_admin=False).update(is_read_admin=True)
         elif not user.is_superuser:

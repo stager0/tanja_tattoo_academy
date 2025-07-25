@@ -5,34 +5,34 @@
 {% block header_title %}Редагування лекції{% endblock %}
 
 {% block styles %}
-{{ block.super }}
-<style>
-    /* Стиль для полей ввода, который пропал */
-    .form-control {
-        width: 100%;
-        background-color: var(--bg-dark);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius-small);
-        padding: 14px;
-        color: var(--text-light);
-        font-family: var(--font-primary);
-        font-size: 1rem;
-        transition: all var(--transition-fast);
-    }
+  {{ block.super }}
+  <style>
+      /* Стиль для полей ввода, который пропал */
+      .form-control {
+          width: 100%;
+          background-color: var(--bg-dark);
+          border: 1px solid var(--border-color);
+          border-radius: var(--border-radius-small);
+          padding: 14px;
+          color: var(--text-light);
+          font-family: var(--font-primary);
+          font-size: 1rem;
+          transition: all var(--transition-fast);
+      }
 
-    .form-control:focus {
-        outline: none;
-        border-color: var(--primary-orange);
-        box-shadow: 0 0 0 3px var(--accent-glow);
-    }
+      .form-control:focus {
+          outline: none;
+          border-color: var(--primary-orange);
+          box-shadow: 0 0 0 3px var(--accent-glow);
+      }
 
-    /* Адаптивность для сетки формы на мобильных устройствах */
-    @media (max-width: 768px) {
-        .form-grid {
-            grid-template-columns: 1fr; /* На мобильных сетка будет в одну колонку */
-        }
-    }
-</style>
+      /* Адаптивность для сетки формы на мобильных устройствах */
+      @media (max-width: 768px) {
+          .form-grid {
+              grid-template-columns: 1fr; /* На мобильных сетка будет в одну колонку */
+          }
+      }
+  </style>
 {% endblock %}
 
 {% block content %}
@@ -42,23 +42,43 @@
     <form id="edit-lecture-form" method="POST" style="margin-top: 20px;">
       {% csrf_token %}
 
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+          {% for error in form.non_field_errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <h4 style="margin-bottom: 20px; color: var(--primary-orange);">Основна частина</h4>
       <div class="form-grid">
         <div class="input-group">
           <label for="{{ form.lecture_name.id_for_label }}">Назва лекції</label>
           {{ form.lecture_name }}
+          {% if form.lecture_name.errors %}
+            <div class="error-text">{{ form.lecture_name.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
           <label for="{{ form.video_url.id_for_label }}">Посилання на відео уроку</label>
           {{ form.video_url }}
+          {% if form.video_url.errors %}
+            <div class="error-text">{{ form.video_url.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
           <label for="{{ form.under_name.id_for_label }}">Підзаголовок</label>
           {{ form.under_name }}
+          {% if form.under_name.errors %}
+            <div class="error-text">{{ form.under_name.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
-            <label for="{{ form.position_number.id_for_label }}">Порядковий номер</label>
-            {{ form.position_number }}
+          <label for="{{ form.position_number.id_for_label }}">Порядковий номер</label>
+          {{ form.position_number }}
+          {% if form.position_number.errors %}
+            <div class="error-text">{{ form.position_number.errors }}</div>
+          {% endif %}
         </div>
       </div>
 
@@ -66,6 +86,9 @@
         <label>Зміст лекції</label>
         <div id="editor-container"></div>
         {{ form.lecture }}
+        {% if form.lecture.errors %}
+            <div class="error-text">{{ form.lecture.errors }}</div>
+        {% endif %}
       </div>
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange); border-top: 1px solid var(--border-color); padding-top: 30px;">
@@ -75,6 +98,9 @@
         <label>Опис домашнього завдання</label>
         <div id="homework-editor-container"></div>
         {{ form.homework }}
+        {% if form.homework.errors %}
+            <div class="error-text">{{ form.homework.errors }}</div>
+        {% endif %}
       </div>
 
       <div class="btn-group" style="margin-top: 30px; display: flex; gap: 15px;">
@@ -92,21 +118,21 @@
   <script>
       document.addEventListener('DOMContentLoaded', function () {
           function createQuillEditor(textareaSelector, placeholder, isSimpleToolbar = false) {
-            const textarea = document.querySelector(textareaSelector);
-            if (!textarea) return null;
-            const editorDiv = document.createElement('div');
-            textarea.parentNode.insertBefore(editorDiv, textarea);
-            textarea.style.display = 'none';
-            const toolbarOptions = isSimpleToolbar
-              ? [ ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean'] ]
-              : [ [{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean'] ];
-            const quill = new Quill(editorDiv, {
-                theme: 'snow',
-                modules: { toolbar: toolbarOptions },
-                placeholder: placeholder
-            });
-            quill.root.innerHTML = textarea.value;
-            return { quill, textarea };
+              const textarea = document.querySelector(textareaSelector);
+              if (!textarea) return null;
+              const editorDiv = document.createElement('div');
+              textarea.parentNode.insertBefore(editorDiv, textarea);
+              textarea.style.display = 'none';
+              const toolbarOptions = isSimpleToolbar
+                  ? [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean']]
+                  : [[{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean']];
+              const quill = new Quill(editorDiv, {
+                  theme: 'snow',
+                  modules: {toolbar: toolbarOptions},
+                  placeholder: placeholder
+              });
+              quill.root.innerHTML = textarea.value;
+              return {quill, textarea};
           }
 
           const lectureEditor = createQuillEditor('#id_lecture', 'Редагуйте текст лекції тут...');
@@ -114,12 +140,12 @@
 
           const editForm = document.getElementById('edit-lecture-form');
           editForm.addEventListener('submit', function () {
-            if (lectureEditor) {
-              lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
-            }
-            if (homeworkEditor) {
-              homeworkEditor.textarea.value = homeworkEditor.quill.root.innerHTML;
-            }
+              if (lectureEditor) {
+                  lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
+              }
+              if (homeworkEditor) {
+                  homeworkEditor.textarea.value = homeworkEditor.quill.root.innerHTML;
+              }
           });
       });
   </script>

@@ -140,26 +140,27 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        try:
-            code_obj = form.cleaned_data.get("code", None)
-            if code_obj:
-                code_obj.is_activated = True
-                code_obj.activated_date = timezone.now()
-                code_obj.save()
+        with transaction.atomic():
+            try:
+                code_obj = form.cleaned_data.get("code", None)
+                if code_obj:
+                    code_obj.is_activated = True
+                    code_obj.activated_date = timezone.now()
+                    code_obj.save()
 
-            email = form.cleaned_data.get("email", "")
-            full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
-            if email and full_name:
-                send_after_register_email(email=email, full_name=full_name)
+                email = form.cleaned_data.get("email", "")
+                full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
+                if email and full_name:
+                    send_after_register_email(email=email, full_name=full_name)
 
-            self.object = form.save()
+                self.object = form.save()
 
-            Chat.objects.create(
+                Chat.objects.create(
                     user=self.object
                 )
-            return super().form_valid(form)
-        except Exception as e:
-            return redirect(reverse("register"))
+                return super().form_valid(form)
+            except Exception as e:
+                return redirect(reverse("register"))
 
 
 class ChangePasswordRequestView(generic.FormView):

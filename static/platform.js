@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.autoResizeTextarea.init();
             this.imageModal.init();
             this.chatUpload.init();
-            this.homeworkUpload.init(); // <-- Добавлен модуль для загрузки ДЗ
+            this.homeworkUpload.init();
         },
 
         // Модуль для управления боковой панелью (меню)
@@ -35,17 +35,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.container = document.querySelector('.students-container');
                 this.gridBtn = document.getElementById('view-grid-btn');
                 this.listBtn = document.getElementById('view-list-btn');
-                if (!this.container || !this.gridBtn || !this.listBtn) return;
+                this.viewInput = document.getElementById('view-mode-input');
+
+                if (!this.container || !this.gridBtn || !this.listBtn || !this.viewInput) {
+                    return;
+                }
+
+                // Устанавливаем обработчики кликов
                 this.gridBtn.addEventListener('click', () => this.setView('grid'));
                 this.listBtn.addEventListener('click', () => this.setView('list'));
+
+                // Проверяем URL при загрузке страницы, чтобы установить правильный вид
+                const currentUrlParams = new URLSearchParams(window.location.search);
+                const currentView = currentUrlParams.get('view');
+
+                if (currentView === 'grid') {
+                    this.setView('grid');
+                } else {
+                    // Устанавливаем вид списка по умолчанию, если ничего не выбрано
+                    this.setView('list');
+                }
+                // --- КОНЕЦ НОВОГО КОДА ---
             },
             setView(view) {
+                // 1. Мгновенно меняем классы для отображения
                 this.container.classList.remove('view-grid', 'view-list');
                 this.container.classList.add(`view-${view}`);
+
                 this.gridBtn.classList.toggle('active', view === 'grid');
                 this.listBtn.classList.toggle('active', view === 'list');
+
+                // 2. Запоминаем выбор в скрытом поле для отправки формы
+                if (this.viewInput) {
+                   this.viewInput.value = view;
+                }
+
+
+                // 3. Находим все ссылки в пагинации и обновляем их
+                const paginationLinks = document.querySelectorAll('.pagination .page-link');
+
+                paginationLinks.forEach(link => {
+                    // Проверяем, что ссылка не пустая и является валидным URL
+                    if (link.href) {
+                        try {
+                            const url = new URL(link.href);
+                            url.searchParams.set('view', view);
+                            link.href = url.toString();
+                        } catch (e) {
+                            // Игнорируем невалидные URL
+                            // console.error("Invalid URL in pagination:", link.href);
+                        }
+                    }
+                });
             }
         },
+
 
         // Модуль для загрузки аватара в профиле
         profileAvatar: {
@@ -130,13 +174,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.fileInput = document.getElementById('file-upload-input');
                 this.previewContainer = document.getElementById('upload-preview-container');
                 if (!this.fileInput || !this.previewContainer) return;
-                this.fileInput.addEventListener('change', (event) => this.showPreview(event));
+
+                this.showPreview = this.showPreview.bind(this);
+                this.clearPreview = this.clearPreview.bind(this);
+
+                this.fileInput.addEventListener('change', this.showPreview);
             },
-            showPreview(event) { /* ... код ... */ },
-            clearPreview(resetInput) { /* ... код ... */ }
+            showPreview(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const previewHtml = `
+                    <div class="upload-preview">
+                        <img src="${URL.createObjectURL(file)}" alt="Preview" class="upload-preview-image">
+                        <span class="upload-preview-info">${file.name}</span>
+                        <button type="button" class="upload-preview-remove" aria-label="Remove attachment">&times;</button>
+                    </div>
+                `;
+
+                this.previewContainer.innerHTML = previewHtml;
+                this.previewContainer.classList.add('visible');
+
+                this.previewContainer.querySelector('.upload-preview-remove').addEventListener('click', this.clearPreview);
+            },
+            clearPreview() {
+                this.previewContainer.classList.remove('visible');
+                this.previewContainer.innerHTML = '';
+                this.fileInput.value = '';
+            }
         },
 
-        // НОВЫЙ МОДУЛЬ: Загрузка домашнего задания на странице курса
+        // Модуль: Загрузка домашнего задания на странице курса
         homeworkUpload: {
             init() {
                 const uploadArea = document.querySelector('.file-upload-area');
@@ -146,10 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const p = uploadArea.querySelector('p');
                 const defaultText = p.textContent;
 
-                // Обработчик клика по области
                 uploadArea.addEventListener('click', () => input.click());
 
-                // Обработчик изменения инпута (когда файл выбран)
                 input.addEventListener('change', () => {
                     if (input.files.length > 0) {
                         p.textContent = `Выбран файл: ${input.files[0].name}`;

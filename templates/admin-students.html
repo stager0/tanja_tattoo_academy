@@ -9,7 +9,7 @@
 
     <div class="search-bar">
       <i class="fas fa-search"></i>
-      <input type="text" name="q" placeholder="Пошук за іменем або email..." value="{{ request.GET.q }}">
+      <input type="text" name="q" placeholder="Пошук за іменем або email..." value="{{ request.GET.q|default:'' }}">
     </div>
 
     <div class="filters">
@@ -39,20 +39,20 @@
   <div class="students-container {% if request.GET.view == 'list' %}view-list{% else %}view-grid{% endif %}">
 
     <div class="admin-grid students-grid">
-      {% for user in users %}
+      {% for user in page_obj %}
         {% if not user.is_superuser %}
           <div class="admin-item-card student-card">
             <div class="admin-item-header">
               <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
               <div class="info">
-                <strong>{{ user.get_full_name }}</strong>
+                <strong>{{ user.get_full_name|default:user.email }}</strong>
                 <p>{{ user.email }}</p>
               </div>
             </div>
             <div class="student-card-progress">
               <div class="progress-info">
                 <span>Прогрес</span>
-                <span>{{ user.progress|default:0 }}%</span>
+                <span>{{ user.progress|floatformat:"1"|default:"0.0" }}%</span>
               </div>
               <div class="progress-bar-bg">
                 <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
@@ -66,9 +66,9 @@
             </div>
             <div class="student-card-actions">
               {% if user.chats.pk %}
-                <a href="{% url 'chat' user.pk %}" class="btn btn-sm">Чат</a>
+                <a href="{% url 'admin_chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
               {% else %}
-                <span class="btn btn-sm disabled">No Chat</span>
+                <button class="btn btn-sm disabled">Немає чату</button>
               {% endif %}
             </div>
           </div>
@@ -84,31 +84,36 @@
       <div class="list-header">
         <span>Учень</span>
         <span>Прогрес</span>
-        <span>Тариф</span>
+        <span style="text-align: center;">Тариф</span>
         <span>Остання активність</span>
         <span style="text-align: right;">Дії</span>
       </div>
-      {% for user in users %}
+      {% for user in page_obj %}
         {% if not user.is_superuser %}
-          <div class="admin-item-card list-item">
+          <div class="admin-item-card list-item" style="margin-bottom: 15px;">
             <div class="student-info-cell">
               <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
-              <div><strong>{{ user.get_full_name }}</strong>
+              <div><strong>{{ user.get_full_name|default:user.email }}</strong>
                 <p>{{ user.email }}</p></div>
             </div>
+
             <div class="student-progress">
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+              <div style="flex-grow: 1;">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+                  </div>
               </div>
-              <span>{% if user.progress is not None %}{{ user.progress }}%{% else %}0.0%{% endif %}</span>
+              <span>{{ user.progress|floatformat:"1"|default:"0.0" }}%</span>
             </div>
-            <div>{{ user.code.tariff|default:"N/A" }}</div>
+
+            <div style="text-align: center;">{{ user.code.tariff|default:"N/A" }}</div>
+
             <div>{{ user.last_activity|date:"d-m-y H:i"|default:"Немає даних" }}</div>
             <div class="item-actions" style="justify-content: flex-end;">
               {% if user.chats.pk %}
-                <a href="{% url 'chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
+                <a href="{% url 'admin_chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
               {% else %}
-                <span class="btn btn-sm disabled">No Chat</span>
+                <button class="btn btn-sm disabled">Немає чату</button>
               {% endif %}
             </div>
           </div>
@@ -116,38 +121,45 @@
       {% endfor %}
     </div>
   </div>
+
+  <nav aria-label="Навігація по сторінках">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
 {% endblock %}
 
 
 {% block scripts %}
   {{ block.super }}
-  <script>
-      document.addEventListener('DOMContentLoaded', function () {
-          const container = document.querySelector('.students-container');
-          const gridBtn = document.getElementById('view-grid-btn');
-          const listBtn = document.getElementById('view-list-btn');
-          const viewInput = document.getElementById('view-mode-input'); // Находим скрытое поле
-
-          // Проверяем, что все элементы существуют на странице
-          if (!container || !gridBtn || !listBtn || !viewInput) {
-              return;
-          }
-
-          const setView = (view) => {
-              // Меняем классы для мгновенного отображения
-              container.classList.remove('view-grid', 'view-list');
-              container.classList.add(`view-${view}`);
-
-              gridBtn.classList.toggle('active', view === 'grid');
-              listBtn.classList.toggle('active', view === 'list');
-
-              // Запоминаем выбор в скрытом поле для следующей отправки формы
-              viewInput.value = view;
-          };
-
-          // Вешаем обработчики на кнопки. Они не отправляют форму, а только меняют вид.
-          gridBtn.addEventListener('click', () => setView('grid'));
-          listBtn.addEventListener('click', () => setView('list'));
-      });
-  </script>
 {% endblock %}

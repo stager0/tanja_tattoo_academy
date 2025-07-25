@@ -916,6 +916,7 @@ class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-all-chats.html"
     model = Chat
     context_object_name = "chats"
+    paginate_by = 30
 
     def get_queryset(self):
         subquery_get_last_message = Message.objects.filter(

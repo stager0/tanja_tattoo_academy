@@ -7,53 +7,54 @@
 {% block styles %}
   {{ block.super }}
   <style>
-    /* УЛУЧШЕНИЕ: Добавлен эффект при наведении для интерактивности */
-    .chat-list .list-item:hover {
-        background-color: var(--bg-surface-light);
-        transform: translateX(5px);
-    }
+      /* эффект при наведении для интерактивности */
+      .chat-list .list-item:hover {
+          background-color: var(--bg-surface-light);
+          transform: translateX(5px);
+      }
 
-    .chat-list .list-item {
-        align-items: center;
-        transition: all 0.2s ease-out; /* Плавный переход для hover-эффекта */
-    }
+      .chat-list .list-item {
+          align-items: center;
+          transition: all 0.2s ease-out; /* Плавный переход для hover-эффекта */
+      }
 
-    .chat-list .item-info {
-        flex-grow: 1;
-        min-width: 0;
-    }
+      .chat-list .item-info {
+          flex-grow: 1;
+          min-width: 0;
+      }
 
-    .chat-list .item-info p {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: var(--text-medium);
-        font-size: 0.9rem;
-        margin: 0;
-    }
+      .chat-list .item-info p {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: var(--text-medium);
+          font-size: 0.9rem;
+          margin: 0;
+      }
 
-    .chat-list .chat-meta-info {
-        margin-left: 15px; /* Добавлен небольшой отступ */
-        flex-shrink: 0;
-    }
+      .chat-list .chat-meta-info {
+          margin-left: 15px; /* Добавлен небольшой отступ */
+          flex-shrink: 0;
+      }
 
-    /* Исправление для мобильных устройств */
-    @media (max-width: 768px) {
-        .chat-list .list-item {
-            flex-direction: row !important;
-            align-items: center !important;
-        }
-    }
+      /* Исправление для мобильных устройств */
+      @media (max-width: 768px) {
+          .chat-list .list-item {
+              flex-direction: row !important;
+              align-items: center !important;
+          }
+      }
 
-    /* УЛУЧШЕНИЕ: Для очень маленьких экранов скрываем превью сообщения, чтобы не ломать верстку */
-    @media (max-width: 420px) {
-        .chat-list .item-info p {
-            display: none;
-        }
-        .chat-list .list-item {
-            gap: 10px;
-        }
-    }
+      /* УЛУЧШЕНИЕ: Для очень маленьких экранов скрываем превью сообщения, чтобы не ломать верстку */
+      @media (max-width: 420px) {
+          .chat-list .item-info p {
+              display: none;
+          }
+
+          .chat-list .list-item {
+              gap: 10px;
+          }
+      }
   </style>
 {% endblock %}
 
@@ -72,23 +73,25 @@
 
     <div class="admin-modern-list chat-list">
       {% for chat in chats %}
-        <a href="{% url 'admin_chat' chat.pk %}" class="list-item">
-          <img class="avatar" src="{{ chat.user.avatar.url }}" alt="Avatar">
-          <div class="item-info">
-            <strong>{{ chat.user.get_full_name }}</strong>
-            <p>{{ chat.last_message|default:"Повідомлень ще немає" }}......</p>
-          </div>
-          <div class="chat-meta-info">
-            {% if chat.message_count > 0 %}
-              <span class="notification-badge">{{ chat.message_count }}</span>
-            {% endif %}
-            <span class="date">
+        {% if chat.user != user %}
+          <a href="{% url 'admin_chat' chat.pk %}" class="list-item">
+            <img class="avatar" src="{{ chat.user.avatar.url }}" alt="Avatar">
+            <div class="item-info">
+              <strong>{{ chat.user.get_full_name }}</strong>
+              <p>{{ chat.last_message|default:"Повідомлень ще немає" }}......</p>
+            </div>
+            <div class="chat-meta-info">
+              {% if chat.message_count > 0 %}
+                <span class="notification-badge">{{ chat.message_count }}</span>
+              {% endif %}
+              <span class="date">
               {% if chat.last_message_date %}
                 {{ chat.last_message_date|date:"d-m-y, H:i" }}
               {% endif %}
             </span>
-          </div>
-        </a>
+            </div>
+          </a>
+        {% endif %}
       {% empty %}
         <div style="text-align: center; padding: 30px; color: var(--text-medium);">
           <p>Чати не знайдено.</p>
@@ -96,4 +99,42 @@
       {% endfor %}
     </div>
   </div>
+  <nav aria-label="Навігація по сторінках">
+    <ul class="pagination">
+
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}"
+             aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+        </li>
+      {% endif %}
+
+    </ul>
+  </nav>
 {% endblock %}

@@ -114,6 +114,7 @@ class StartBox(models.Model):
     comments = models.CharField(max_length=200, blank=True, null=True)
     is_sent = models.BooleanField(default=False, blank=True, null=True)
     sent_date = models.DateTimeField(blank=True, null=True)
+    created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
 
 class LecturesCounter(models.Model):

@@ -8,32 +8,56 @@
   <div class="card">
     <a href="{% url 'admin_lecture_list' %}" class="back-link"><i class="fas fa-arrow-left"></i> До списку лекцій</a>
 
-    <form id="create-lecture-form" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+    <form id="edit-lecture-form" method="POST" style="margin-top: 20px;">
       {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+          {% for error in form.non_field_errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange);">Основна частина</h4>
       <div class="form-grid">
         <div class="input-group">
           <label for="{{ form.lecture_name.id_for_label }}">Назва лекції</label>
           {{ form.lecture_name }}
+          {% if form.lecture_name.errors %}
+            <div class="error-text">{{ form.lecture_name.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
           <label for="{{ form.video_url.id_for_label }}">Посилання на відео уроку</label>
           {{ form.video_url }}
+          {% if form.video_url.errors %}
+            <div class="error-text">{{ form.video_url.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
           <label for="{{ form.under_name.id_for_label }}">Підзаголовок</label>
           {{ form.under_name }}
+          {% if form.under_name.errors %}
+            <div class="error-text">{{ form.under_name.errors }}</div>
+          {% endif %}
         </div>
         <div class="input-group">
-            <label for="{{ form.position_number.id_for_label }}">Порядковий номер</label>
-          <label for="position_number"></label><input type="number" id="position_number" name="position_number" placeholder="{{ position_number }}">
+          <label for="{{ form.position_number.id_for_label }}">Порядковий номер</label>
+          {{ form.position_number }}
+          {% if form.position_number.errors %}
+            <div class="error-text">{{ form.position_number.errors }}</div>
+          {% endif %}
         </div>
       </div>
 
       <div class="input-group" style="margin-top: 10px; margin-bottom: 30px;">
         <label>Зміст лекції</label>
+        <div id="editor-container"></div>
         {{ form.lecture }}
+        {% if form.lecture.errors %}
+          <div class="error-text">{{ form.lecture.errors }}</div>
+        {% endif %}
       </div>
 
       <h4 style="margin-bottom: 20px; color: var(--primary-orange); border-top: 1px solid var(--border-color); padding-top: 30px;">
@@ -41,11 +65,15 @@
       </h4>
       <div class="input-group">
         <label>Опис домашнього завдання</label>
+        <div id="homework-editor-container"></div>
         {{ form.homework }}
+        {% if form.homework.errors %}
+          <div class="error-text">{{ form.homework.errors }}</div>
+        {% endif %}
       </div>
 
       <div class="btn-group" style="margin-top: 30px; display: flex; gap: 15px;">
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Зберегти лекцію</button>
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Зберегти зміни</button>
         <a href="{% url 'admin_lecture_list' %}" class="btn btn-secondary">Скасувати</a>
       </div>
     </form>
@@ -58,46 +86,46 @@
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function () {
 
-      // Эта функция находит поле Django и заменяет его на редактор Quill
-      function createQuillEditor(textareaSelector, placeholder, isSimpleToolbar = false) {
-        const textarea = document.querySelector(textareaSelector);
-        if (!textarea) return null;
+          // Эта функция находит поле Django и заменяет его на редактор Quill
+          function createQuillEditor(textareaSelector, placeholder, isSimpleToolbar = false) {
+              const textarea = document.querySelector(textareaSelector);
+              if (!textarea) return null;
 
-        const editorDiv = document.createElement('div');
-        textarea.parentNode.insertBefore(editorDiv, textarea);
-        textarea.style.display = 'none';
+              const editorDiv = document.createElement('div');
+              textarea.parentNode.insertBefore(editorDiv, textarea);
+              textarea.style.display = 'none';
 
-        const toolbarOptions = isSimpleToolbar
-          ? [ ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean'] ]
-          : [ [{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean'] ];
+              const toolbarOptions = isSimpleToolbar
+                  ? [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean']]
+                  : [[{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean']];
 
-        const quill = new Quill(editorDiv, {
-            theme: 'snow',
-            modules: { toolbar: toolbarOptions },
-            placeholder: placeholder
-        });
+              const quill = new Quill(editorDiv, {
+                  theme: 'snow',
+                  modules: {toolbar: toolbarOptions},
+                  placeholder: placeholder
+              });
 
-        quill.root.innerHTML = textarea.value;
+              quill.root.innerHTML = textarea.value;
 
-        return { quill, textarea };
-      }
+              return {quill, textarea};
+          }
 
-      // Инициализируем редакторы для полей лекции и домашнего задания
-      const lectureEditor = createQuillEditor('#id_lecture', 'Почніть писати текст лекції тут...');
-      const homeworkEditor = createQuillEditor('#id_homework', 'Опишіть домашнє завдання тут...', true);
+          // Инициализируем редакторы для полей лекции и домашнего задания
+          const lectureEditor = createQuillEditor('#id_lecture', 'Почніть писати текст лекції тут...');
+          const homeworkEditor = createQuillEditor('#id_homework', 'Опишіть домашнє завдання тут...', true);
 
-      // Перед отправкой формы, копируем HTML-контент из редакторов обратно в скрытые поля
-      const createForm = document.getElementById('create-lecture-form');
-      createForm.addEventListener('submit', function () {
-        if (lectureEditor) {
-          lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
-        }
-        if (homeworkEditor) {
-          homeworkEditor.textarea.value = homeworkEditor.quill.root.innerHTML;
-        }
+          // Перед отправкой формы, копируем HTML-контент из редакторов обратно в скрытые поля
+          const createForm = document.getElementById('create-lecture-form');
+          createForm.addEventListener('submit', function () {
+              if (lectureEditor) {
+                  lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
+              }
+              if (homeworkEditor) {
+                  homeworkEditor.textarea.value = homeworkEditor.quill.root.innerHTML;
+              }
+          });
       });
-    });
   </script>
 {% endblock %}

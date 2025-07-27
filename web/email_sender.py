@@ -12,7 +12,7 @@ api_key = os.getenv("API_KEY")
 
 mailjet = Client(auth=(api_key, api_secret), version="v3.1")
 
-app_name = "Tanja Tattoo"
+app_name = "GodArt Tattoo"
 
 
 def send_password_change_email(email: str, full_name: str, activation_code: str) -> None:
@@ -53,9 +53,9 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
             <tr>
                 <td align="center" style="padding: 40px 0;">
-                    <h1 style="margin: 0; font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5;">
-                        Tanja<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
-                    </h1>
+                    <a href="https://{os.getenv('HOST')}" target="_blank" style="font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5; text-decoration: none; letter-spacing: 1px;">
+                        GodArt<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
+                    </a>
                 </td>
             </tr>
 
@@ -142,8 +142,10 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
 def send_email_subscribe_code(email: str, code: str, full_name: str):
     register_link = urljoin("https://" + (os.getenv("HOST")), "/accounts/register")
     current_year = datetime.now().year
+    app_name_academy = "GodArt Tattoo Academy"
+
     text_part = f"""
-    Вітаємо у Tanja Tattoo Academy, {full_name}!
+    Вітаємо у {app_name_academy}, {full_name}!
 
     Ваш платіж успішно отримано. Дякуємо за довіру!
 
@@ -153,11 +155,11 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
     Щоб почати навчання, просто зареєструйтеся на нашій платформі, ввівши цей код.
 
     Регістрація за посиланням: {register_link}
-    
+
     (Використати код можливо лише 1 раз.)
 
     До зустрічі на курсі!
-    Команда Tanja Tattoo
+    Команда {app_name}
     """
 
     html_part = f"""
@@ -167,28 +169,13 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ваш доступ до Tanja Tattoo Academy</title>
+    <title>Ваш доступ до {app_name_academy}</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap');
-
-        body {{
-            margin: 0;
-            padding: 0;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            background-color: #0d0d0d;
-        }}
-        table, td {{
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }}
-        img {{
-            -ms-interpolation-mode: bicubic;
-            border: 0;
-        }}
-        a {{
-            text-decoration: none;
-        }}
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Megrim&display=swap');
+        body {{ margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #0d0d0d; }}
+        table, td {{ mso-table-lspace: 0pt; mso-table-rspace: 0pt; }}
+        img {{ -ms-interpolation-mode: bicubic; border: 0; }}
+        a {{ text-decoration: none; }}
     </style>
     </head>
     <body style="margin: 0; padding: 0; background-color: #0d0d0d;">
@@ -196,9 +183,9 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
             <tr>
                 <td align="center" style="padding: 40px 0;">
-                    <h1 style="margin: 0; font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5;">
-                        Tanja<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
-                    </h1>
+                    <a href="https://{os.getenv('HOST')}" target="_blank" style="font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5; text-decoration: none; letter-spacing: 1px;">
+                        GodArt<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
+                    </a>
                 </td>
             </tr>
 
@@ -252,9 +239,9 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
             </tr>
             <tr>
                 <td align="center" style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #a0a0a0; padding: 0 15px 40px 15px;">
-                    Ви отримали цей лист, оскільки придбали курс на сайті Tanja Tattoo Academy.
+                    Ви отримали цей лист, оскільки придбали курс на сайті {app_name_academy}.
                     <br>
-                    &copy; {current_year} Tanja Tattoo. Всі права захищено.
+                    &copy; {current_year} {app_name}. Всі права захищено.
                 </td>
             </tr>
         </table>
@@ -267,7 +254,7 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
             {
                 "From": {
                     "Email": f"{os.getenv('EMAIL_FIRST_PART')}@gmail.com",
-                    "Name": "Tanja Tattoo Academy"
+                    "Name": app_name_academy
                 },
                 "To": [
                     {
@@ -275,7 +262,7 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
                         "Name": full_name
                     }
                 ],
-                "Subject": "Вітаємо у Tanja Tattoo Academy",
+                "Subject": f"Вітаємо у {app_name_academy}",
                 "TextPart": text_part,
                 "HTMLPart": html_part
             }
@@ -289,6 +276,8 @@ def send_after_register_email(email: str, full_name: str):
     kit_form_link = urljoin("https://" + (os.getenv("HOST")), "/platform/box_application/")
     dashboard_link = urljoin("https://" + (os.getenv("HOST")), "/platform/dashboard/")
     current_year = datetime.now().year
+    app_name_academy = "GodArt Tattoo Academy"
+
     text_part = f"""
     Ласкаво просимо до Академії, {full_name}!
 
@@ -300,17 +289,16 @@ def send_after_register_email(email: str, full_name: str):
     Заповнити форму для боксу: {kit_form_link}
 
     Бажаємо натхнення!
-    Команда Tanja Tattoo
+    Команда {app_name}
     """
 
-    # Покращена HTML версія
     html_part = f"""
     <!DOCTYPE html>
     <html lang="uk">
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ласкаво просимо до Tanja Tattoo Academy!</title>
+    <title>Ласкаво просимо до {app_name_academy}!</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Megrim&display=swap');
         body {{ margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color: #0d0d0d; }}
@@ -324,9 +312,9 @@ def send_after_register_email(email: str, full_name: str):
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
             <tr>
                 <td align="center" style="padding: 40px 0;">
-                    <h1 style="margin: 0; font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5;">
-                        Tanja<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
-                    </h1>
+                    <a href="https://{os.getenv('HOST')}" target="_blank" style="font-family: 'Megrim', cursive; font-size: 36px; font-weight: 400; color: #f5f5f5; text-decoration: none; letter-spacing: 1px;">
+                        GodArt<span style="font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: #ff4500;">Tattoo</span>
+                    </a>
                 </td>
             </tr>
 
@@ -340,7 +328,7 @@ def send_after_register_email(email: str, full_name: str):
                         </tr>
                         <tr>
                             <td align="center" style="padding: 20px 0; font-family: 'Montserrat', sans-serif; font-size: 16px; line-height: 1.7; color: #a0a0a0;">
-                                Ваш код доступу успішно активовано! Ласкаво просимо до <b style="color: #f5f5f5;">Tanja Tattoo Academy</b>. Всі двері у світ тату-мистецтва тепер відчинені для вас.
+                                Ваш код доступу успішно активовано! Ласкаво просимо до <b style="color: #f5f5f5;">{app_name_academy}</b>. Всі двері у світ тату-мистецтва тепер відчинені для вас.
                             </td>
                         </tr>
                         <tr>
@@ -382,7 +370,7 @@ def send_after_register_email(email: str, full_name: str):
 
             <tr>
                 <td align="center" style="font-family: 'Montserrat', sans-serif; font-size: 12px; color: #a0a0a0; padding: 40px 15px;">
-                    &copy; {current_year} Tanja Tattoo. Всі права захищено.
+                    &copy; {current_year} {app_name}. Всі права захищено.
                 </td>
             </tr>
         </table>
@@ -396,7 +384,7 @@ def send_after_register_email(email: str, full_name: str):
             {
                 "From": {
                     "Email": f"{os.getenv('EMAIL_FIRST_PART')}@gmail.com",
-                    "Name": "Tanja Tattoo Academy"
+                    "Name": app_name_academy
                 },
                 "To": [
                     {
@@ -404,7 +392,7 @@ def send_after_register_email(email: str, full_name: str):
                         "Name": full_name
                     }
                 ],
-                "Subject": "Ласкаво просимо до Tanja Tattoo!",
+                "Subject": f"Ласкаво просимо до {app_name}!",
                 "TextPart": text_part,
                 "HTMLPart": html_part
             }

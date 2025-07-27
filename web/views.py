@@ -261,29 +261,27 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
-        if not user.is_superuser:
-            chat = Chat.objects.get(user=user)
-            new_sms = count_new_messages(user_chat_obj=chat, user=user)
-            lectures_done_ids = HomeWorkReview.objects.filter(
-                homework__user=user,
-                homework__was_checked=True,
-                is_approved=True
-            ).values_list("homework__lecture_id", flat=True)
-            next_lesson = Lecture.objects.filter(~Q(id__in=lectures_done_ids)).first().pk
+        chat, created = Chat.objects.get_or_create(user=user)
+        new_sms = count_new_messages(user_chat_obj=chat, user=user)
+        lectures_done_ids = HomeWorkReview.objects.filter(
+            homework__user=user,
+            homework__was_checked=True,
+            is_approved=True
+        ).values_list("homework__lecture_id", flat=True).distinct()
+        lectures_count = Lecture.objects.count()
 
-            if Lecture.objects.count() >= next_lesson:
-                lesson = Lecture.objects.get(position_number=next_lesson)
-            else:
-                lesson = None
+        next_lesson = Lecture.objects.filter(~Q(id__in=lectures_done_ids)).order_by("position_number").first()
 
-            lectures_count = Lecture.objects.count()
+        if lectures_count > 0:
+            percent_done = int((len(lectures_done_ids) / lectures_count) * 100)
+        else:
+            percent_done = 0
 
         context["user"] = user
         context["chat_pk"] = get_object_or_404(Chat, user=user).pk
         context["new_sms"] = new_sms
-        context["lesson"] = lesson
-        context["next_lesson"] = next_lesson
-        context["percent_done"] = int(((next_lesson - 1) / lectures_count) * 100)
+        context["lesson"] = next_lesson
+        context["percent_done"] = percent_done
 
         return context
 

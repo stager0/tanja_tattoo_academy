@@ -395,64 +395,52 @@ def get_part_of_messages(request, pk):
 
 
 @method_decorator(redirect_superuser, name="dispatch")
-class ProfileView(LoginRequiredMixin, generic.FormView):
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "profile.html"
-    model = get_user_model()
+    model = UserModel
     form_class = ProfileForm
     success_url = reverse_lazy("profile")
 
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         user = self.request.user
         context["user"] = user
 
         if not user.is_superuser:
-            chat = Chat.objects.get(user=user)
-            new_sms = count_new_messages(user_chat_obj=chat, user=user)
-            context["new_sms"] = new_sms
-            context["chat_pk"] = get_object_or_404(Chat, user=user).pk
+            chat = Chat.objects.filter(user=user).first()
+            if chat:
+                new_sms = count_new_messages(user_chat_obj=chat, user=user)
+                context["new_sms"] = new_sms
+                context["chat_pk"] = chat.pk
 
         return context
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-
-        user = self.request.user
-        password = getattr(user, "password", None)
-
-        if not password:
-            raise ValueError("User has no password set")
-
-        kwargs["hashed_current_password"] = password
-        kwargs["user_id"] = user.id
-        print(user.password)
-        return kwargs
-
-
     def form_valid(self, form):
-        new_password = form.cleaned_data.get("new_password", "")
-        first_name = form.cleaned_data.get("first_name", "")
-        last_name = form.cleaned_data.get("last_name", "")
-        email = form.cleaned_data.get("email", "")
-        phone = form.cleaned_data.get("phone", "")
-        avatar = form.cleaned_data.get("avatar", "")
+        is_password_change = 'change_password' in self.request.POST
 
-        user = self.request.user
-        if new_password:
-            user.set_password(new_password)
-        if first_name:
-            user.first_name = first_name
-        if last_name:
-            user.last_name = last_name
-        if email:
-            user.email = email
-        if phone:
-            user.phone = phone
-        if avatar:
-            user.avatar = avatar
+        if is_password_change:
+            new_password = form.cleaned_data.get('new_password1')
+            if new_password:
+                form.instance.set_password(new_password)
+                messages.success(self.request, "Ваш пароль було успішно змінено!")
+                update_session_auth_hash(self.request, form.instance)
+        else:
+            if 'avatar' in form.changed_data:
+                old_user_instance = self.get_object()
+                old_avatar = old_user_instance.avatar
+                if old_avatar and "base_icon.png" not in old_avatar.name:
+                    if os.path.exists(old_avatar.path):
+                        old_avatar.delete(save=False)
 
-        user.save()
+            messages.success(self.request, "Ваші дані було успішно оновлено.")
 
         return super().form_valid(form)
 

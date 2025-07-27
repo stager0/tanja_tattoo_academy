@@ -4,14 +4,18 @@ from decimal import Decimal
 from functools import wraps
 
 import stripe.checkout
-from django.contrib.auth import get_user_model
+from django.contrib import messages
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import AnonymousUser
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, Min, IntegerField
 from django.db.models.functions import Cast
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError
 from django.shortcuts import redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -31,22 +35,22 @@ load_dotenv()
 
 
 def redirect_superuser(view_func):
-    wraps(view_func)
+    @wraps(view_func)
 
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_superuser:
-            return redirect("/platform/admin_dashboard")
+            return redirect(reverse("admin_dashboard"))
         return view_func(request, *args, **kwargs)
 
     return _wrapper
 
 
 def redirect_user(view_func):
-    wraps(view_func)
+    @wraps(view_func)
 
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.is_superuser:
-            return redirect("/platform/dashboard/")
+            return redirect(reverse("dashboard"))
         return view_func(request, *args, **kwargs)
 
     return _wrapper
@@ -227,13 +231,14 @@ class ChangePasswordView(generic.FormView):
 class IndexView(generic.FormView):
     template_name = "index.html"
     form_class = IndexForm
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("answer")
 
     def get_context_data(self, **kwargs):
         user = self.request.user if self.request.user.is_authenticated else None
         context = super().get_context_data(**kwargs)
 
         context["user"] = user
+        context["mentor"] = UserModel.objects.filter(is_superuser=True).first()
         return context
 
     def form_valid(self, form):
@@ -242,10 +247,8 @@ class IndexView(generic.FormView):
         contact_details = form.cleaned_data.get("contact_details", "")
 
         if name and contact_method and contact_details:
-            if self.request.POST:
-                # send_telegramm_index_form(name=name, contact_method=contact_method, contact_details=contact_details)
-                print(name, contact_details, contact_method)
-                return HttpResponseRedirect("answer_to_form")
+            # send_telegramm_index_form(name=name, contact_method=contact_method, contact_details=contact_details)
+            print(name, contact_details, contact_method)
 
         return super().form_valid(form)
 
@@ -288,13 +291,7 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         user = self.request.user
         user.last_activity = timezone.now()
         user.save()
-        try:
-            return super().dispatch(request, *args, **kwargs)
-        except Chat.DoesNotExist:
-            Chat.objects.create(
-                user=self.request.user
-            )
-            return super().dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ChatView(LoginRequiredMixin, generic.FormView):

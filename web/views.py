@@ -122,11 +122,10 @@ class Webhook(View):
                     tariff=event["data"]["object"]["metadata"]["tariff"]
                 )
                 full_name = event["data"]["object"]["customer_details"]["name"]
-
+                print("before", email, new_code.code, full_name)
             except Exception as e:
-                order.delete()
-                new_code.delete()
-                return redirect(reverse("error_pay"))
+                print(f"Ошибка при обработке вебхука, но оплата прошла: {e}")
+                return HttpResponse(status=500)
             else:
                 print(email, new_code.code, full_name)
                 send_email_subscribe_code(email=email, code=new_code.code, full_name=full_name)
@@ -190,24 +189,33 @@ class ChangePasswordView(generic.FormView):
     success_url = reverse_lazy("change_password_success")
 
     def form_valid(self, form):
-        code = form.cleaned_data.get("code", "")
-        password = form.cleaned_data.get("password1", "")
+        code = form.cleaned_data.get("code")
+        password = form.cleaned_data.get("password1")
 
-        if password and code:
-            try:
-                code_obj = ResetCode.objects.get(code=code)
-                if code_obj.is_activated is True:
-                    raise ValueError("Нажаль ваш код вже активований.")
+        try:
+            code_obj = ResetCode.objects.get(code=code)
 
-                if code_obj.created_date + timedelta(minutes=15) < timezone.now():
-                    raise ValueError("Нажаль ваш код прострочений.")
+            if code_obj.is_activated:
+                form.add_error('code', "На жаль, ваш код вже активований.")
+                return self.form_invalid(form)
 
-                user = get_user_model().objects.get(email=code_obj.user_email)
+            if code_obj.created_date + timedelta(minutes=15) < timezone.now():
+                form.add_error('code', "На жаль, ваш код прострочений.")
+                return self.form_invalid(form)
 
-                if user:
-                    user.set_password(password)
-                    user.save()
-                return super().form_valid(form)
+            user = get_user_model().objects.get(email=code_obj.user_email)
+
+        except (ResetCode.DoesNotExist, get_user_model().DoesNotExist):
+            form.add_error('code', "Введений код недійсний або пов'язаний з ним акаунт не знайдено.")
+            return self.form_invalid(form)
+
+        user.set_password(password)
+        user.save()
+
+        code_obj.is_activated = True
+        code_obj.save()
+
+        return super().form_valid(form)
 
             except get_user_model().DoesNotExist:
                 raise ValueError("Користувача з таким email немає")

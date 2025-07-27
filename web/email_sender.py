@@ -16,10 +16,9 @@ app_name = "Tanja Tattoo"
 
 
 def send_password_change_email(email: str, full_name: str, activation_code: str) -> None:
-    reset_link = urljoin(os.getenv("URL_BASE"), "/accounts/change_password/")
+    reset_link = urljoin("https://" + (os.getenv("HOST")), "/accounts/change_password/")
     current_year = datetime.now().year
 
-    # Покращена текстова версія
     text_part = f"""
         Привіт, {full_name}!
 
@@ -141,7 +140,7 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
 
 
 def send_email_subscribe_code(email: str, code: str, full_name: str):
-    register_link = urljoin(os.getenv("URL_BASE"), "/register")
+    register_link = urljoin("https://" + (os.getenv("HOST")), "/accounts/register")
     current_year = datetime.now().year
     text_part = f"""
     Вітаємо у Tanja Tattoo Academy, {full_name}!
@@ -287,8 +286,8 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
 
 
 def send_after_register_email(email: str, full_name: str):
-    kit_form_link = urljoin(os.getenv("URL_BASE"), "/platform/box_application/")
-    dashboard_link = urljoin(os.getenv("URL_BASE"), "/platform/dashboard/")
+    kit_form_link = urljoin("https://" + (os.getenv("HOST")), "/platform/box_application/")
+    dashboard_link = urljoin("https://" + (os.getenv("HOST")), "/platform/dashboard/")
     current_year = datetime.now().year
     text_part = f"""
     Ласкаво просимо до Академії, {full_name}!

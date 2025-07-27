@@ -454,14 +454,10 @@ class CourseView(LoginRequiredMixin, generic.FormView):
     def get_context_data(self, **kwargs):
         user = self.request.user
         context = super().get_context_data(**kwargs)
-        if not user.is_superuser:
-            chat = Chat.objects.get(user=user)
-            new_sms = count_new_messages(user_chat_obj=chat, user=user)
-            context["new_sms"] = new_sms
-
-
+        chat = get_object_or_404(Chat, user=user)
         lectures = Lecture.objects.order_by("position_number")
-        context["lectures"] = lectures
+        new_sms = count_new_messages(user_chat_obj=chat, user=user)
+
         homework_review_count = HomeWorkReview.objects.filter(
             homework__user=user,
             homework__was_checked=True,
@@ -469,44 +465,77 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         ).count()
         paginator = Paginator(lectures, 10)
         current_page = self.request.GET.get("page")
-        page_obj = paginator.get_page(current_page)
+        context["page_obj"] = paginator.get_page(current_page)
 
-        context["page_obj"] = page_obj
+        homework_done_posit_nums = HomeWorkReview.objects.filter(homework__user=user, homework__was_checked=True,
+                                                                 is_approved=True).values_list(
+            "homework__lecture__position_number", flat=True
+        )
+        current_task = lectures.filter(~Q(position_number__in=homework_done_posit_nums)).first()
+
+        context["homework_done_ids"] = homework_done_posit_nums
+        context["request"] = self.request
+
+        context["new_sms"] = new_sms
         context["homework_review_count"] = homework_review_count
-        context["homework_review_count_plus_1"] = homework_review_count + 1
-        context["chat_pk"] = get_object_or_404(Chat, user=user).pk
+        context["current_task"] = current_task.position_number or (
+            None if homework_review_count == lectures.count() else 1)
+        context["chat_pk"] = chat.pk
         context["current_id"] = self.kwargs["pk"] if self.kwargs["pk"] else 1
+        context["user_tasks_waiting_for_review_pos_nums"] = HomeWork.objects.filter(user=user,
+                                                                                    was_checked=False).values_list(
+            "lecture__position_number", flat=True)
 
-        pk = self.kwargs.get("pk")
-        if pk:
+        position_number = self.kwargs.get("pk")
+        if position_number:
             try:
-                lecture_data = Lecture.objects.get(pk=pk)
+                lecture_data = lectures.get(position_number=position_number)
                 context["lecture"] = lecture_data
-            except Exception:
-                raise Lecture.DoesNotExist
+            except Lecture.DoesNotExist:
+                raise Http404("Такої лекції немає")
+            else:
+                homework = HomeWork.objects.filter(user=user, lecture__position_number=position_number).first()
+                if homework and homework.lecture.position_number in homework_done_posit_nums:
+                    context["homework_text"] = homework.text
 
         return context
 
     def get(self, request, *args, **kwargs):
-        lectures = Lecture.objects.order_by("position_number")
-        paginator = Paginator(lectures, 10)
-        current_task = self.kwargs["pk"]
-        current_page = self.request.GET.get("page") if self.request.GET.get("page") else None
-        if paginator.get_page(current_task) != current_page or current_task > 10 and not current_page:
-            url = reverse("course", kwargs={"pk": current_task})
-            return HttpResponseRedirect(f"{url}?page={paginator.get_page(current_task)}")
+        per_page = 10
+
+        current_lecture_pk = int(self.kwargs["pk"])
+        page_from_request = request.GET.get("page")
+        user = self.request.user
+        count_of_done_homework = HomeWorkReview.objects.filter(homework__user=user, is_approved=True,
+                                                               homework__was_checked=True).count()
+
+        if not page_from_request:
+            try:
+                lecture = Lecture.objects.get(position_number=current_lecture_pk)
+            except Lecture.DoesNotExist:
+                raise Http404("Такої лекції немає.")
+
+            position = Lecture.objects.filter(position_number__lt=lecture.position_number).count()
+            correct_page = position // per_page + 1
+
+            url = reverse("course", kwargs={"pk": current_lecture_pk})
+            return HttpResponseRedirect(f"{url}?page={correct_page}")
+
         return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
+
         text = form.cleaned_data.get("text", "")
         image = form.cleaned_data.get("image", "")
         user = self.request.user
-        lecture_pk = self.kwargs.get("pk", "")
-        if lecture_pk:
-            lecture_obj = Lecture.objects.get(pk=lecture_pk)
+        lecture_positional_number = self.kwargs.get("pk", "")
 
-        if not text and not image or lecture_pk:
-            return reverse("course", kwargs={"pk": 1})
+        if lecture_positional_number:
+            lecture_obj = get_object_or_404(Lecture, position_number=int(lecture_positional_number))
+        if not lecture_positional_number:
+            return HttpResponseRedirect(reverse("course", kwargs={"pk": 1}))
+        if not text and not image:
+            return HttpResponseRedirect(reverse("course", kwargs={"pk": int(lecture_positional_number)}))
 
         homework = HomeWork.objects.create(
             lecture=lecture_obj,
@@ -518,10 +547,14 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        pk = self.kwargs["pk"]
-        if pk and Lecture.objects.filter(pk=pk).exists():
-            return reverse("course", kwargs={"pk": pk + 1})
-        return reverse("course", kwargs={"pk": 1})
+        pk = int(self.kwargs.get("pk"))
+        try:
+            next_lecture = Lecture.objects.filter(position_number__gt=pk).order_by("position_number").first()
+            if next_lecture:
+                return reverse("course", kwargs={"pk": next_lecture.position_number})
+        except Exception as e:
+            print(e)
+            return reverse("course", kwargs={"pk": 1})
 
 
 @method_decorator(redirect_superuser, name="dispatch")

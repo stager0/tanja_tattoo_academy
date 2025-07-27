@@ -627,18 +627,17 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
         queryset = super().get_queryset()
         query_param = self.request.GET.get("type")
         if query_param == "waiting_for_a_check":
-            return queryset.filter(was_checked=False)
+            return queryset.filter(was_checked=False).select_related("lecture", "user")
 
         elif query_param == "approved":
-            queryset = queryset.filter(was_checked=True)
             approved_hw_ids = HomeWorkReview.objects.filter(is_approved=True).values_list("homework_id", flat=True)
-            return queryset.filter(was_checked=True, id__in=approved_hw_ids)
+            return queryset.filter(was_checked=True, id__in=approved_hw_ids).select_related("lecture", "user")
 
         else:
-            return queryset
+            return queryset.select_related("lecture", "user")
 
     def get_context_data(
-        self, *, object_list = ..., **kwargs
+            self, *, object_list=..., **kwargs
     ):
         context = super().get_context_data(**kwargs)
         approved_ids = HomeWorkReview.objects.filter(is_approved=True).values_list("homework_id", flat=True)
@@ -663,42 +662,45 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
     form_class = ReviewTaskForm
 
     def form_valid(self, form):
-        review_text = form.cleaned_data.get("review_text")
-        pk = self.kwargs.get("pk")
-        homework = HomeWork.objects.get(pk=pk)
+        with transaction.atomic():
+            review_text = form.cleaned_data.get("review_text", "(немає коментаря).")
+            pk = self.kwargs.get("pk")
+            homework = get_object_or_404(HomeWork, pk=pk)
 
-        action = self.request.POST.get("action")
+            action = self.request.POST.get("action")
+            if action == "reject" and not review_text:
+                messages.error(self.request, "Будь ласка, напишіть коментар, чому робота відхилена.")
+                return self.form_invalid(form)
 
-        HomeWorkReview.objects.create(
-            homework=homework,
-            review_text=review_text,
-            is_approved=True if action == "approve" else False,
-        )
+            HomeWorkReview.objects.create(
+                homework=homework,
+                review_text=review_text,
+                is_approved=True if action == "approve" else False,
+            )
 
-        homework.was_checked = True
-        homework.save()
+            homework.was_checked = True
+            homework.save()
 
-        chat = homework.user.chats
-        if chat:
-            if action == "approve":
-                Message.objects.create(
-                    chat=chat,
-                    text=f"✅ Ваше завдання було прийняте ментором! 🎉      💬 Коментар ментора: {review_text}",
-                    user=self.request.user,
-                    is_read_admin=True,
-                    from_admin=True
-                )
-            else:
-                Message.objects.create(
-                    chat=chat,
-                    text=f"❌ На жаль, завдання не було прийняте ментором. 😔     💬 Коментар ментора: '{review_text}' P.S: Не засмучуйтесь, спробуйте ще раз — у вас все вийде! 💪",
-                    user=self.request.user,
-                    is_read_admin=True,
-                    from_admin=True
-                )
+            chat = homework.user.chats
+            if chat:
+                if action == "approve":
+                    Message.objects.create(
+                        chat=chat,
+                        text=f"✅ Ваше завдання було прийняте ментором! 🎉      💬 Коментар ментора: {review_text if review_text else '(немає коментаря)'}",
+                        user=self.request.user,
+                        is_read_admin=True,
+                        from_admin=True
+                    )
+                else:
+                    Message.objects.create(
+                        chat=chat,
+                        text=f"❌ На жаль, завдання не було прийняте ментором. 😔     💬 Коментар ментора: '{review_text}' P.S: Не засмучуйтесь, спробуйте ще раз — у вас все вийде! 💪",
+                        user=self.request.user,
+                        is_read_admin=True,
+                        from_admin=True
+                    )
 
-
-        return super().form_valid(form)
+            return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -773,6 +775,7 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-students.html"
     model = UserModel
     context_object_name = "users"
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -819,6 +822,7 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
     template_name = "admin-boxes.html"
     model = StartBox
     context_object_name = "boxes"
+    paginate_by = 16
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -849,7 +853,7 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
                 box.is_sent = True
                 box.sent_date = timezone.now()
                 box.save()
-                chat = Chat.objects.get(user=box.user.chats.user)
+                chat = Chat.objects.get(user=box.user)
             except StartBox.DoesNotExist:
                 pass
             else:
@@ -869,6 +873,7 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
     template_name = "admin-lecture-list.html"
     model = Lecture
     context_object_name = "lectures"
+    queryset = Lecture.objects.order_by("position_number")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

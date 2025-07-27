@@ -20,18 +20,20 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from web.telegram_bot import webhook_telegram
 from web.views import RegisterView, ChangePasswordRequestView, ChangePasswordView, IndexView, CreateCheckoutSessionView, \
     Webhook
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
-    path("thank_you/", TemplateView.as_view(template_name="thank-you.html"), name="thank_you"),
+    path("thank_you/", TemplateView.as_view(template_name="success-pay.html"), name="thank_you"),
     path("answer_to_form/", TemplateView.as_view(template_name="answer_to_index_form.html"), name="answer"),
     path("success_pay/", TemplateView.as_view(template_name="success-pay.html"), name="success_pay"),
     path("cancel_pay/", TemplateView.as_view(template_name="cancel-pay.html"), name="cancel_pay"),
     path("error_pay/", TemplateView.as_view(template_name="error-pay.html"), name="error_pay"),
     path("checkout_session/", CreateCheckoutSessionView.as_view(), name="checkout_session"),
     path("stripe_webhook/", Webhook.as_view(), name="webhook"),
+    path("telegram_webhook/<str:token>/", webhook_telegram, name="webhook_telegram"),
     path('admin/', admin.site.urls),
     path("platform/", include("web.urls")),
     path("accounts/", include("django.contrib.auth.urls")),

@@ -221,12 +221,6 @@ class ChangePasswordView(generic.FormView):
 
         return super().form_valid(form)
 
-            except get_user_model().DoesNotExist:
-                raise ValueError("Користувача з таким email немає")
-
-        else:
-            raise ValueError("Неправильний код або пароль.")
-
 
 class IndexView(generic.FormView):
     template_name = "index.html"
@@ -298,15 +292,18 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
     def get_chat(self):
         user = self.request.user
+        pk = self.kwargs.get("pk")
 
-        try:
-            if user.is_superuser:
-                pk = self.kwargs["pk"]
-                return Chat.objects.get(pk=pk)
-            elif not user.is_superuser:
-                return Chat.objects.get(user=user)
-        except Chat.DoesNotExist:
-            raise ValueError("Current user's chat was not found.")
+        if not pk and not user.is_superuser:
+            chat = get_object_or_404(Chat, user=self.request.user)
+            return chat
+
+        chat = get_object_or_404(Chat, pk=pk)
+
+        if chat.user == user or user.is_superuser:
+            return chat
+
+        raise PermissionDenied("Ви не маєте прав для перегляду цього чату.")
 
     def get_messages(self):
         chat = self.get_chat()
@@ -332,7 +329,7 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
         if user.is_superuser:
             chat_pk = self.kwargs["pk"]
-            context["interlocutor_avatar"] = Chat.objects.get(pk=chat_pk).user.avatar.url
+            context["interlocutor"] = Chat.objects.get(pk=chat_pk).user
 
         context["chat_pk"] = chat_pk
         context["user"] = self.request.user
@@ -382,16 +379,19 @@ class ChatView(LoginRequiredMixin, generic.FormView):
 
 
 def get_part_of_messages(request, pk):
-    chat = get_object_or_404(Chat, pk=pk)
-    messages = Message.objects.filter(chat=chat).order_by("date")
-    paginator = Paginator(messages, 20)
-    current_page = request.GET.get("page", None)
-    page_obj = paginator.get_page(current_page)
-    messages = page_obj.object_list
+    try:
+        chat = get_object_or_404(Chat, pk=pk)
+        messages = Message.objects.filter(chat=chat).order_by("date")
+        paginator = Paginator(messages, 20)
+        current_page = request.GET.get("page", None)
+        page_obj = paginator.get_page(current_page)
+        messages = page_obj.object_list
 
-    html = render_to_string("partial/_messages_partial.html", {"messages": messages, "user": request.user})
-    return HttpResponse(html)
-
+        html = render_to_string("partial/_messages_partial.html", {"messages": messages, "user": request.user})
+        return HttpResponse(html)
+    except Exception as e:
+        print(e)
+        return HttpResponseServerError
 
 
 @method_decorator(redirect_superuser, name="dispatch")

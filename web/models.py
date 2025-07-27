@@ -50,10 +50,11 @@ def profile_avatar(instance, filename):
 
 # user
 class UserModel(EmailAbstractUser):
-    code = models.ForeignKey(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
+    code = models.OneToOneField(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
     avatar = models.ImageField(upload_to=profile_avatar, blank=True, default="user_avatars/base_icon.png")
     last_activity = models.DateTimeField(null=True, blank=True)
+    telegram_chat_id = models.CharField(null=True, blank=True)
 
     def __str__(self):
         return self.email
@@ -115,11 +116,6 @@ class StartBox(models.Model):
     is_sent = models.BooleanField(default=False, blank=True, null=True)
     sent_date = models.DateTimeField(blank=True, null=True)
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
-
-
-class LecturesCounter(models.Model):
-    lecture = models.ForeignKey(Lecture, related_name="counter", on_delete=models.CASCADE)
-    user = models.ForeignKey(UserModel, related_name="counter", on_delete=models.CASCADE)
 
 
 class Order(models.Model):

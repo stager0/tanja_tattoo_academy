@@ -562,6 +562,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
     template_name = "box-application.html"
     model = StartBox
     form_class = BoxApplicationForm
+    success_url = reverse_lazy("box_application")
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -569,42 +570,50 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
 
         context["tariff"] = user.code.tariff
         context["user"] = user
+        context["start_box"] = StartBox.objects.get(user=user) if user.code.start_box_coupon_is_activated else None
 
         if StartBox.objects.filter(user=user) and user.code.tariff != "base":
-            context["sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
+            context[
+                "sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
         elif not StartBox.objects.filter(user=user) and user.code.tariff != "base":
             context["sms"] = "Заповніть анкету нижче, і ми відправимо вам набір з усім необхідним для початку роботи."
         elif user.code.tariff == "base":
-            context["sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
+            context[
+                "sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
 
         if not user.is_superuser:
-            chat = Chat.objects.get(user=user)
+            chat = get_object_or_404(Chat, user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
-            context["chat_pk"] = get_object_or_404(Chat, user=user).pk
+            context["chat_pk"] = chat.pk
 
         return context
 
-
     def form_valid(self, form):
-        if self.request.user.code.tariff != "base" and self.request.user.code.start_box_coupon_is_activated is False:
-            full_name = form.cleaned_data.get("full_name", "")
-            phone = form.cleaned_data.get("phone", "")
-            address = form.cleaned_data.get("address", "")
-            comments = form.cleaned_data.get("comments", "")
+        if self.request.user.code.tariff != "base":
+            with transaction.atomic():
+                if not self.request.user.code.start_box_coupon_is_activated:
+                    full_name = form.cleaned_data.get("full_name", "")
+                    phone = form.cleaned_data.get("phone", "")
+                    address = form.cleaned_data.get("address", "")
+                    comments = form.cleaned_data.get("comments", "")
 
-            user = self.request.user
+                    user = self.request.user
 
-            StartBox.objects.create(
-                full_name=full_name,
-                phone=phone,
-                address=address,
-                comments=comments,
-                user=user
-            )
+                    StartBox.objects.create(
+                        full_name=full_name,
+                        phone=phone,
+                        address=address,
+                        comments=comments,
+                        user=user
+                    )
 
-            user.code.start_box_coupon_is_activated = True
-            return super().form_valid(form)
+                    code = user.code
+                    code.start_box_coupon_is_activated = True
+                    code.save()
+
+                    return redirect(f"{reverse(f'box_application')}?success=true")
+
         return redirect("box_application")
 
 

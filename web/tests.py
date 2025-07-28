@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from web.models import UserModel, Order, SubscribeTariff
+from web.models import UserModel, Order, SubscribeTariff, Code
 
 
 @pytest.fixture
@@ -23,6 +23,10 @@ def subscribe_tariff_base(db):
         with_startbox=False
     )
 
+@pytest.fixture
+def order(db, subscribe_tariff_base):
+    price = SubscribeTariff.objects.get(name="base").price
+    return Order.objects.create(total_sum=price)
 
 @pytest.mark.django_db
 def test_send_index_form_valid_status_302(client, admin_user, mocker):
@@ -68,5 +72,38 @@ def test_create_checkout_session_creates_order_status_303(db, client, mocker, su
     assert response.url == "https://stripe.com/test"
     assert response.status_code == 303
     mocker_checkout_session.assert_called_once()
+
+
+@pytest.mark.django_db
+def test_stripe_webhook_changes_order_and_creates_new_code_also_sends_email(db, mocker, admin_user, client, order, subscribe_tariff_base):
+    mocker_webhook = mocker.patch("stripe.Webhook.construct_event")
+    session_id = "1212"
+    mocker_webhook.return_value = {
+        "type": "checkout.session.completed",
+        "data": {
+            "object": {
+                "id": session_id,
+                "customer_details": {
+                    "email": admin_user.email,
+                    "name": admin_user.get_full_name()
+                },
+                "metadata": {
+                    "order_id": order.pk,
+                    "tariff": subscribe_tariff_base.name,
+                }
+            }
+        }
+    }
+    response = client.post(reverse("webhook"))
+    order.refresh_from_db()
+
+    new_code = Code.objects.first()
+
+    assert response.status_code == 200
+    assert order.is_paid == True
+    assert order.user_email == admin_user.email
+    assert order.session_id == session_id
+    assert new_code.order == order
+    assert new_code.tariff == subscribe_tariff_base.name
 
 

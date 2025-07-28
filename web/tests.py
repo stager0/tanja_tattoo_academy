@@ -1,8 +1,7 @@
 import pytest
 from django.urls import reverse
-from pytest_mock import mocker
 
-from web.models import UserModel
+from web.models import UserModel, Order, SubscribeTariff
 
 
 @pytest.fixture
@@ -15,6 +14,14 @@ def admin_user(db):
     )
     admin.set_password("1qaz")
     return admin
+
+@pytest.fixture
+def subscribe_tariff_base(db):
+    return SubscribeTariff.objects.create(
+        name="base",
+        price="250",
+        with_startbox=False
+    )
 
 
 @pytest.mark.django_db
@@ -41,4 +48,25 @@ def test_send_index_invalid_form_status_400(client):
     invalid_data = {"name": "not all data", "action": "submit"}
     response = client.post(url, data=invalid_data)
     assert response.status_code == 400
+
+
+@pytest.mark.django_db
+def test_create_checkout_session_creates_order_status_303(db, client, mocker, subscribe_tariff_base):
+    mocker_checkout_session = mocker.patch("stripe.checkout.Session.create")
+    mocker_checkout_session.return_value = mocker.MagicMock(
+        id="cs_test_123",
+        url="https://stripe.com/test"
+    )
+    data = {
+        "action": "base"
+    }
+    orders_count_before = Order.objects.count()
+    response = client.post(reverse("checkout_session"), data=data)
+    orders_count_after = Order.objects.count()
+
+    assert orders_count_after == orders_count_before + 1
+    assert response.url == "https://stripe.com/test"
+    assert response.status_code == 303
+    mocker_checkout_session.assert_called_once()
+
 

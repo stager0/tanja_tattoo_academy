@@ -184,6 +184,15 @@ class ChangePasswordRequestView(generic.FormView):
                 user_email=email,
                 code=code,
             )
+            chat_id = UserModel.objects.filter(email=email).first().telegram_chat_id
+            if chat_id:
+                send_message_in_telegram(
+                    chat_id=chat_id,
+                    text=(
+                        "✉️ Хтось запросив код для зміни вашого пароля. Ми вже надіслали його на вашу електронну пошту.\n"
+                        "Якщо це були не ви — просто проігноруйте це повідомлення. Ваш обліковий запис залишиться в безпеці. 🔒")
+                )
+
             send_password_change_email(email=email, full_name=full_name, activation_code=code)
             return super().form_valid(form)
 

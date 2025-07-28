@@ -667,6 +667,26 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
                     code.start_box_coupon_is_activated = True
                     code.save()
 
+                    user_chat_id = user.telegram_chat_id
+                    if user_chat_id:
+                        send_message_in_telegram(
+                            chat_id=user_chat_id,
+                            text=(
+                                "📨 Ми отримали вашу заявку на тату-бокс!\n"
+                                "Як тільки відправлення буде здійснено — я повідомлю вас у цей чат. Дякуємо за довіру! 🧡"
+                            )
+                        )
+
+                    mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
+                    if mentor_chat_id:
+                        send_message_in_telegram(
+                            chat_id=mentor_chat_id,
+                            text=(
+                                f"📬 Учень {user.get_full_name()} щойно надіслав анкету на тату-бокс.\n"
+                                "Перевірте, будь ласка, нову заявку у кабінеті."
+                            )
+                        )
+
                     return redirect(f"{reverse(f'box_application')}?success=true")
 
         return redirect("box_application")
@@ -738,6 +758,7 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
 
             chat = homework.user.chats
             if chat:
+                user_chat_id = homework.user.telegram_chat_id
                 if action == "approve":
                     Message.objects.create(
                         chat=chat,
@@ -746,6 +767,9 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         is_read_admin=True,
                         from_admin=True
                     )
+                    if user_chat_id:
+                        send_message_in_telegram(chat_id=user_chat_id,
+                                                 text="✅ Ваше завдання було прийняте ментором! 🎉\n Для перегляду деталей перейдіть на платформу.🧡")
                 else:
                     Message.objects.create(
                         chat=chat,
@@ -754,6 +778,9 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         is_read_admin=True,
                         from_admin=True
                     )
+                    if user_chat_id:
+                        send_message_in_telegram(chat_id=user_chat_id,
+                                                 text="❌ На жаль, завдання не було прийняте ментором. 😔\n Для перегляду деталей перейдіть на платформу.🧡")
 
             return super().form_valid(form)
 
@@ -902,23 +929,27 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
 
     def post(self, request, *args, **kwargs):
         box_id = self.request.POST.get("mark_as_sent")
-        if box_id:
-            try:
-                box = StartBox.objects.get(pk=box_id)
-                box.is_sent = True
-                box.sent_date = timezone.now()
-                box.save()
-                chat = Chat.objects.get(user=box.user)
-            except StartBox.DoesNotExist:
-                pass
-            else:
-                Message.objects.create(
-                    chat=chat,
-                    text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚 Посилка вже в дорозі до тебе за вказаною адресою!",
-                    user=box.user,
-                    is_read_admin=True,
-                    from_admin=True
-                )
+        with transaction.atomic():
+            if box_id:
+                try:
+                    box = StartBox.objects.get(pk=box_id)
+                    box.is_sent = True
+                    box.sent_date = timezone.now()
+                    box.save()
+                    chat = Chat.objects.get(user=box.user)
+                except StartBox.DoesNotExist:
+                    pass
+                else:
+                    Message.objects.create(
+                        chat=chat,
+                        text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚 Посилка вже в дорозі до тебе за вказаною адресою!",
+                        user=box.user,
+                        is_read_admin=True,
+                        from_admin=True
+                    )
+                    user_chat_id = box.user.telegram_chat_id
+                    if user_chat_id:
+                        send_message_in_telegram(chat_id=user_chat_id, text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚\n Посилка вже в дорозі до тебе за вказаною адресою!")
 
         return HttpResponseRedirect(reverse("admin_boxes") + "?type=active")
 

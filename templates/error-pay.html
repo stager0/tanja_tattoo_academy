@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Помилка оплати - GodArt Tattoo Academy</title>
+
+  <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+      :root {
+          --bg-dark: #0d0d0d;
+          --bg-surface: #1a1a1a;
+          --text-light: #f5f5f5;
+          --text-medium: #a0a0a0;
+          --primary-orange: #ff4500;
+          --primary-orange-hover: #e03e00;
+          --error-color: #dc3545; /* Цвет для ошибок */
+          --border-color: #333333;
+          --font-primary: 'Montserrat', sans-serif;
+          --font-logo: 'Megrim', cursive;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: var(--font-primary);
+          background-color: var(--bg-dark);
+          color: var(--text-light);
+          line-height: 1.7;
+          background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+          background-size: 30px 30px;
+      }
+
+      .container {
+          width: 90%;
+          max-width: 1200px;
+          margin: 0 auto;
+      }
+
+      /* --- Стилі для сторінок статусу --- */
+      .status-page-wrapper {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+      }
+
+      .status-header {
+          padding: 20px 0;
+          text-align: center;
+          border-bottom: 1px solid var(--border-color);
+      }
+
+      .logo {
+          font-family: var(--font-logo);
+          font-size: 2.5rem;
+          color: var(--text-light);
+          text-decoration: none;
+      }
+
+      .logo span {
+          color: var(--primary-orange);
+          font-family: var(--font-primary);
+          font-weight: 900;
+          font-size: 1.8rem;
+      }
+
+      .status-content {
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+      }
+
+      .status-box {
+          background: var(--bg-surface);
+          padding: clamp(30px, 5vw, 60px);
+          border-radius: 20px;
+          border: 1px solid var(--border-color);
+          max-width: 650px;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 0 40px rgba(220, 53, 69, 0.3); /* Красное свечение */
+      }
+
+      .status-icon {
+          font-size: clamp(4rem, 10vw, 6rem);
+          margin-bottom: 30px;
+      }
+
+      .status-icon.error {
+          color: var(--error-color);
+      }
+
+      .status-box h1 {
+          font-size: clamp(2rem, 5vw, 2.5rem);
+          margin-bottom: 20px;
+      }
+
+      .status-box p {
+          color: var(--text-medium);
+          font-size: 1.1rem;
+          line-height: 1.8;
+          max-width: 500px;
+          margin: 0 auto 40px;
+      }
+
+      .status-actions {
+          display: flex;
+          justify-content: center;
+          gap: 15px;
+          flex-wrap: wrap;
+      }
+
+      .btn {
+          display: inline-block;
+          padding: 15px 35px;
+          background: var(--primary-orange);
+          color: var(--text-light);
+          text-decoration: none;
+          font-weight: 600;
+          border-radius: 50px;
+          border: 2px solid var(--primary-orange);
+          transition: all 0.3s ease;
+      }
+
+      .btn:hover {
+          background-color: var(--primary-orange-hover);
+          transform: translateY(-3px);
+      }
+
+      .btn-secondary {
+          background-color: transparent;
+          color: var(--primary-orange);
+      }
+
+      .btn-secondary:hover {
+          background-color: var(--primary-orange);
+          color: var(--text-light);
+      }
+
+  </style>
+</head>
+<body>
+
+<div class="status-page-wrapper">
+
+  <header class="status-header">
+      <a href="{% url 'index' %}" class="logo">GodArt<span>Tattoo</span></a>
+  </header>
+
+  <main class="status-content">
+    <div class="status-box">
+      <div class="status-icon error">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h1>Сталася помилка</h1>
+      <p>На жаль, не вдалося обробити ваш платіж. Можливі причини: недостатньо коштів на карті або технічна помилка.
+        Будь ласка, перевірте дані та спробуйте ще раз.</p>
+      <div class="status-actions">
+        <a href="{% url 'index' %}#tariffs" class="btn">Спробувати ще раз</a>
+        <a href="https://www.instagram.com/tattoo.godart/" class="btn btn-secondary">Зв'язатися з підтримкою</a>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+</body>
+</html>

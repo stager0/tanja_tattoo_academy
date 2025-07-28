@@ -35,4 +35,10 @@ def test_send_index_form_valid_status_302(client, admin_user, mocker):
     mock_telegram.assert_called_once()
 
 
-# Create your tests here.
+@pytest.mark.django_db
+def test_send_index_invalid_form_status_400(client):
+    url = reverse("index")
+    invalid_data = {"name": "not all data", "action": "submit"}
+    response = client.post(url, data=invalid_data)
+    assert response.status_code == 400
+

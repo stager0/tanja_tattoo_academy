@@ -1,4 +1,5 @@
 import os
+
 from datetime import timedelta
 from decimal import Decimal
 from functools import wraps
@@ -11,7 +12,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, Min, IntegerField
+from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, IntegerField
 from django.db.models.functions import Cast
 from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError
 from django.shortcuts import redirect, get_object_or_404
@@ -26,17 +27,17 @@ from dotenv import load_dotenv
 
 from web.email_sender import send_password_change_email, send_after_register_email, send_email_subscribe_code
 from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm, BoxApplicationForm, \
-    ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm, LectureCreateForm
+    ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm
 from web.generators import generate_reset_password_code, generate_subscribe_code
 from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
     SubscribeTariff, Order, Code
+from web.telegram_bot import send_message_in_telegram
 
 load_dotenv()
 
 
 def redirect_superuser(view_func):
     @wraps(view_func)
-
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_superuser:
             return redirect(reverse("admin_dashboard"))
@@ -47,7 +48,6 @@ def redirect_superuser(view_func):
 
 def redirect_user(view_func):
     @wraps(view_func)
-
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.is_superuser:
             return redirect(reverse("dashboard"))
@@ -161,6 +161,10 @@ class RegisterView(CreateView):
                 Chat.objects.create(
                     user=self.object
                 )
+                mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
+                if mentor_chat_id:
+                    send_message_in_telegram(chat_id=mentor_chat_id,
+                                             text=f"Юзер '{full_name}' тільки що зареєструвався на платформі.")
                 return super().form_valid(form)
             except Exception as e:
                 return redirect(reverse("register"))

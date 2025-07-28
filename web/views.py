@@ -265,9 +265,17 @@ class IndexView(generic.FormView):
         contact_details = form.cleaned_data.get("contact_details", "")
 
         if name and contact_method and contact_details:
-            # send_telegramm_index_form(name=name, contact_method=contact_method, contact_details=contact_details)
-            print(name, contact_details, contact_method)
-
+            mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
+            if mentor_chat_id:
+                send_message_in_telegram(
+                    chat_id=mentor_chat_id,
+                    text=(
+                        "📩 Отримано нову форму зворотного зв'язку!\n\n"
+                        f"👤 Ім'я: {name}\n"
+                        f"🌐 Соцмережа: {contact_method}\n"
+                        f"📞 Контакт: {contact_details}"
+                    )
+                )
         return super().form_valid(form)
 
 

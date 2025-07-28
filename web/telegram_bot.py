@@ -110,3 +110,10 @@ def webhook_telegram(request, token: str = None):
             except Exception as e:
                 print(e)
         return JsonResponse({"status": "400"})
+
+
+def send_message_in_telegram(text: str, chat_id: str = 0):
+    user = UserModel.objects.filter(telegram_chat_id=chat_id).first()
+    if user:
+        bot.send_message(chat_id=int(chat_id), text=text)
+    return JsonResponse({"status": "ok"})

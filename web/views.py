@@ -586,6 +586,18 @@ class CourseView(LoginRequiredMixin, generic.FormView):
             image=image if image else None,
             text=text if text else None
         )
+        user_chat_id = user.telegram_chat_id
+        if user_chat_id:
+            send_message_in_telegram(chat_id=user_chat_id, text=(
+                "📨 Ми отримали ваше домашнє завдання!\n"
+                "Очікуйте на перевірку від ментора — щойно він її завершить, я одразу вам напишу 😉"
+            ))
+        mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
+        if mentor_chat_id:
+            send_message_in_telegram(chat_id=mentor_chat_id, text=(
+                f"📬 Учень {user.get_full_name()} щойно надіслав домашнє завдання для уроку «{lecture_obj.lecture_name}».\n"
+                "Перевірте, будь ласка, його в особистому кабінеті."
+            ))
 
         return super().form_valid(form)
 

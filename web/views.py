@@ -232,6 +232,17 @@ class ChangePasswordView(generic.FormView):
         code_obj.is_activated = True
         code_obj.save()
 
+        chat_id = user.telegram_chat_id
+        if chat_id:
+            send_message_in_telegram(
+                chat_id=chat_id,
+                text=(
+                    "✅ Ваш пароль було успішно змінено!\n"
+                    "Тепер ви можете використовувати свій акаунт з новими даними.\n"
+                    "Якщо це були не ви — негайно зверніться в підтримку. 🔒"
+                )
+            )
+
         return super().form_valid(form)
 
 

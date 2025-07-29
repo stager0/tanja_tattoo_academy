@@ -232,5 +232,53 @@ def test_change_password_request_200(db, client, mocker, user, user_without_chat
     assert new_reset_code.first().code == "AAAA-AAAA-AAAA"
 
 
+@pytest.mark.django_db
+def test_change_password_view_302(db, client, user, code_reset_user_with_chat, user_without_chat, mocker):
+    url = reverse("change_password")
+    data = {
+        "code": code_reset_user_with_chat.code,
+        "password1": "qejejejj39123-=",
+        "password2": "qejejejj39123-="
+    }
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+
+    user.refresh_from_db()
+    user_password_before = user.password
+
+    response_existing_user = client.post(url, data=data)
+
+    assert code_reset_user_with_chat.is_activated == False
+    code_reset_user_with_chat.refresh_from_db()
+    assert code_reset_user_with_chat.is_activated == True
+    code_reset_user_with_chat.refresh_from_db()
+    user.refresh_from_db()
+    user_password_after = user.password
+    response_activated_code = client.post(url, data=data)
+    assert "На жаль, ваш код вже активований." in response_activated_code.content.decode()
+
+    code_reset_user_with_chat.is_activated = False
+    code_reset_user_with_chat.created_date = timezone.now() - timedelta(minutes=16)
+    code_reset_user_with_chat.save()
+    response_expired_date = client.post(url, data=data)
+    assert "На жаль, ваш код прострочений." in response_expired_date.content.decode()
+
+    code_reset_user_with_chat.created_date = timezone.now() + timedelta(minutes=15)
+    code_reset_user_with_chat.save()
+    data["code"] = "INVALD"
+    response_invalid_code = client.post(url, data=data)
+
+    assert "Введений код недійсний або пов'язаний з ним акаунт не знайдено." in html.unescape(response_invalid_code.content.decode())
+
+    data["code"] = code_reset_user_with_chat.code
+    data["password1"] = "29e7y78qw6129yqhdiwqhid"
+    response_different_passwords = client.post(url, data=data)
+    form = response_different_passwords.context["form"]
+    assert "Паролі не співпадають." in form.non_field_errors()
+
+    assert response_existing_user.status_code == 302
+    assert user_password_before != user_password_after
+    mocker_send_message_in_telegram.assert_called_once()
+
 
 

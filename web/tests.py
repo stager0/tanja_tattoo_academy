@@ -1,10 +1,8 @@
-from multiprocessing.resource_tracker import register
-
 import pytest
 from django.urls import reverse
 from django.utils import timezone
 
-from web.models import UserModel, Order, SubscribeTariff, Code
+from web.models import UserModel, Order, SubscribeTariff, Code, Chat, ResetCode
 
 
 @pytest.fixture
@@ -30,11 +28,29 @@ def user(db):
     return user
 
 @pytest.fixture
+def user_without_chat(db):
+    user = UserModel.objects.create_user(
+        first_name="Larisa",
+        last_name="Muller",
+        email="larisa@user.com"
+    )
+    user.set_password("1qaz")
+    return user
+
+@pytest.fixture
 def subscribe_tariff_base(db):
     return SubscribeTariff.objects.create(
         name="base",
         price="250",
         with_startbox=False
+    )
+
+@pytest.fixture
+def subscribe_tariff_pro(db):
+    return SubscribeTariff.objects.create(
+        name="pro",
+        price="500",
+        with_startbox=True
     )
 
 @pytest.fixture
@@ -94,16 +110,16 @@ def test_send_index_invalid_form_status_400(client):
     response = client.post(url, data=invalid_data)
     assert response.status_code == 400
 
-
 @pytest.mark.django_db
-def test_create_checkout_session_creates_order_status_303(db, client, mocker, subscribe_tariff_base):
+@pytest.mark.parametrize("action", ["base", "pro", "master"])
+def test_create_checkout_session_creates_order_status_303(db, client, mocker, subscribe_tariff_base, subscribe_tariff_pro, subscribe_tariff_master, action):
     mocker_checkout_session = mocker.patch("stripe.checkout.Session.create")
     mocker_checkout_session.return_value = mocker.MagicMock(
         id="cs_test_123",
         url="https://stripe.com/test"
     )
     data = {
-        "action": "base"
+        "action": action
     }
     orders_count_before = Order.objects.count()
     response = client.post(reverse("checkout_session"), data=data)
@@ -153,7 +169,11 @@ def test_stripe_webhook_changes_order_and_creates_new_code_also_sends_email(db, 
 
 
 @pytest.mark.django_db
-def test_register_user_with_code(db, client, code_master, user):
+def test_register_user_with_code(db, client, mocker, code_master, user, admin_user):
+    mocker_mailjet = mocker.patch("web.views.send_after_register_email")
+    mocker_mailjet.return_value.status_code = 200
+    mocker_notification = mocker.patch("web.views.send_message_in_telegram")
+    mocker_notification.return_value.status_code = 200
     data = {
         "first_name": "Dmytro",
         "last_name": "Ukrainets",
@@ -163,10 +183,12 @@ def test_register_user_with_code(db, client, code_master, user):
         "code": code_master.code,
     }
     response = client.post(reverse("register"), data=data)
+    print(response)
 
     new_user = UserModel.objects.filter(email="test@lerner.com").first()
 
     assert response.status_code == 302
+    assert response.url == reverse("login")
 
     assert new_user.first_name == "Dmytro"
     assert new_user.last_name == "Ukrainets"
@@ -177,4 +199,38 @@ def test_register_user_with_code(db, client, code_master, user):
     assert code_master.activated_date.timestamp() == pytest.approx(timezone.now().timestamp())
     assert code_master.is_activated == True
     assert code_master.start_box_coupon_is_activated == False
+
+    new_user_chat_was_created = Chat.objects.filter(user=new_user).exists()
+
+    assert new_user_chat_was_created == True
+    mocker_mailjet.assert_called_once()
+    mocker_notification.assert_called_once()
+
+
+@pytest.mark.django_db
+def test_change_password_request_200(db, client, mocker, user, user_without_chat):
+    mocker_send_password_change_email = mocker.patch("web.views.send_password_change_email")
+    mocker_send_password_change_email.return_value.status_code = 200
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+    mocker_generate_reset_password_code = mocker.patch("web.views.generate_reset_password_code")
+    mocker_generate_reset_password_code.return_value = "AAAA-AAAA-AAAA"
+
+    url = reverse("change_password_request")
+    request_correct = client.post(url, data={"email": user.email})
+    request_not_correct = client.post(url, data={"email": "falsh_email@gmail.com"})
+    request_with_user_without_chat = client.post(url, data={"email": user_without_chat.email})
+    new_reset_code = ResetCode.objects.all()
+
+    assert request_correct.status_code == 302
+    assert request_not_correct.status_code == 302
+    assert request_with_user_without_chat.status_code == 302
+    assert mocker_send_password_change_email.call_count == 2
+    assert mocker_generate_reset_password_code.call_count == 2
+    assert new_reset_code.count() == 2
+    assert new_reset_code.first().user_email == user.email
+    assert new_reset_code.first().code == "AAAA-AAAA-AAAA"
+
+
+
 

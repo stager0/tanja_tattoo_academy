@@ -17,6 +17,24 @@ def admin_user(db):
     return admin
 
 @pytest.fixture
+def admin_user_without_chat(db):
+    admin = UserModel.objects.create_superuser(
+        first_name="Bella",
+        last_name="Admin",
+        email="admin@admin.com"
+    )
+    admin.set_password("1qaz")
+    return admin
+
+@pytest.fixture
+def mentor(request, admin_user, admin_user_without_chat):
+    if request.param == "admin_user":
+        return admin_user
+    if request.param == "admin_user_without_chat":
+        return admin_user_without_chat
+    raise ValueError(f"Unknown fixture param: {request.param}")
+
+@pytest.fixture
 def user(db):
     user = UserModel.objects.create_user(
         first_name="Antonino",
@@ -279,6 +297,31 @@ def test_change_password_view_302(db, client, user, code_reset_user_with_chat, u
     assert response_existing_user.status_code == 302
     assert user_password_before != user_password_after
     mocker_send_message_in_telegram.assert_called_once()
+
+
+@pytest.mark.parametrize("mentor", ["admin_user", "admin_user_without_chat"], indirect=True)
+@pytest.mark.django_db
+def test_index_sending_form(db, mocker, client, mentor):
+    url = reverse("index")
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+
+    fake_response = client.post(url, data={"name": "fake"})
+    response = client.post(url, data={"name": "Lera", "contact_method": "Tg", "contact_details": "No Details"})
+
+    assert fake_response.status_code == 400
+    assert response.status_code == 302
+    mocker_send_message_in_telegram.assert_called_once()
+
+
+@pytest.mark.django_db
+def test_dashboard_redirect_unauthorized(client):
+    url = reverse("dashboard")
+    response = client.get(url)
+
+    assert response.status_code == 302
+    assert "accounts/login/" in response.url
+
 
 
 

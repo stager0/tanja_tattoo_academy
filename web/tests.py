@@ -485,3 +485,34 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     assert "Неправильний поточний пароль." in response_fake_current_password.content.decode()
 
 
+@pytest.mark.django_db
+def test_course(client, user, admin_user, chat, mocker, lecture_1, lecture_2):
+    url = reverse("course", kwargs={"pk": 1})
+    response = client.get(url)
+    client.force_login(user=user)
+    response_with_user = client.get(url, follow=True)
+
+    assert response.status_code == 302
+    assert "accounts/login/" in response.url
+    assert response_with_user.status_code == 200
+    assert response_with_user
+
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+
+    assert HomeWork.objects.count() == 0
+    assert HomeWorkReview.objects.count() == 0
+    response_post_valid = client.post(url, data={"text": "Test Text"})
+    homework = HomeWork.objects.first()
+    assert HomeWork.objects.count() == 1
+    assert homework.was_checked == False
+    assert homework.text == "Test Text"
+    assert HomeWorkReview.objects.count() == 0
+    assert response_post_valid.status_code == 302
+    assert "2/" in response_post_valid.url
+    assert mocker_send_message_in_telegram.call_count == 2
+
+    url = reverse("course", kwargs={"pk": 2})
+    response_post_valid_2 = client.post(url, data={"text": "test test"})
+    assert response_post_valid_2.status_code == 302
+    assert "2/" in response_post_valid_2.url

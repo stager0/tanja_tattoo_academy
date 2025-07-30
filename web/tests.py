@@ -40,9 +40,11 @@ def user(db):
         first_name="Antonino",
         last_name="Bombardino",
         telegram_chat_id="2222222222",
-        email="user@user.com"
+        email="user@user.com",
+        is_active=True
     )
-    user.set_password("1qaz")
+    user.set_password("1qsdyfweryrqwipp[p][[]]---az")
+    user.save()
     return user
 
 @pytest.fixture
@@ -52,8 +54,31 @@ def user_without_chat(db):
         last_name="Muller",
         email="larisa@user.com"
     )
-    user.set_password("1qaz")
+    user.set_password("1sgdrggqaz")
+    user.save()
     return user
+
+@pytest.fixture
+def chat(db, user):
+    return Chat.objects.create(
+        user=user
+    )
+
+@pytest.fixture
+def message_from_user(db, chat, user):
+    return Message.objects.create(
+        chat=chat,
+        text="test",
+        user=user,
+    )
+
+@pytest.fixture
+def message_from_admin(db, chat, user, admin_user):
+    return Message.objects.create(
+        chat=chat,
+        text="test_form_user",
+        user=admin_user,
+    )
 
 @pytest.fixture
 def subscribe_tariff_base(db):
@@ -100,6 +125,33 @@ def code_master(db, order_paid_master):
         order=order_paid_master,
         tariff="master"
     )
+
+@pytest.fixture
+def code_reset_user_with_chat(db, user):
+    return ResetCode.objects.create(code="111111", user_email=user.email)
+
+@pytest.fixture
+def lecture_1(db):
+    return Lecture.objects.create(
+        lecture_name="Lecture 1",
+        under_name="Under Name",
+        position_number=1,
+        video_url="https://test1.com",
+        lecture="test text for lecture 1",
+        homework="test homework 1"
+    )
+
+@pytest.fixture
+def lecture_2(db):
+    return Lecture.objects.create(
+        lecture_name="Lecture 2",
+        under_name="Under Name 2",
+        video_url="https://test2.com",
+        position_number=2,
+        lecture="test text for lecture 2",
+        homework="test homework 2"
+    )
+
 
 # -------------------------TESTS---------------------------
 
@@ -315,13 +367,48 @@ def test_index_sending_form(db, mocker, client, mentor):
 
 
 @pytest.mark.django_db
-def test_dashboard_redirect_unauthorized(client):
+def test_dashboard_redirect_unauthorized(client, user):
+    if user.is_superuser:
+        user.is_superuser = False
+        user.save()
+
     url = reverse("dashboard")
     response = client.get(url)
+    client.force_login(user)
+    response_with_user = client.get(url)
 
     assert response.status_code == 302
+    assert response_with_user.status_code == 200
     assert "accounts/login/" in response.url
 
+
+@pytest.mark.django_db
+def test_chat(admin_user, client, chat, message_from_user, message_from_admin, mocker):
+    url = reverse("chat", kwargs={"pk": chat.pk})
+
+    response_without_user = client.get(url)
+    assert response_without_user.status_code == 302
+
+    client.force_login(chat.user)
+
+    response = client.get(url)
+    assert response.status_code == 200
+    assert chat.messages.count() == 2
+
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+
+    response_post = client.post(url, data={"text": "opa opa"}, follow=True)
+    assert response_post.status_code == 200, response_post.content.decode()
+
+    chat.refresh_from_db()
+    assert chat.messages.count() == 3
+    assert "opa opa" in response_post.content.decode()
+
+    assert message_from_user.text in response_post.content.decode()
+    assert message_from_admin.text in response_post.content.decode()
+
+    mocker_send_message_in_telegram.assert_called_once()
 
 
 

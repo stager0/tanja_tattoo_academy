@@ -411,4 +411,77 @@ def test_chat(admin_user, client, chat, message_from_user, message_from_admin, m
     mocker_send_message_in_telegram.assert_called_once()
 
 
+@pytest.mark.django_db
+def test_profile_view(db, client, mocker, user, admin_user, chat):
+    url = reverse("profile")
+
+    response_without_user = client.get(url)
+
+    client.force_login(admin_user)
+    response_with_admin = client.get(url)
+
+    client.force_login(user)
+    response_with_user = client.get(url)
+
+
+    assert response_with_admin.status_code == 302
+    assert response_with_user.status_code == 200
+    assert response_without_user.status_code == 302
+    assert user.first_name in response_with_user.content.decode()
+    assert user.last_name in response_with_user.content.decode()
+    assert user.email in response_with_user.content.decode()
+
+    response_change_name = client.post(url, data={"first_name": "Dmytro", "action": "update_profile"}, follow=True)
+    user.refresh_from_db()
+    assert user.first_name == "Dmytro"
+    print(response_change_name.content.decode())
+    assert "Ваші дані було успішно оновлено." in response_change_name.content.decode()
+
+    response_change_last_name = client.post(url, data={"last_name": "Kozak", "action": "update_profile"}, follow=True)
+    user.refresh_from_db()
+    assert user.last_name == "Kozak"
+    assert "Ваші дані було успішно оновлено." in response_change_last_name.content.decode()
+
+    response_change_phone = client.post(url, data={"phone": "+380666681625", "action": "update_profile"}, follow=True)
+    user.refresh_from_db()
+    assert user.phone == "+380666681625"
+    assert "Ваші дані було успішно оновлено." in response_change_phone.content.decode()
+
+    password_change_data = {
+        "change_password": "1",
+        "current_password": "1qsdyfweryrqwipp[p][[]]---az",
+        "new_password1": "47263r8y3he8dyj91jd",
+        "new_password2": "47263r8y3he8dyj91jd"
+    }
+
+    response_change_password = client.post(url, data=password_change_data, follow=True)
+    user.refresh_from_db()
+    assert user.check_password("47263r8y3he8dyj91jd") == True
+    assert response_change_password.status_code == 200
+    assert "Ваш пароль було успішно змінено!" in response_change_password.content.decode()
+    assert "Ваші дані було успішно оновлено." not in response_change_password.content.decode()
+
+    password_change_data["new_password1"] = "fake_password"
+    response_passwords_are_not_equal = client.post(url, data=password_change_data, follow=True)
+    user.refresh_from_db()
+    assert user.check_password("fake_password") == False
+    assert "Паролі не співпадають." in response_passwords_are_not_equal.content.decode()
+    assert "Ваші дані було успішно оновлено." not in response_passwords_are_not_equal.content.decode()
+
+    password_change_data["current_password"] = ""
+    password_change_data["new_password1"] = "nuihaidhudwddsuu"
+    password_change_data["new_password2"] = "nuihaidhudwddsuu"
+    response_without_current_password = client.post(url, data=password_change_data, follow=True)
+    user.refresh_from_db()
+    assert user.check_password("nuihaidhudwddsuu") == False
+    assert response_without_current_password.status_code == 200
+    assert "Введіть поточний пароль, щоб встановити новий." in response_without_current_password.content.decode()
+
+    password_change_data["current_password"] = "fake_current_password"
+    response_fake_current_password = client.post(url, data=password_change_data, follow=True)
+    user.refresh_from_db()
+    assert user.check_password("nuihaidhudwddsuu") == False
+    assert response_fake_current_password.status_code == 200
+    assert "Неправильний поточний пароль." in response_fake_current_password.content.decode()
+
 

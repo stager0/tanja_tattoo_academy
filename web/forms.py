@@ -118,13 +118,26 @@ class ProfileForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        new_password = cleaned_data.get("new_password", "")
-        new_password_confirm = cleaned_data.get("confirm_new_password", "")
+        new_password1 = cleaned_data.get("new_password1")
+        new_password2 = cleaned_data.get("new_password2")
+        current_password = cleaned_data.get("current_password")
 
-        if new_password != new_password_confirm or new_password is None or new_password_confirm is None:
-            raise forms.ValidationError("Паролі не співпадають")
-        if new_password and new_password_confirm:
-            validate_password(new_password)
+        if new_password1 or new_password2 or current_password:
+            if not current_password:
+                self.add_error('current_password', "Введіть поточний пароль, щоб встановити новий.")
+            elif not self.user or not check_password(current_password, self.user.password):
+                self.add_error('current_password', "Неправильний поточний пароль.")
+
+            if not new_password1:
+                self.add_error('new_password1', "Введіть новий пароль.")
+            else:
+                if new_password1 != new_password2:
+                    self.add_error('new_password2', "Паролі не співпадають.")
+                try:
+                    validate_password(new_password1, self.user)
+                except forms.ValidationError as e:
+                    self.add_error('new_password1', e)
+
         return cleaned_data
 
 

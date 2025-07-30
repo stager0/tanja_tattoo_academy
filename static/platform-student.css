@@ -660,3 +660,50 @@
     cursor: not-allowed;
     border-color: transparent;
 }
+.load-more-container {
+    padding: 20px 0;
+    text-align: center;
+}
+.lesson-status.status-pending {
+    color: #ffc107; /* Янтарный/желтый цвет для статуса "ожидание" */
+}
+.task-header {
+    /* Эти стили нужны, чтобы выровнять текст статуса */
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Позволит переноситься на новую строку на мобильных */
+    gap: 15px;
+}
+
+.task-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.task-status.status-completed {
+    color: var(--success-color); /* Используем переменную цвета для "успеха" */
+}
+
+/* Стилі для статусів уроків у бічному меню */
+.lesson-status.status-completed { color: #28a745; }
+.lesson-status.status-pending { color: #ffc107; }
+.lesson-status.status-current { color: inherit; }
+.lesson-status.status-locked { color: #6B6B6B; }
+
+/* Стилі для статусу в заголовку завдання */
+.task-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.task-status {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.task-status.status-completed {
+    color: var(--success-color);
+}
+.task-status.status-pending {
+    color: #ffc107;
+}

@@ -83,7 +83,10 @@
 
 /* --- Mobile (max-width: 768px) --- */
 @media (max-width: 768px) {
-    .page-content { padding: 20px; }
+    /* FIX 1: Убираем отступы у основного контейнера страницы, чтобы чат мог занять всё место */
+    .page-content {
+        padding: 0;
+    }
     .page-title { font-size: 1.8rem; }
     .form-grid, .review-grid, .applications-grid, .students-grid {
         grid-template-columns: 1fr;
@@ -92,11 +95,23 @@
     .user-profile .user-info { display: none; }
     .platform-header { gap: 15px; }
     .header-right { gap: 20px; }
-    .chat-container { height: calc(100vh - var(--header-height) - 40px); }
+
+    /* FIX 2: Заставляем контейнер чата занимать всю высоту экрана под шапкой */
+    .chat-container {
+        height: calc(100vh - var(--header-height));
+        border: none;
+        border-radius: 0;
+    }
     .chat-messages { padding: 15px; }
     .message { max-width: 85%; }
     .chat-input-area { padding: 10px; }
     .chat-form { gap: 10px; }
+
+    /* FIX 3: Увеличиваем шрифт в поле ввода, чтобы предотвратить авто-зум на iOS */
+    .chat-form textarea {
+        font-size: 16px;
+    }
+
     .feedback-panel .btn-group { flex-direction: column; }
     .task-review-header { flex-direction: column; align-items: flex-start; gap: 15px; }
     .list-controls { flex-direction: column; align-items: stretch; }
@@ -124,7 +139,10 @@
 
 /* --- Small Mobile (max-width: 480px) --- */
 @media (max-width: 480px) {
-    .page-content { padding: 15px; }
+    /* Восстанавливаем отступ для всех страниц, кроме чата */
+    .page-content:not(:has(.chat-container)) {
+        padding: 15px;
+    }
     .card { padding: 20px; }
     .chat-messages { padding: 10px; }
 }

@@ -62,3 +62,67 @@ img { max-width: 100%; height: auto; display: block; }
 .input-group input, .input-group textarea { background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: var(--border-radius-small); padding: 14px; color: var(--text-light); font-family: var(--font-primary); font-size: 1rem; transition: all var(--transition-fast); }
 .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--primary-orange); box-shadow: 0 0 0 3px var(--accent-glow); }
 textarea { resize: vertical; min-height: 120px; }
+/* --- Base Pagination Component --- */
+.pagination {
+    display: flex;
+    flex-wrap: wrap; /* Позволяет кнопкам переноситься на новую строку на мобильных */
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    gap: 8px; /* Отступ между кнопками */
+    margin: 40px 0; /* Внешние отступы сверху и снизу */
+}
+
+.page-item {
+    /* Контейнер для каждой кнопки */
+}
+
+.page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
+    height: 45px;
+    padding: 0 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-small);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Состояние при наведении на активную ссылку */
+.page-item:not(.disabled) .page-link:hover {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+/* Состояние для активной (текущей) страницы */
+.page-item.active .page-link {
+    background-color: var(--primary-orange);
+    border-color: var(--primary-orange);
+    color: var(--text-light);
+    cursor: default;
+    box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+/* Состояние для неактивных кнопок "Назад"/"Вперед" */
+.page-item.disabled .page-link {
+    color: var(--text-dark);
+    background-color: var(--bg-main);
+    border-color: var(--bg-surface);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+/* --- FIX: Mobile Scroll Jitter on Platform --- */
+@media (max-width: 768px) {
+    .platform-wrapper {
+        min-height: 100svh;
+    }
+}

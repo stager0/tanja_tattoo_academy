@@ -133,6 +133,17 @@ class ChatForm(forms.ModelForm):
         model = Message
         fields = ["text", "image"]
 
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+
+        if 'image' in self.files:
+            if image.size > 4 * 1024 * 1024:  # 4 MB
+                raise forms.ValidationError("Розмір фото має бути максимум 4МБ.")
+            if image.content_type not in ["image/jpeg", "image/png", "image/webp"]:
+                raise forms.ValidationError("Фото має бути файлом у форматі JPG, PNG або WEBP.")
+
+        return image
+
 
 class IndexForm(forms.Form):
     name = forms.CharField(required=True, max_length=70)

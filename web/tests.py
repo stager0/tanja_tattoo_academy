@@ -1,19 +1,24 @@
+import html
+from datetime import timedelta
+
 import pytest
 from django.urls import reverse
 from django.utils import timezone
 
-from web.models import UserModel, Order, SubscribeTariff, Code, Chat, ResetCode
+from web.models import UserModel, Order, SubscribeTariff, Code, Chat, ResetCode, Message, Lecture, HomeWork, \
+    HomeWorkReview, StartBox
 
 
 @pytest.fixture
 def admin_user(db):
     admin = UserModel.objects.create_superuser(
-        first_name="Bella",
-        last_name="Admin",
+        first_name="Bella1",
+        last_name="Admin1",
         telegram_chat_id="1111111111",
-        email="admin@admin.com"
+        email="admin1@admin.com"
     )
-    admin.set_password("1qaz")
+    admin.set_password("1q6314hdjsaz")
+    admin.save()
     return admin
 
 @pytest.fixture
@@ -23,7 +28,8 @@ def admin_user_without_chat(db):
         last_name="Admin",
         email="admin@admin.com"
     )
-    admin.set_password("1qaz")
+    admin.set_password("1q3289w4djcz")
+    admin.save()
     return admin
 
 @pytest.fixture
@@ -278,7 +284,7 @@ def test_register_user_with_code(db, client, mocker, code_master, user, admin_us
 
 
 @pytest.mark.django_db
-def test_change_password_request_200(db, client, mocker, user, user_without_chat):
+def test_change_password_request(db, client, mocker, user, user_without_chat):
     mocker_send_password_change_email = mocker.patch("web.views.send_password_change_email")
     mocker_send_password_change_email.return_value.status_code = 200
     mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
@@ -424,7 +430,7 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     response_with_user = client.get(url)
 
 
-    assert response_with_admin.status_code == 302
+    assert response_with_admin.status_code == 200
     assert response_with_user.status_code == 200
     assert response_without_user.status_code == 302
     assert user.first_name in response_with_user.content.decode()
@@ -434,7 +440,6 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     response_change_name = client.post(url, data={"first_name": "Dmytro", "action": "update_profile"}, follow=True)
     user.refresh_from_db()
     assert user.first_name == "Dmytro"
-    print(response_change_name.content.decode())
     assert "Ваші дані було успішно оновлено." in response_change_name.content.decode()
 
     response_change_last_name = client.post(url, data={"last_name": "Kozak", "action": "update_profile"}, follow=True)
@@ -516,3 +521,43 @@ def test_course(client, user, admin_user, chat, mocker, lecture_1, lecture_2):
     response_post_valid_2 = client.post(url, data={"text": "test test"})
     assert response_post_valid_2.status_code == 302
     assert "2/" in response_post_valid_2.url
+
+
+@pytest.mark.django_db
+def test_box_application_view(client, mocker, user, code_master, admin_user):
+    url = reverse("box_application")
+    client.force_login(user)
+    user.code = code_master
+    user.save()
+
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value.status_code = 200
+
+    response = client.get(url)
+    assert StartBox.objects.count() == 0
+    data = {
+        "full_name": "Bershcka",
+        "phone": "+380506102635",
+        "address": "Test Address"
+    }
+    response_post = client.post(url, data=data)
+    assert StartBox.objects.count() == 1
+    code_master.refresh_from_db()
+    assert code_master.start_box_coupon_is_activated == True
+
+    startbox = StartBox.objects.first()
+    assert startbox.is_sent == False
+    assert startbox.full_name == "Bershcka"
+    assert startbox.phone == "+380506102635"
+    assert startbox.address == "Test Address"
+
+    second_post = client.post(url, data=data)
+    assert response_post.status_code == 302
+    assert "?success=true" in response_post.url
+    assert second_post.status_code == 302
+    assert "?success=true" not in second_post.url
+    assert StartBox.objects.count() == 1
+    assert mocker_send_message_in_telegram.call_count == 2
+    second_get = client.get(url)
+    assert second_get.status_code == 200
+    assert "Ви вже заповняли анкету. Це можливо зробити тільки 1 раз." in second_get.content.decode()

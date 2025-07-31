@@ -913,6 +913,7 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
             return queryset.filter(is_sent=False).select_related("user")
         elif self.request.GET.get("type") == "sent":
             return queryset.filter(is_sent=True).select_related("user")
+        return queryset.select_related("user")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -938,7 +939,7 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
                     box.save()
                     chat = Chat.objects.get(user=box.user)
                 except StartBox.DoesNotExist:
-                    pass
+                    raise Http404("Старт боксу не існує...")
                 else:
                     Message.objects.create(
                         chat=chat,
@@ -947,9 +948,10 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
                         is_read_admin=True,
                         from_admin=True
                     )
-                    user_chat_id = box.user.telegram_chat_id
-                    if user_chat_id:
-                        send_message_in_telegram(chat_id=user_chat_id, text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚\n Посилка вже в дорозі до тебе за вказаною адресою!")
+                    user = self.request.user
+                    if user and user.telegram_chat_id:
+                        send_message_in_telegram(chat_id=user.telegram_chat_id,
+                                                 text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚\n Посилка вже в дорозі до тебе за вказаною адресою!")
 
         return HttpResponseRedirect(reverse("admin_boxes") + "?type=active")
 

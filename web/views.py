@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, IntegerField
 from django.db.models.functions import Cast
-from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError
+from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError, JsonResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
@@ -41,6 +41,8 @@ def redirect_superuser(view_func):
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and request.user.is_superuser:
             return redirect(reverse("admin_dashboard"))
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
         return view_func(request, *args, **kwargs)
 
     return _wrapper
@@ -51,6 +53,8 @@ def redirect_user(view_func):
     def _wrapper(request, *args, **kwargs):
         if request.user.is_authenticated and not request.user.is_superuser:
             return redirect(reverse("dashboard"))
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
         return view_func(request, *args, **kwargs)
 
     return _wrapper

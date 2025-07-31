@@ -561,3 +561,30 @@ def test_box_application_view(client, mocker, user, code_master, admin_user):
     second_get = client.get(url)
     assert second_get.status_code == 200
     assert "Ви вже заповняли анкету. Це можливо зробити тільки 1 раз." in second_get.content.decode()
+    startbox.refresh_from_db()
+
+    response_get = client.get(reverse("box_application"))
+    print(response_get)
+    assert response_get.status_code == 200
+    assert "Ви вже заповняли анкету. Це можливо зробити тільки 1 раз." in response_get.content.decode()
+
+
+@pytest.mark.django_db
+def test_all_chats(user, admin_user, chat, client):
+    url = reverse("admin_all_chats")
+    response_without_user = client.get(url)
+    client.force_login(user)
+    response_user = client.get(url)
+    client.force_login(admin_user)
+    response_admin = client.get(url)
+
+    assert response_without_user.status_code == 302
+    assert "/accounts/login/" in response_without_user.url
+
+    assert response_user.status_code == 302
+    assert "/platform/dashboard/" in response_user.url
+
+    assert response_admin.status_code == 200
+    assert Chat.objects.count() == 1
+    assert Chat.objects.first().user.get_full_name() in response_admin.content.decode()
+

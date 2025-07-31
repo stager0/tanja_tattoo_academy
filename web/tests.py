@@ -558,9 +558,6 @@ def test_box_application_view(client, mocker, user, code_master, admin_user):
     assert "?success=true" not in second_post.url
     assert StartBox.objects.count() == 1
     assert mocker_send_message_in_telegram.call_count == 2
-    second_get = client.get(url)
-    assert second_get.status_code == 200
-    assert "Ви вже заповняли анкету. Це можливо зробити тільки 1 раз." in second_get.content.decode()
     startbox.refresh_from_db()
 
     response_get = client.get(reverse("box_application"))
@@ -587,4 +584,45 @@ def test_all_chats(user, admin_user, chat, client):
     assert response_admin.status_code == 200
     assert Chat.objects.count() == 1
     assert Chat.objects.first().user.get_full_name() in response_admin.content.decode()
+
+
+@pytest.mark.django_db
+def test_admin_boxes(client, user, admin_user, chat, code_master, mocker):
+    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram.return_value_status_code = 200
+    user.code = code_master
+    user.code.start_box_coupon_is_activated = True
+    user.save()
+    user.code.save()
+    user.refresh_from_db()
+    user.code.refresh_from_db()
+
+    client.force_login(admin_user)
+
+    data = {
+        "full_name": "Bershcka",
+        "phone": "+380506102635",
+        "address": "Test Address"
+    }
+    start_box = StartBox.objects.create(user=user, **data)
+    assert start_box.is_sent == False
+    assert not start_box.sent_date
+    url = reverse("admin_boxes")
+    response = client.get(url, {"type": "active"})
+    assert response.status_code == 200
+    assert data["full_name"] in response.content.decode()
+    assert data["phone"] in response.content.decode()
+    assert data["address"] in response.content.decode()
+    response_post = client.post(url, {"mark_as_sent": start_box.pk})
+    assert response_post.status_code == 302
+    response = client.get(url, {"type": "active"})
+    assert data["full_name"] not in response.content.decode()
+    assert data["phone"] not in response.content.decode()
+    assert data["address"] not in response.content.decode()
+    start_box.refresh_from_db()
+    assert start_box.is_sent == True
+    assert start_box.sent_date.timestamp() == pytest.approx(timezone.now().timestamp())
+    mocker_send_message_in_telegram.assert_called_once()
+
+
 

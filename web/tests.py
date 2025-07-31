@@ -47,7 +47,6 @@ def user(db):
         last_name="Bombardino",
         telegram_chat_id="2222222222",
         email="user@user.com",
-        is_active=True
     )
     user.set_password("1qsdyfweryrqwipp[p][[]]---az")
     user.save()
@@ -524,7 +523,7 @@ def test_course(client, user, admin_user, chat, mocker, lecture_1, lecture_2):
 
 
 @pytest.mark.django_db
-def test_box_application_view(client, mocker, user, code_master, admin_user):
+def test_box_application_view(client, mocker, user, code_master, admin_user, chat):
     url = reverse("box_application")
     client.force_login(user)
     user.code = code_master
@@ -533,7 +532,6 @@ def test_box_application_view(client, mocker, user, code_master, admin_user):
     mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
     mocker_send_message_in_telegram.return_value.status_code = 200
 
-    response = client.get(url)
     assert StartBox.objects.count() == 0
     data = {
         "full_name": "Bershcka",

@@ -49,7 +49,8 @@
             </div>
           </div>
         {% endif %}
-        {% if max_progress %}
+
+        {% if max_progress and max_progress != min_progress %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
               <strong>{{ max_progress.get_full_name }} -------> {{ max_progress.progress|default:0 }}%🏆</strong>

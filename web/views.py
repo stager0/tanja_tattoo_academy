@@ -167,13 +167,18 @@ class RegisterView(CreateView):
                 Chat.objects.create(
                     user=self.object
                 )
-                mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
-                if mentor_chat_id:
-                    send_message_in_telegram(chat_id=mentor_chat_id,
-                                             text=f"Юзер '{full_name}' тільки що зареєструвався на платформі.")
+                mentor = UserModel.objects.filter(is_superuser=True).first()
+                if mentor:
+                    mentor_chat_id = mentor.telegram_chat_id if mentor.telegram_chat_id else None
+                    if mentor_chat_id:
+                        send_message_in_telegram(chat_id=mentor_chat_id,
+                                                 text=f"Юзер '{full_name}' тільки що зареєструвався на платформі.")
                 return super().form_valid(form)
             except Exception as e:
-                return redirect(reverse("register"))
+                print(e)
+                response = HttpResponseRedirect(reverse("register"))
+                response.status_code = 400
+                return response
 
 
 class ChangePasswordRequestView(generic.FormView):

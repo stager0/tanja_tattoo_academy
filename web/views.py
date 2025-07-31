@@ -96,7 +96,9 @@ class CreateCheckoutSessionView(View):
                 cancel_url=request.build_absolute_uri(reverse("cancel_pay")),
                 metadata={"order_id": order.pk, "tariff": tariff}
             )
-            return redirect(checkout_session.url, code=303)
+            response = HttpResponseRedirect(checkout_session.url)
+            response.status_code = 303
+            return response
         except Exception as e:
             print(e)
             return redirect(reverse("error_pay"))

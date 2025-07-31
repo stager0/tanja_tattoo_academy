@@ -455,7 +455,6 @@ def get_part_of_messages(request, pk):
         return HttpResponseServerError
 
 
-@method_decorator(redirect_superuser, name="dispatch")
 class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "profile.html"
     model = UserModel
@@ -527,7 +526,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         user = self.request.user
         context = super().get_context_data(**kwargs)
         chat = get_object_or_404(Chat, user=user)
-        lectures = Lecture.objects.order_by("position_number")
+        lectures = Lecture.objects.order_by("position_number").filter(position_number__gte=1)
         new_sms = count_new_messages(user_chat_obj=chat, user=user)
 
         homework_review_count = HomeWorkReview.objects.filter(
@@ -561,10 +560,14 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         position_number = self.kwargs.get("pk")
         if position_number:
             try:
-                lecture_data = lectures.get(position_number=position_number)
+                lecture_data = lectures.filter(position_number=position_number).first()
+                if not lecture_data or not lecture_data.position_number:
+                    lecture_data = Lecture.objects.order_by("position_number").filter(position_number__gte=1).first()
                 context["lecture"] = lecture_data
             except Lecture.DoesNotExist:
                 raise Http404("Такої лекції немає")
+            except Exception or not lecture_data:
+                raise Http404("Лекції не знайдені.")
             else:
                 homework = HomeWork.objects.filter(user=user, lecture__position_number=position_number).first()
                 if homework and homework.lecture.position_number in homework_done_posit_nums:
@@ -583,9 +586,9 @@ class CourseView(LoginRequiredMixin, generic.FormView):
 
         if not page_from_request:
             try:
-                lecture = Lecture.objects.get(position_number=current_lecture_pk)
+                lecture = Lecture.objects.filter(position_number=current_lecture_pk).first()
             except Lecture.DoesNotExist:
-                raise Http404("Такої лекції немає.")
+                raise Http404("Лекції не знайдені.")
 
             position = Lecture.objects.filter(position_number__lt=lecture.position_number).count()
             correct_page = position // per_page + 1
@@ -615,15 +618,15 @@ class CourseView(LoginRequiredMixin, generic.FormView):
             image=image if image else None,
             text=text if text else None
         )
-        user_chat_id = user.telegram_chat_id
-        if user_chat_id:
+        if user and user.telegram_chat_id:
+            user_chat_id = user.telegram_chat_id
             send_message_in_telegram(chat_id=user_chat_id, text=(
                 "📨 Ми отримали ваше домашнє завдання!\n"
                 "Очікуйте на перевірку від ментора — щойно він її завершить, я одразу вам напишу 😉"
             ))
-        mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
-        if mentor_chat_id:
-            send_message_in_telegram(chat_id=mentor_chat_id, text=(
+        mentor = UserModel.objects.filter(is_superuser=True).first()
+        if mentor and mentor.telegram_chat_id:
+            send_message_in_telegram(chat_id=mentor.telegram_chat_id, text=(
                 f"📬 Учень {user.get_full_name()} щойно надіслав домашнє завдання для уроку «{lecture_obj.lecture_name}».\n"
                 "Перевірте, будь ласка, його в особистому кабінеті."
             ))
@@ -636,6 +639,13 @@ class CourseView(LoginRequiredMixin, generic.FormView):
             next_lecture = Lecture.objects.filter(position_number__gt=pk).order_by("position_number").first()
             if next_lecture:
                 return reverse("course", kwargs={"pk": next_lecture.position_number})
+            else:
+                next_lecture = Lecture.objects.filter(position_number=pk).first()
+                if next_lecture:
+                    return reverse("course", kwargs={"pk": next_lecture.position_number})
+                else:
+                    next_lecture = Lecture.objects.order_by("-position_number").first()
+                    return reverse("course", kwargs={"pk": next_lecture.position_number})
         except Exception as e:
             print(e)
             return reverse("course", kwargs={"pk": 1})

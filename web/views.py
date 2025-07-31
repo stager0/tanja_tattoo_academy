@@ -398,15 +398,15 @@ class ChatView(LoginRequiredMixin, generic.FormView):
         if self.request.user.is_superuser:
             message.is_read_admin = True
             message.from_admin = True
-            user_chat_id = message.chat.user.telegram_chat_id
-            if user_chat_id:
-                send_message_in_telegram(chat_id=user_chat_id,
+            user_chat = message.chat.user
+            if user_chat and user_chat.telegram_chat_id:
+                send_message_in_telegram(chat_id=user_chat.telegram_chat_id,
                                          text="🧑‍🏫 Ментор щойно надіслав вам повідомлення. Загляньте в особистий кабінет 😊")
         else:
             message.is_read_user = True
-            mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
-            if mentor_chat_id:
-                send_message_in_telegram(chat_id=mentor_chat_id, text=(
+            mentor = UserModel.objects.filter(is_superuser=True).first()
+            if mentor and mentor.telegram_chat_id:
+                send_message_in_telegram(chat_id=mentor.telegram_chat_id, text=(
                     f"🧑‍🎓 Учень {message.user.get_full_name()} надіслав повідомлення!\n\n"
                     f"📝 \"{message.text}\"\n\n"
                     f"🔗 Відкрийте чат на платформі, щоб відповісти."

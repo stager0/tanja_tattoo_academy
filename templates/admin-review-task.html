@@ -6,236 +6,267 @@
 {% block header_title %}Перевірка роботи{% endblock %}
 
 {% block styles %}
-{{ block.super }}
-<style>
-    .task-review-header {
-        padding: 20px;
-        background-color: var(--bg-surface);
-        border-radius: var(--border-radius-main);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        gap: 20px;
-        border: 1px solid var(--border-color);
-    }
-    .back-link {
-        font-weight: 600;
-        transition: color 0.3s ease;
-    }
-    .back-link:hover {
-        color: var(--primary-orange);
-    }
-    .submission-meta {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        flex-grow: 1;
-    }
-    .submission-meta img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 2px solid var(--primary-orange);
-    }
-    .submission-meta h4, .submission-meta p {
-        margin: 0;
-    }
-    .submission-meta p {
-        font-size: 0.9rem;
-        color: var(--text-medium);
-    }
-    .submission-date-header {
-        font-size: 0.9rem;
-        color: var(--text-medium);
-        white-space: nowrap;
-    }
+  {{ block.super }}
+  <style>
+      .task-review-header {
+          padding: 20px;
+          background-color: var(--bg-surface);
+          border-radius: var(--border-radius-main);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          gap: 20px;
+          border: 1px solid var(--border-color);
+      }
 
-    .task-review-workspace {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-    .submission-image-viewer img {
-        border-radius: var(--border-radius-small);
-        width: 100%;
-    }
-    .student-comment-block {
-        background: var(--bg-dark);
-        border: 1px solid var(--border-color);
-        border-left: 4px solid var(--primary-orange);
-        padding: 20px;
-        margin-top: 25px;
-        border-radius: var(--border-radius-small);
-    }
-    .student-comment-block h5 {
-        margin: 0 0 10px 0;
-        color: var(--text-medium);
-        font-size: 0.9rem;
-    }
-    .student-comment-block p {
-        margin: 0;
-        font-size: 1rem;
-        font-style: italic;
-    }
+      .back-link {
+          font-weight: 600;
+          transition: color 0.3s ease;
+      }
 
-    .feedback-panel {
-        position: static;
-    }
-    .quick-replies {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 20px 0;
-    }
-    .btn-quick-reply {
-        background: var(--bg-surface-light);
-        border: 1px solid var(--border-color);
-        color: var(--text-medium);
-        padding: 8px 15px;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .btn-quick-reply:hover {
-        background: var(--primary-orange);
-        color: var(--text-light);
-        border-color: var(--primary-orange);
-    }
-    .btn-group {
-        border-top: 1px solid var(--border-color);
-        padding-top: 20px;
-    }
+      .back-link:hover {
+          color: var(--primary-orange);
+      }
 
-    /* --- Стили для больших экранов --- */
-    @media (min-width: 992px) {
-        .task-review-workspace {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            align-items: flex-start;
-        }
+      .submission-meta {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          flex-grow: 1;
+      }
 
-        .feedback-panel {
-            position: sticky;
-            top: 110px;
-        }
-    }
+      .submission-meta img {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          border: 2px solid var(--primary-orange);
+      }
 
-    /* --- НОВЫЕ СТИЛИ ДЛЯ РАЗДЕЛИТЕЛЕЙ НА МОБИЛЬНЫХ --- */
-    @media (max-width: 768px) {
-        .task-review-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0; /* Убираем gap, чтобы разделители были четкими */
-            padding-top: 15px;
-            padding-bottom: 15px;
-        }
-        .task-review-header > .back-link,
-        .task-review-header > .submission-date-header {
-            padding: 15px 0;
-            width: 100%;
-        }
-        .task-review-header > .submission-meta {
-            padding: 15px 0;
-            width: 100%;
-            /* Добавляем линии сверху и снизу */
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-    }
-</style>
+      .submission-meta h4, .submission-meta p {
+          margin: 0;
+      }
+
+      .submission-meta p {
+          font-size: 0.9rem;
+          color: var(--text-medium);
+      }
+
+      .submission-date-header {
+          font-size: 0.9rem;
+          color: var(--text-medium);
+          white-space: nowrap;
+      }
+
+      .task-review-workspace {
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+      }
+
+      .submission-image-viewer img {
+          border-radius: var(--border-radius-small);
+          width: 100%;
+      }
+
+      .student-comment-block {
+          background: var(--bg-dark);
+          border: 1px solid var(--border-color);
+          border-left: 4px solid var(--primary-orange);
+          padding: 20px;
+          margin-top: 25px;
+          border-radius: var(--border-radius-small);
+      }
+
+      .student-comment-block h5 {
+          margin: 0 0 10px 0;
+          color: var(--text-medium);
+          font-size: 0.9rem;
+      }
+
+      .student-comment-block p {
+          margin: 0;
+          font-size: 1rem;
+          font-style: italic;
+      }
+
+      .feedback-panel {
+          position: static;
+      }
+
+      .quick-replies {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin: 20px 0;
+      }
+
+      .btn-quick-reply {
+          background: var(--bg-surface-light);
+          border: 1px solid var(--border-color);
+          color: var(--text-medium);
+          padding: 8px 15px;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
+
+      .btn-quick-reply:hover {
+          background: var(--primary-orange);
+          color: var(--text-light);
+          border-color: var(--primary-orange);
+      }
+
+      .btn-group {
+          border-top: 1px solid var(--border-color);
+          padding-top: 20px;
+      }
+
+      /* --- Стили для больших экранов --- */
+      @media (min-width: 992px) {
+          .task-review-workspace {
+              display: grid;
+              grid-template-columns: 2fr 1fr;
+              align-items: flex-start;
+          }
+
+          .feedback-panel {
+              position: sticky;
+              top: 110px;
+          }
+      }
+
+      /* --- НОВЫЕ СТИЛИ ДЛЯ РАЗДЕЛИТЕЛЕЙ НА МОБИЛЬНЫХ --- */
+      @media (max-width: 768px) {
+          .task-review-header {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 0; /* Убираем gap, чтобы разделители были четкими */
+              padding-top: 15px;
+              padding-bottom: 15px;
+          }
+
+          .task-review-header > .back-link,
+          .task-review-header > .submission-date-header {
+              padding: 15px 0;
+              width: 100%;
+          }
+
+          .task-review-header > .submission-meta {
+              padding: 15px 0;
+              width: 100%;
+              /* Добавляем линии сверху и снизу */
+              border-top: 1px solid var(--border-color);
+              border-bottom: 1px solid var(--border-color);
+          }
+      }
+  </style>
 {% endblock %}
 
 
 {% block content %}
-<div class="task-review-header">
+  <div class="task-review-header">
     <a href="{% url 'admin_review_list' %}" class="back-link"><i class="fas fa-arrow-left"></i> До списку</a>
     <div class="submission-meta">
-        <img src="{{ homework.user.avatar.url }}" alt="Avatar">
-        <div>
-            <h4>{{ homework.user.get_full_name }}</h4>
-            <p>Урок {{ homework.lecture.position_number }}: {{ homework.lecture.lecture_name }}</p>
-        </div>
+      <img src="{{ homework.user.avatar.url }}" alt="Avatar">
+      <div>
+        <h4>{{ homework.user.get_full_name }}</h4>
+        <p>Урок {{ homework.lecture.position_number }}: {{ homework.lecture.lecture_name }}</p>
+      </div>
     </div>
-    <span class="submission-date-header">Відправлено: {{ homework.date }}</span>
-</div>
+    <span class="submission-date-header">Відправлено: {{ homework.date|date:"y:m:d H:i" }}</span>
+  </div>
 
-<div class="task-review-workspace">
+  <div class="task-review-workspace">
     <div class="submission-panel">
-        <div class="card">
-            <div class="submission-image-viewer">
-              {% if homework.image %}
-                <img src="{{ homework.image.url }}" alt="Homework Image">
-              {% else %}
-                <img src="{% static 'system_files/not_found.jpeg' %}" alt="Homework Image">
-              {% endif %}
-            </div>
-            <div class="student-comment-block">
-                <h5>Коментар учня:</h5>
-                <p>"{{ homework.text }}"</p>
-            </div>
+      <div class="card">
+        <div class="submission-image-viewer">
+          {% if homework.image %}
+            <img src="{{ homework.image.url }}" alt="Homework Image">
+          {% else %}
+            <img src="{% static 'system_files/not_found.jpeg' %}" alt="Homework Image">
+          {% endif %}
         </div>
+        <div class="student-comment-block">
+          <h5>Коментар учня:</h5>
+          <p>"{{ homework.text }}"</p>
+        </div>
+      </div>
     </div>
 
     <div class="feedback-panel">
-        <div class="card">
-            <form method="post" enctype="multipart/form-data">
-              {% csrf_token %}
-                <h4><i class="fas fa-pen-alt"></i> Ваш відгук</h4>
-                <div class="input-group">
-                    <textarea id="feedback-text" rows="10" placeholder="Напишіть детальний відгук..." name="review_text"></textarea>
-                </div>
+      <div class="card">
+        {% if messages %}
+          <div class="messages-container">
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                <h3><strong class="error-text" style="color: red">{{ message }}</strong></h3>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <h4><i class="fas fa-pen-alt"></i> Ваш відгук</h4>
+          <div class="input-group">
+            <textarea id="feedback-text" rows="10" placeholder="Напишіть детальний відгук..."
+                      name="review_text"></textarea>
+          </div>
 
-                <h5>Швидкі відповіді:</h5>
-                <div class="quick-replies">
-                    <button type="button" class="btn-quick-reply">Чудова робота!</button>
-                    <button type="button" class="btn-quick-reply">Зверни увагу на...</button>
-                    <button type="button" class="btn-quick-reply">Перероби, будь ласка</button>
-                </div>
+          <h5>Швидкі відповіді:</h5>
+          <div class="quick-replies">
+            <button type="button" class="btn-quick-reply">Чудова робота!</button>
+            <button type="button" class="btn-quick-reply">Зверни увагу на...</button>
+            <button type="button" class="btn-quick-reply">Перероби, будь ласка</button>
+          </div>
 
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-danger" name="action" value="reject"><i class="fas fa-times"></i> Відхилити</button>
-                    <button type="submit" class="btn btn-success" name="action" value="approve"><i class="fas fa-check"></i> Зарахувати</button>
-                </div>
-            </form>
-        </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-danger" name="action" value="reject"><i class="fas fa-times"></i>
+              Відхилити
+            </button>
+            <button type="submit" class="btn btn-success" name="action" value="approve"><i class="fas fa-check"></i>
+              Зарахувати
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
+  </div>
 {% endblock %}
 
 
 {% block scripts %}
-{{ block.super }}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Находим все кнопки быстрых ответов
-        const quickReplyButtons = document.querySelectorAll('.btn-quick-reply');
+  {{ block.super }}
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          // Находим все кнопки быстрых ответов
+          const quickReplyButtons = document.querySelectorAll('.btn-quick-reply');
 
-        // Находим текстовое поле для отзыва
-        const feedbackTextarea = document.getElementById('feedback-text');
+          // Находим текстовое поле для отзыва
+          const feedbackTextarea = document.getElementById('feedback-text');
 
-        // Для каждой кнопки добавляем обработчик события "клик"
-        quickReplyButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Получаем текст с нажатой кнопки
-                const textToInsert = button.textContent;
+          // Для каждой кнопки добавляем обработчик события "клик"
+          quickReplyButtons.forEach(button => {
+              button.addEventListener('click', function () {
+                  // Получаем текст с нажатой кнопки
+                  const textToInsert = button.textContent;
 
-                // Получаем текущий текст в поле
-                const currentText = feedbackTextarea.value;
+                  // Получаем текущий текст в поле
+                  const currentText = feedbackTextarea.value;
 
-                // Если поле пустое, просто вставляем текст
-                if (currentText.trim() === '') {
-                    feedbackTextarea.value = textToInsert;
-                } else {
-                    // Если в поле уже есть текст, добавляем два переноса строки и новый текст
-                    feedbackTextarea.value = currentText + '\\n\\n' + textToInsert;
-                }
+                  // Если поле пустое, просто вставляем текст
+                  if (currentText.trim() === '') {
+                      feedbackTextarea.value = textToInsert;
+                  } else {
+                      // Если в поле уже есть текст, добавляем два переноса строки и новый текст
+                      feedbackTextarea.value = currentText + '\\n\\n' + textToInsert;
+                  }
 
-                // Ставим фокус обратно в текстовое поле, чтобы можно было продолжить писать
-                feedbackTextarea.focus();
-            });
-        });
-    });
-</script>
+                  // Ставим фокус обратно в текстовое поле, чтобы можно было продолжить писать
+                  feedbackTextarea.focus();
+              });
+          });
+      });
+  </script>
 {% endblock %}

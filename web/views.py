@@ -188,14 +188,19 @@ class ChangePasswordRequestView(generic.FormView):
 
     def form_valid(self, form):
         if form.cleaned_data["email"] is not None and form.cleaned_data["full_name"] is not None:
-            email = form.cleaned_data["email"]
-            full_name = form.cleaned_data["full_name"]
+            email = form.cleaned_data.get("email")
+            full_name = form.cleaned_data.get("full_name")
             code = generate_reset_password_code()
             ResetCode.objects.create(
                 user_email=email,
                 code=code,
             )
-            chat_id = UserModel.objects.filter(email=email).first().telegram_chat_id
+            user = UserModel.objects.filter(email=email).first()
+            chat_id = None
+
+            if user and user.telegram_chat_id:
+                chat_id = user.telegram_chat_id
+
             if chat_id:
                 send_message_in_telegram(
                     chat_id=chat_id,

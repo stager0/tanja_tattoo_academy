@@ -280,10 +280,10 @@ class IndexView(generic.FormView):
         contact_details = form.cleaned_data.get("contact_details", "")
 
         if name and contact_method and contact_details:
-            mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
-            if mentor_chat_id:
+            mentor = UserModel.objects.filter(is_superuser=True).first()
+            if mentor and mentor.telegram_chat_id:
                 send_message_in_telegram(
-                    chat_id=mentor_chat_id,
+                    chat_id=mentor.telegram_chat_id,
                     text=(
                         "📩 Отримано нову форму зворотного зв'язку!\n\n"
                         f"👤 Ім'я: {name}\n"
@@ -292,6 +292,9 @@ class IndexView(generic.FormView):
                     )
                 )
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        return JsonResponse({"errors": form.errors}, status=400)
 
 
 @method_decorator(redirect_superuser, name="dispatch")

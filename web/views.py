@@ -797,7 +797,7 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
 
             chat = homework.user.chats
             if chat:
-                user_chat_id = homework.user.telegram_chat_id
+                user = homework.user
                 if action == "approve":
                     Message.objects.create(
                         chat=chat,
@@ -806,8 +806,8 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         is_read_admin=True,
                         from_admin=True
                     )
-                    if user_chat_id:
-                        send_message_in_telegram(chat_id=user_chat_id,
+                    if user and user.telegram_chat_id:
+                        send_message_in_telegram(chat_id=user.telegram_chat_id,
                                                  text="✅ Ваше завдання було прийняте ментором! 🎉\n Для перегляду деталей перейдіть на платформу.🧡")
                 else:
                     Message.objects.create(
@@ -817,8 +817,8 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         is_read_admin=True,
                         from_admin=True
                     )
-                    if user_chat_id:
-                        send_message_in_telegram(chat_id=user_chat_id,
+                    if user and user.telegram_chat_id:
+                        send_message_in_telegram(chat_id=user.telegram_chat_id,
                                                  text="❌ На жаль, завдання не було прийняте ментором. 😔\n Для перегляду деталей перейдіть на платформу.🧡")
 
             return super().form_valid(form)

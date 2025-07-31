@@ -564,8 +564,6 @@ class CourseView(LoginRequiredMixin, generic.FormView):
                 if not lecture_data or not lecture_data.position_number:
                     lecture_data = Lecture.objects.order_by("position_number").filter(position_number__gte=1).first()
                 context["lecture"] = lecture_data
-            except Lecture.DoesNotExist:
-                raise Http404("Такої лекції немає")
             except Exception or not lecture_data:
                 raise Http404("Лекції не знайдені.")
             else:
@@ -664,7 +662,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
 
         context["tariff"] = user.code.tariff
         context["user"] = user
-        context["start_box"] = StartBox.objects.get(user=user) if user.code.start_box_coupon_is_activated else None
+        context["start_box"] = StartBox.objects.filter(user=user).first() if user.code.start_box_coupon_is_activated else None
 
         if StartBox.objects.filter(user=user) and user.code.tariff != "base":
             context[
@@ -676,7 +674,10 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
                 "sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
 
         if not user.is_superuser:
-            chat = get_object_or_404(Chat, user=user)
+            try:
+                chat = get_object_or_404(Chat, user=user)
+            except Chat.DoesNotExist:
+                chat = Chat.objects.create(user=user)
             new_sms = count_new_messages(user_chat_obj=chat, user=user)
             context["new_sms"] = new_sms
             context["chat_pk"] = chat.pk
@@ -706,20 +707,19 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
                     code.start_box_coupon_is_activated = True
                     code.save()
 
-                    user_chat_id = user.telegram_chat_id
-                    if user_chat_id:
+                    if user and user.telegram_chat_id:
                         send_message_in_telegram(
-                            chat_id=user_chat_id,
+                            chat_id=user.telegram_chat_id,
                             text=(
                                 "📨 Ми отримали вашу заявку на тату-бокс!\n"
                                 "Як тільки відправлення буде здійснено — я повідомлю вас у цей чат. Дякуємо за довіру! 🧡"
                             )
                         )
 
-                    mentor_chat_id = UserModel.objects.filter(is_superuser=True).first().telegram_chat_id
-                    if mentor_chat_id:
+                    mentor = UserModel.objects.filter(is_superuser=True).first()
+                    if mentor and mentor.telegram_chat_id:
                         send_message_in_telegram(
-                            chat_id=mentor_chat_id,
+                            chat_id=mentor.telegram_chat_id,
                             text=(
                                 f"📬 Учень {user.get_full_name()} щойно надіслав анкету на тату-бокс.\n"
                                 "Перевірте, будь ласка, нову заявку у кабінеті."

@@ -474,6 +474,8 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context["user"] = user
+        context["base_template"] = "base.html" if not user.is_superuser else "base-admin.html"
+        context["css"] = "platform.css"
 
         if not user.is_superuser:
             chat = Chat.objects.filter(user=user).first()
@@ -481,6 +483,13 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
                 new_sms = count_new_messages(user_chat_obj=chat, user=user)
                 context["new_sms"] = new_sms
                 context["chat_pk"] = chat.pk
+
+        if user.is_superuser:
+            count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+            count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+
+            context["count_of_new_messages"] = count_of_new_messages
+            context["count_of_waiting"] = count_of_waiting
 
         return context
 
@@ -490,9 +499,11 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         if is_password_change:
             new_password = form.cleaned_data.get('new_password1')
             if new_password:
-                form.instance.set_password(new_password)
+                user = self.request.user
+                user.set_password(new_password)
+                user.save()
                 messages.success(self.request, "Ваш пароль було успішно змінено!")
-                update_session_auth_hash(self.request, form.instance)
+                update_session_auth_hash(self.request, user)
         else:
             if 'avatar' in form.changed_data:
                 old_user_instance = self.get_object()

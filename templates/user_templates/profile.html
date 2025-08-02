@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends base_template %}
 {% load static %}
 
 {% block title %}Налаштування профілю - {{ block.super }}{% endblock %}
@@ -51,11 +51,19 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {# Общие ошибки формы (например, "Пароли не совпадают") #}
     {% if form.non_field_errors %}
       <div class="non-field-errors" style="margin-bottom: 20px;">
         {% for error in form.non_field_errors %}
           <p class="error-text">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">
+            {{ message }}
+          </div>
         {% endfor %}
       </div>
     {% endif %}
@@ -107,7 +115,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" style="margin-top: 30px;">
       <h3>Зміна паролю</h3>
       <div class="form-body-separator">
@@ -131,7 +138,7 @@
               <p class="error-text">{{ form.new_password2.errors.as_text }}</p>{% endif %}
           </div>
         </div>
-        <button type="submit" name="change_password" class="btn btn-secondary" style="margin-top: 10px;">Оновити
+        <button type="submit" value="1" name="change_password" class="btn btn-secondary" style="margin-top: 10px;">Оновити
           пароль
         </button>
       </div>
@@ -143,7 +150,6 @@
   {{ block.super }}
   <script>
       document.addEventListener('DOMContentLoaded', function () {
-          // Убедимся, что ID в JS совпадает с ID в <label for="...">
           const avatarInput = document.getElementById('{{ form.avatar.id_for_label }}');
           const avatarPreview = document.getElementById('avatar-preview');
 

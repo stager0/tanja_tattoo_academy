@@ -660,13 +660,16 @@
     cursor: not-allowed;
     border-color: transparent;
 }
+
 .load-more-container {
     padding: 20px 0;
     text-align: center;
 }
+
 .lesson-status.status-pending {
     color: #ffc107; /* Янтарный/желтый цвет для статуса "ожидание" */
 }
+
 .task-header {
     /* Эти стили нужны, чтобы выровнять текст статуса */
     display: flex;
@@ -685,10 +688,21 @@
 }
 
 /* Стилі для статусів уроків у бічному меню */
-.lesson-status.status-completed { color: #28a745; }
-.lesson-status.status-pending { color: #ffc107; }
-.lesson-status.status-current { color: inherit; }
-.lesson-status.status-locked { color: #6B6B6B; }
+.lesson-status.status-completed {
+    color: #28a745;
+}
+
+.lesson-status.status-pending {
+    color: #ffc107;
+}
+
+.lesson-status.status-current {
+    color: inherit;
+}
+
+.lesson-status.status-locked {
+    color: #6B6B6B;
+}
 
 /* Стилі для статусу в заголовку завдання */
 .task-header {
@@ -697,13 +711,66 @@
     flex-wrap: wrap;
     gap: 15px;
 }
+
 .task-status {
     font-size: 0.9rem;
     font-weight: 500;
 }
+
 .task-status.status-completed {
     color: var(--success-color);
 }
+
 .task-status.status-pending {
     color: #ffc107;
+}
+
+.telegram-notification {
+    background-color: #27272a;
+    border: 1px solid #3f3f46;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.telegram-notification__icon {
+    font-size: 2.5rem;
+    color: #2AABEE; /* Telegram blue */
+}
+
+.telegram-notification__content h4 {
+    margin: 0 0 5px 0;
+    color: #f4f4f5;
+    font-size: 1.1rem;
+}
+
+.telegram-notification__content p {
+    margin: 0;
+    color: #a1a1aa;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.telegram-notification__action .btn {
+    margin-top: 10px;
+}
+
+.telegram-notification__close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #71717a;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.telegram-notification__close:hover {
+    color: #f4f4f5;
 }

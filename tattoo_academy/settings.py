@@ -14,11 +14,12 @@ from os import getenv
 from pathlib import Path
 
 from django.conf.global_settings import AUTH_USER_MODEL
+from django.conf.urls import handler404
+from django.contrib import staticfiles
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -32,12 +33,11 @@ HOST = os.getenv("HOST")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [HOST, "127.0.0.1"]
+ALLOWED_HOSTS = [HOST, "127.0.0.1", "*"]
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{HOST}",
 ]
-
 
 # Application definition
 
@@ -54,13 +54,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'web.middleware.ExceptionHandleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'tattoo_academy.urls'
@@ -140,6 +142,8 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
@@ -147,6 +151,9 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
+
+HANDLER404 = "web.views.custom_404_view"
+HANDLER500 = "web.views.custom_500_view"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

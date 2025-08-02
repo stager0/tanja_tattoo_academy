@@ -388,13 +388,13 @@ def test_dashboard_redirect_unauthorized(client, user):
 
 
 @pytest.mark.django_db
-def test_chat(admin_user, client, chat, message_from_user, message_from_admin, mocker):
-    url = reverse("chat", kwargs={"pk": chat.pk})
+def test_chat(admin_user, client, user, chat, message_from_user, message_from_admin, mocker):
+    url = reverse("chat", kwargs={"pk":chat.pk})
 
     response_without_user = client.get(url)
     assert response_without_user.status_code == 302
 
-    client.force_login(chat.user)
+    client.force_login(user)
 
     response = client.get(url)
     assert response.status_code == 200

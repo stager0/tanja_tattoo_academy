@@ -15,7 +15,7 @@ from django.db import transaction
 from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, IntegerField
 from django.db.models.functions import Cast
 from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError, JsonResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
@@ -94,7 +94,8 @@ class CreateCheckoutSessionView(View):
                 mode='payment',
                 success_url=request.build_absolute_uri(reverse("success_pay")),
                 cancel_url=request.build_absolute_uri(reverse("cancel_pay")),
-                metadata={"order_id": order.pk, "tariff": tariff}
+                metadata={"order_id": order.pk, "tariff": tariff},
+                customer_creation = 'always'
             )
             response = HttpResponseRedirect(checkout_session.url)
             response.status_code = 303
@@ -120,6 +121,8 @@ class Webhook(View):
             try:
                 order = Order.objects.get(pk=event["data"]["object"]["metadata"]["order_id"])
                 email = event["data"]["object"]["customer_details"]["email"]
+                if not email:
+                    return HttpResponse(status=400)
                 session_id = event["data"]["object"]["id"]
                 order.user_email = email
                 order.session_id = session_id
@@ -262,7 +265,7 @@ class ChangePasswordView(generic.FormView):
 
 
 class IndexView(generic.FormView):
-    template_name = "index.html"
+    template_name = "user_templates/index.html"
     form_class = IndexForm
     success_url = reverse_lazy("answer")
 
@@ -299,7 +302,7 @@ class IndexView(generic.FormView):
 
 @method_decorator(redirect_superuser, name="dispatch")
 class DashboardView(LoginRequiredMixin, generic.TemplateView):
-    template_name = "dashboard.html"
+    template_name = "user_templates/dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -326,6 +329,7 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context["new_sms"] = new_sms
         context["lesson"] = next_lesson
         context["percent_done"] = percent_done
+        context["is_telegram_connected"] = False if not user.telegram_chat_id else True
 
         return context
 
@@ -338,7 +342,7 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
 
 class ChatView(LoginRequiredMixin, generic.FormView):
     form_class = ChatForm
-    template_name = "chat.html"
+    template_name = "user_templates/../templates/chat.html"
 
     def get_chat(self):
         user = self.request.user
@@ -456,7 +460,7 @@ def get_part_of_messages(request, pk):
 
 
 class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
-    template_name = "profile.html"
+    template_name = "user_templates/profile.html"
     model = UserModel
     form_class = ProfileForm
     success_url = reverse_lazy("profile")
@@ -518,7 +522,7 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @method_decorator(redirect_superuser, name="dispatch")
 class CourseView(LoginRequiredMixin, generic.FormView):
-    template_name = "course.html"
+    template_name = "user_templates/course.html"
     model = Lecture
     form_class = LectureHomeworkUserForm
 
@@ -651,7 +655,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
 
 @method_decorator(redirect_superuser, name="dispatch")
 class BoxApplicationView(LoginRequiredMixin, generic.FormView):
-    template_name = "box-application.html"
+    template_name = "user_templates/box-application.html"
     model = StartBox
     form_class = BoxApplicationForm
     success_url = reverse_lazy("box_application")
@@ -733,7 +737,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminReviewListView(LoginRequiredMixin, generic.ListView):
-    template_name = "admin-review-list.html"
+    template_name = "admin_templates/admin-review-list.html"
     model = HomeWork
     context_object_name = "homeworks"
 
@@ -771,7 +775,7 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
-    template_name = "admin-review-task.html"
+    template_name = "admin_templates/admin-review-task.html"
     model = HomeWork
     form_class = ReviewTaskForm
 
@@ -847,7 +851,7 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
-    template_name = "admin-dashboard.html"
+    template_name = "admin_templates/admin-dashboard.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -893,7 +897,7 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminStudentsView(LoginRequiredMixin, generic.ListView):
-    template_name = "admin-students.html"
+    template_name = "admin_templates/admin-students.html"
     model = UserModel
     context_object_name = "users"
     paginate_by = 5
@@ -940,7 +944,7 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminBoxesView(LoginRequiredMixin, generic.ListView):
-    template_name = "admin-boxes.html"
+    template_name = "admin_templates/admin-boxes.html"
     model = StartBox
     context_object_name = "boxes"
     paginate_by = 16
@@ -997,7 +1001,7 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminLectureList(LoginRequiredMixin, generic.ListView):
-    template_name = "admin-lecture-list.html"
+    template_name = "admin_templates/admin-lecture-list.html"
     model = Lecture
     context_object_name = "lectures"
     queryset = Lecture.objects.order_by("position_number")
@@ -1021,7 +1025,7 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
-    template_name = "admin-lecture-create.html"
+    template_name = "admin_templates/admin-lecture-create.html"
     model = Lecture
     form_class = LectureEditForm
 
@@ -1049,7 +1053,7 @@ class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
-    template_name = "admin-lecture-edit.html"
+    template_name = "admin_templates/admin-lecture-edit.html"
     model = Lecture
     context_object_name = "lecture"
     form_class = LectureEditForm
@@ -1070,7 +1074,7 @@ class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
 @method_decorator(redirect_user, name="dispatch")
 class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
     model = Lecture
-    template_name = "admin_lecture_delete.html"
+    template_name = "admin_templates/admin_lecture_delete.html"
 
     def get_success_url(self):
         return reverse("admin_lecture_list")
@@ -1078,7 +1082,7 @@ class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
-    template_name = "admin-all-chats.html"
+    template_name = "admin_templates/admin-all-chats.html"
     model = Chat
     context_object_name = "chats"
     paginate_by = 30
@@ -1113,3 +1117,11 @@ class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
         context["count_of_new_messages"] = count_of_new_messages
 
         return context
+
+
+def custom_404_view(request, exception):
+    return render(request, "custom-errors/404.html", status=404)
+
+
+def custom_500_view(request):
+    return render(request, "custom-errors/500.html", status=500)

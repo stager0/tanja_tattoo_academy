@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Реєстрація - Tanja Tattoo Academy</title>
+  <title>Реєстрація - GodArt Tattoo Academy</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,13 +13,13 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
       rel="stylesheet">
 
-  <link rel="stylesheet" href="{% static 'auth.css' %}">
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
 <body>
 
 <div class="auth-container">
   <div class="auth-box">
-    <a href="../index.html" class="logo">Tanja<span>Tattoo</span></a>
+    <a href="{% url 'index' %}" class="logo">GodArt<span>Tattoo</span></a>
     <h2>Створення акаунту</h2>
     <p class="auth-subtitle">Заповніть форму, щоб почати свій шлях тату-майстра</p>
     <form action="{% url 'register' %}" method="post">

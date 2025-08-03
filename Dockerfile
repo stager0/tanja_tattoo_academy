@@ -20,6 +20,6 @@ RUN chmod +x /app/entrypoint.sh
 
 COPY . /app/
 
-ENTRYPOINT ["/app/entrypoint.sh", "python manage.py makemigration", "python manage.py migrate"]
+ENTRYPOINT ["/app/entrypoint.sh"]
 
 CMD ["python", "manage.py", "runserver"]

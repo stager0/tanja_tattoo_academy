@@ -42,7 +42,7 @@ echo "Применяем миграции..."
 python manage.py migrate
 
 echo "Устанавливаем Telegram webhook..."
-python manage.py shell -c "from web.views.telegram_bot import set_telegram_webhook; set_telegram_webhook()"
+python manage.py shell -c "from web.telegram_bot import set_telegram_webhook; set_telegram_webhook()"
 # ------------------------------------
 
 echo "Запускаем основной процесс..."

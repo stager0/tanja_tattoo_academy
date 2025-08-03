@@ -7,8 +7,8 @@ from mailjet_rest import Client
 
 load_dotenv()
 
-api_secret = os.getenv("API_SECRET")
-api_key = os.getenv("API_KEY")
+api_secret = os.getenv("MAILJET_API_SECRET_KEY")
+api_key = os.getenv("MAILJET_API_KEY")
 
 mailjet = Client(auth=(api_key, api_secret), version="v3.1")
 

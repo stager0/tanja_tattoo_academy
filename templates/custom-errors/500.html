@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Внутрішня помилка сервера (500) - GodArt Tattoo Academy</title>
+    <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=Megrim&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --background-color: #171717;
+            --surface-color: #202020;
+            --primary-color: #FF4D00;
+            --text-primary: #F5F5F5;
+            --text-secondary: #A3A3A3;
+            --border-color: #383838;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        .error-graphic {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            animation: shake 1.5s cubic-bezier(.36,.07,.19,.97) both infinite;
+        }
+
+        .error-graphic .st0 {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-miterlimit: 10;
+        }
+
+        .error-code {
+            font-family: 'Megrim', cursive;
+            font-size: 6rem;
+            font-weight: 400;
+            line-height: 1;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            animation: text-glitch 2s linear infinite alternate-reverse;
+        }
+
+        .error-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #e64400;
+            transform: translateY(-3px);
+        }
+
+        /* Анимации */
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        @keyframes text-glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,0,.75), -0.025em 0.05em 0 rgba(0,0,255,.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,0,.75), -0.05em -0.05em 0 rgba(0,0,255,.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,0,.75), 0 -0.05em 0 rgba(0,0,255,.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,0,.75), -0.025em -0.05em 0 rgba(0,0,255,.75); }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            .container {
+                padding: 2rem;
+            }
+            .error-code {
+                font-size: 4.5rem;
+            }
+            .error-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="error-graphic">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                <g>
+                    <line class="st0" x1="25.5" y1="74.5" x2="46.8" y2="53.2"/>
+                    <line class="st0" x1="53.2" y1="46.8" x2="74.5" y2="25.5"/>
+                    <line class="st0" x1="45" y1="45" x2="55" y2="55"/>
+                    <path class="st0" d="M46.8,53.2L25.5,74.5c-1.6,1.6-4.1,1.6-5.7,0l-2.8-2.8c-1.6-1.6-1.6-4.1,0-5.7L38.3,44.7"/>
+                    <path class="st0" d="M53.2,46.8L74.5,25.5c1.6-1.6,4.1-1.6,5.7,0l2.8,2.8c1.6,1.6,1.6,4.1,0,5.7L61.7,55.3"/>
+                </g>
+            </svg>
+        </div>
+
+        <h1 class="error-code">500</h1>
+        <h2 class="error-title">Упс! Здається, зламалася голка</h2>
+        <p class="error-description">
+            На нашому сервері сталася несподівана помилка. Ми вже знаємо про проблему і працюємо над її виправленням. Спробуйте оновити сторінку трохи пізніше.
+        </p>
+
+        <a href="{% url 'index' %}" class="btn">Повернутися на головну</a>
+    </div>
+
+</body>
+</html>

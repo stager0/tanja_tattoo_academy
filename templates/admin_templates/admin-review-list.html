@@ -1,0 +1,79 @@
+{% extends 'admin_templates/../base-admin.html' %}
+{% load static %}
+
+{% block title %}Завдання на перевірку - {{ block.super }}{% endblock %}
+{% block header_title %}Завдання на перевірку{% endblock %}
+
+{% block styles %}
+{{ block.super }}
+<style>
+    .admin-grid {
+        display: grid;
+        /* Ограничиваем максимальную ширину карточек, чтобы они не растягивались */
+        grid-template-columns: repeat(auto-fit, minmax(350px, 380px));
+        gap: 30px;
+    }
+
+    /* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+    @media (max-width: 768px) {
+        .filter-tabs {
+            /* Эти свойства больше не нужны */
+            /* flex-wrap: nowrap; */
+            /* overflow-x: auto; */
+        }
+        .filter-tab {
+            /* Заставляем вкладки делить всю ширину поровну */
+            flex: 1;
+            text-align: center;
+            /* Немного уменьшим боковые отступы, чтобы текст поместился */
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="filter-tabs">
+    <a href="?type=waiting_for_a_check" class="filter-tab {% if type == "waiting_for_a_check" %}active{% endif %}">Очікують <span class="tab-counter">{{ count_of_waiting }}</span></a>
+    <a href="?type=approved" class="filter-tab {% if type == "approved" %}active{% endif %}">Зараховані <span class="tab-counter ">{{ count_of_approved }}</span></a>
+    <a href="?type=all" class="filter-tab {% if type == "all" %}active{% endif %}">Всі<span class="tab-counter">{{ all }}</span></a>
+</div>
+
+<div class="admin-grid">
+  {% for homework in homeworks %}
+    <div class="admin-item-card review-card">
+        <div class="admin-item-header">
+            <img class="avatar" src="{{ homework.user.avatar.url }}" alt="Avatar">
+            <div class="info">
+                <strong>{{ homework.user.get_full_name }}</strong>
+                <p>Урок {{ homework.lecture.position_number }}: {{ homework.lecture.lecture_name }}</p>
+            </div>
+        </div>
+        <div class="submission-preview">
+          {% if homework.image %}
+            <img src="{{ homework.image.url }}" alt="Homework Thumbnail">
+          {% else %}
+             <div style="height: 200px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-dark); color: var(--text-dark);">NO IMAGE</div>
+          {% endif %}
+        </div>
+        {% if homework.text %}
+        <div class="submission-comment">
+            <p>{{ homework.text }}</p>
+        </div>
+        {% endif %}
+        <div class="admin-item-footer">
+            <span class="date">{% if homework.date %}{{ homework.date|date:"d.m.Y H:i" }}{% endif %}</span>
+            {% if not homework.was_checked %}
+                <a href="{% url 'admin_review_task' homework.id %}" class="btn btn-sm">Перевірити</a>
+            {% endif %}
+        </div>
+    </div>
+  {% empty %}
+      <div class="card" style="grid-column: 1 / -1; text-align: center;">
+        <p>Немає завдань для перевірки у цій категорії.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

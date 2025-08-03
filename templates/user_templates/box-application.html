@@ -1,0 +1,140 @@
+{% extends 'user_templates/../base.html' %}
+{% load static %}
+
+{% block title %}Заявка на бокс - {{ block.super }}{% endblock %}
+{% block header_title %}Заявка на бокс новачка{% endblock %}
+
+{% block content %}
+
+<style>
+    .success-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2000;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .success-modal.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+    .success-modal-box {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-main);
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        box-shadow: var(--shadow-main);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+    .success-modal.is-open .success-modal-box {
+        transform: scale(1);
+    }
+    .success-modal .modal-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        color: var(--success-color);
+    }
+    .success-modal .modal-title {
+        font-size: 1.8rem;
+        color: var(--text-light);
+        margin-bottom: 15px;
+    }
+    .success-modal .modal-text {
+        color: var(--text-medium);
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="form-container">
+    <div class="eligibility-card success">
+      <h4><i class="fas fa-check-circle"></i> {% if tariff == "pro" or tariff == "master" %}Ваш тариф "{{ tariff }}" включає стартовий бокс! Заповніть анкету для отримання.{% elif tariff == "base" %} Нажаль ваш тариф "{{ tariff }}" не включає стартовий бокс!{% endif %}</h4>
+      {% if user.code.start_box_coupon_is_activated %}
+        <p>Ви вже заповняли анкету. Це можливо зробити тільки 1 раз.</p>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h3>Анкета на відправку</h3>
+      <form method="POST" class="form-body-separator">
+        {% csrf_token %}
+        <div class="input-group">
+          <label for="full_name">Повне ім'я (ПІБ)</label>
+          <input type="text" id="full_name" placeholder="{{ start_box.full_name }}" name="full_name" value="{{ user.get_full_name }} " {% if user.code.start_box_coupon_is_activated %} disabled {% endif %} required>
+        </div>
+        <div class="input-group">
+          <label for="phone">Номер телефону</label>
+          <input type="tel" id="phone" placeholder="+380 12 345 6789" {% if user.code.start_box_coupon_is_activated %} disabled value="{{ start_box.phone }}"{% endif %} name="phone" required>
+        </div>
+        <div class="input-group">
+          <label for="address">Адреса доставки</label>
+          <textarea id="address" name="address" rows="4"  {% if user.code.start_box_coupon_is_activated %} disabled {% endif %} placeholder="Країна, місто, вулиця, будинок, квартира, поштовий індекс" required>{% if user.code.start_box_coupon_is_activated %} {{ start_box.address }}{% endif %}</textarea>
+        </div>
+        <div class="input-group">
+          <label for="comments">Коментар (необов'язково)</label>
+          <textarea id="comments" name="comments" rows="3" placeholder="Будь-які побажання щодо доставки" {% if user.code.start_box_coupon_is_activated %} disabled {% endif %}>{% if user.code.start_box_coupon_is_activated %} {{ start_box.comments }}{% endif %}</textarea>
+        </div>
+        <button type="submit" {% if user.code.start_box_coupon_is_activated %}disabled{% endif %} class="btn">Відправити заявку</button>
+      </form>
+    </div>
+</div>
+
+<div class="success-modal" id="successModal">
+    <div class="success-modal-box">
+        <div class="modal-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="modal-title">Заявку успішно відправлено!</h3>
+        <p class="modal-text">
+            Ми отримали ваші дані та взяли заявку в обробку. Як тільки ваш тату-бокс буде відправлено, ми надішлемо вам SMS-повідомлення з номером для відстеження.
+        </p>
+        <button class="btn" data-close-modal>Чудово!</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('successModal');
+        if (!modal) return;
+
+        const openModal = () => {
+            modal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeModal = () => {
+            modal.classList.remove('is-open');
+            document.body.style.overflow = '';
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+            openModal();
+        }
+
+        const closeModalBtn = modal.querySelector('[data-close-modal]');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    });
+</script>
+
+{% endblock %}

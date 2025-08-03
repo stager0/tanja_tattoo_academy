@@ -1,0 +1,83 @@
+{% extends 'user_templates/../base.html' %}
+{% load static %}
+
+{% block title %}Панель управління - {{ block.super }}{% endblock %}
+
+{% block header_title %}Вітаємо з поверненням, {{ user.first_name }}! 👋{% endblock %}
+
+{% block content %}
+
+{% if not is_telegram_connected %}
+<div class="telegram-notification" id="telegram-banner">
+    <div class="telegram-notification__icon">
+        <i class="fab fa-telegram-plane"></i>
+    </div>
+    <div class="telegram-notification__content">
+        <h4>Отримуйте сповіщення в Telegram!</h4>
+        <p>Підключіть нашого бота, щоб миттєво дізнаватися про нові повідомлення від ментора та статус перевірки ДЗ.</p>
+        <div class="telegram-notification__action">
+            <a href="https://t.me/GodArtTattooBot" class="btn btn-secondary">Підключити Telegram</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="progress-card-detailed">
+    <div class="progress-info">
+        <h3>Прогрес курсу</h3>
+        <span class="progress-percentage">{{ percent_done }}%</span>
+    </div>
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: {{ percent_done }}%;"></div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+
+    {% if lesson %}
+        <a href="{% url 'course' pk=lesson.pk %}" class="dashboard-card">
+            <div class="card-icon"><i class="fas fa-play-circle"></i></div>
+            <h3>Продовжити навчання</h3>
+            <p>Наступний урок: "{{ lesson.lecture_name }}".</p>
+            <div class="btn">
+                Перейти до лекції <i class="fas fa-arrow-right"></i>
+            </div>
+        </a>
+    {% else %}
+        <div class="dashboard-card course-completed">
+            <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+            <h3>Курс пройдено!</h3>
+            <p>Вітаємо з успішним завершенням навчання.</p>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'chat' pk=chat_pk %}" class="dashboard-card">
+        <div class="card-icon"><i class="fas fa-comments"></i></div>
+        <h3>Чат з ментором</h3>
+
+        <p>
+            У вас
+            {% if not new_sms %}
+                немає нових повідомлень
+            {% elif new_sms == 1 %}
+                1 нове повідомлення
+            {% elif new_sms > 1 and new_sms < 5 %}
+                {{ new_sms }} нові повідомлення
+            {% else %}
+                {{ new_sms }} нових повідомлень
+            {% endif %}
+             від ментора.
+        </p>
+
+        <div class="btn btn-secondary">Відкрити чат</div>
+    </a>
+
+    <a href="{% url 'profile' %}" class="dashboard-card">
+        <div class="card-icon"><i class="fas fa-user-edit"></i></div>
+        <h3>Редагувати профіль</h3>
+        <p>Оновіть вашу особисту інформацію та фото.</p>
+        <div class="btn btn-secondary">Налаштування</div>
+    </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'admin_templates/../base-admin.html' %}
+{% load static %}
+
+{% block title %}Список учнів - {{ block.super }}{% endblock %}
+{% block header_title %}Список учнів{% endblock %}
+
+{% block content %}
+  <form method="GET" action="{% url 'admin_students' %}" class="list-controls">
+
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" name="q" placeholder="Пошук за іменем або email..." value="{{ request.GET.q|default:'' }}">
+    </div>
+
+    <div class="filters">
+      <div class="custom-select-wrapper">
+        <select name="progress" class="filter-select" aria-label="Фільтр по прогресу">
+          <option value="">Весь прогрес</option>
+          <option value="low" {% if request.GET.progress == 'low' %}selected{% endif %}>Низький (< 30%)</option>
+          <option value="medium" {% if request.GET.progress == 'medium' %}selected{% endif %}>Середній (30-80%)</option>
+          <option value="high" {% if request.GET.progress == 'high' %}selected{% endif %}>Високий (> 80%)</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-apply-filter">
+      <i class="fas fa-filter"></i> Застосувати
+    </button>
+    <input type="hidden" name="view" id="view-mode-input" value="{{ request.GET.view|default:'grid' }}">
+
+    <div class="view-switcher">
+      <button type="button" class="btn-icon view-btn {% if request.GET.view != 'list' %}active{% endif %}"
+              id="view-grid-btn" aria-label="Вигляд сіткою"><i class="fas fa-th-large"></i></button>
+      <button type="button" class="btn-icon view-btn {% if request.GET.view == 'list' %}active{% endif %}"
+              id="view-list-btn" aria-label="Вигляд списком"><i class="fas fa-bars"></i></button>
+    </div>
+  </form>
+
+  <div class="students-container {% if request.GET.view == 'list' %}view-list{% else %}view-grid{% endif %}">
+
+    <div class="admin-grid students-grid">
+      {% for user in page_obj %}
+        {% if not user.is_superuser %}
+          <div class="admin-item-card student-card">
+            <div class="admin-item-header">
+              <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
+              <div class="info">
+                <strong>{{ user.get_full_name|default:user.email }}</strong>
+                <p>{{ user.email }}</p>
+              </div>
+            </div>
+            <div class="student-card-progress">
+              <div class="progress-info">
+                <span>Прогрес</span>
+                <span>{{ user.progress|floatformat:"1"|default:"0.0" }}%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+              </div>
+            </div>
+            <div class="student-card-stats">
+              <div><span>Тариф:</span><strong>{{ user.code.tariff|default:"N/A" }}</strong></div>
+              <div>
+                <span>Остання активність:</span><strong>{{ user.last_activity|date:"d-m-y H:i"|default:"Немає даних" }}</strong>
+              </div>
+            </div>
+            <div class="student-card-actions">
+              {% if user.chats.pk %}
+                <a href="{% url 'admin_chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
+              {% else %}
+                <button class="btn btn-sm disabled">Немає чату</button>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% empty %}
+        <div class="card" style="grid-column: 1 / -1; text-align: center;">
+          <p>Не знайдено учнів, які відповідають вашому запиту.</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="students-list-view">
+      <div class="list-header">
+        <span>Учень</span>
+        <span>Прогрес</span>
+        <span style="text-align: center;">Тариф</span>
+        <span>Остання активність</span>
+        <span style="text-align: right;">Дії</span>
+      </div>
+      {% for user in page_obj %}
+        {% if not user.is_superuser %}
+          <div class="admin-item-card list-item" style="margin-bottom: 15px;">
+            <div class="student-info-cell">
+              <img class="avatar" src="{{ user.avatar.url }}" alt="Avatar">
+              <div><strong>{{ user.get_full_name|default:user.email }}</strong>
+                <p>{{ user.email }}</p></div>
+            </div>
+
+            <div class="student-progress">
+              <div style="flex-grow: 1;">
+                  <div class="progress-bar-bg">
+                    <div class="progress-bar-fill success" style="width: {{ user.progress|default:0 }}%;"></div>
+                  </div>
+              </div>
+              <span>{{ user.progress|floatformat:"1"|default:"0.0" }}%</span>
+            </div>
+
+            <div style="text-align: center;">{{ user.code.tariff|default:"N/A" }}</div>
+
+            <div>{{ user.last_activity|date:"d-m-y H:i"|default:"Немає даних" }}</div>
+            <div class="item-actions" style="justify-content: flex-end;">
+              {% if user.chats.pk %}
+                <a href="{% url 'admin_chat' user.chats.pk %}" class="btn btn-sm">Чат</a>
+              {% else %}
+                <button class="btn btn-sm disabled">Немає чату</button>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <nav aria-label="Навігація по сторінках">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?page={{ num }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q|default:'' }}&progress={{ request.GET.progress|default:'' }}&view={{ request.GET.view|default:'grid' }}" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock %}
+
+
+{% block scripts %}
+  {{ block.super }}
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'admin_templates/../base-admin.html' %}
+{% load static %}
+
+{% block title %}Заявки на бокси - {{ block.super }}{% endblock %}
+{% block header_title %}Заявки на бокси{% endblock %}
+
+{% block content %}
+  <div class="filter-tabs">
+    <a href="{% url 'admin_boxes' %}?type=active" class="filter-tab {% if filter == "active" %}active{% endif %}">На
+      відправку <span
+          class="tab-counter">{{ active_count }}</span></a>
+    <a href="{% url 'admin_boxes' %}?type=sent" class="filter-tab {% if filter == "sent" %}active{% endif %}">Відправлені
+      <span
+          class="tab-counter">{{ sent_count }}</span></a>
+  </div>
+
+  <div class="admin-grid">
+    {% for box in boxes %}
+      <div class="admin-item-card application-card-admin">
+        <div class="admin-item-header">
+          <img src="{{ box.user.avatar.url }}" alt="Avatar" class="avatar">
+          <div class="info">
+            <strong>{{ box.user.get_full_name }}</strong>
+            <p>Заявка від {{ box.created_date|date:"d.m.Y H:i" }}</p>
+          </div>
+        </div>
+        <div class="admin-item-body">
+          <div class="info-item">
+            <strong>Адреса:</strong>
+            <span>{{ box.address }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Телефон:</strong>
+            <span>{{ box.phone }}</span>
+          </div>
+          <div class="info-item">
+            <strong>ПІБ отримувача:</strong>
+            <span>{{ box.full_name }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Коментарі:</strong>
+            <span>{{ box.comments|default:"Коментарів немає" }}</span>
+          </div>
+          {% if box.is_sent %}
+            <div class="info-item">
+              <strong>Статус:</strong>
+              <span>Вже відправлено: <strong>{{ box.sent_date|date:"d.m.Y H:i" }}</strong></span>
+            </div>
+          {% endif %}
+        </div>
+
+        {% if not box.is_sent %}
+          <div class="admin-item-footer">
+            <form method="post">
+              {% csrf_token %}
+              <button class="btn mark-as-sent-btn" name="mark_as_sent" value="{{ box.pk }}" style="width: 100%;">
+                Позначити
+                як відправлений
+              </button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <div class="card" style="grid-column: 1 / -1; text-align: center;">
+        <p>Заявок у цій категорії поки що немає.</p>
+      </div>
+    {% endfor %}
+  </div>
+  <nav aria-label="Навігація по сторінках">
+    <ul class="pagination">
+
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?type={{ filter }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-left"></i></span>
+        </li>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?type={{ filter }}&page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?type={{ filter }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <span class="page-link"><i class="fas fa-chevron-right"></i></span>
+        </li>
+      {% endif %}
+
+    </ul>
+  </nav>
+{% endblock %}

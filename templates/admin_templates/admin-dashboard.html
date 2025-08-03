@@ -1,0 +1,101 @@
+{% extends 'admin_templates/../base-admin.html' %}
+{% load static %}
+
+{% block title %}Дашборд Ментора - {{ block.super }}{% endblock %}
+{% block header_title %}Дашборд Ментора{% endblock %}
+
+{% block content %}
+  <div class="admin-dashboard-grid">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-inbox"></i>
+        <h3>Завдання на перевірку ({{ count_of_waiting }})</h3>
+      </div>
+      <div class="admin-list">
+        {% if waiting_for_check %}
+          {% for homework in waiting_for_check %}
+            <div class="list-item">
+              <img class="avatar" src="{{ homework.user.avatar.url }}" alt="Avatar">
+              <div class="item-info">
+                <strong>{{ homework.user.get_full_name }}</strong>
+                <p>Урок {{ homework.lecture.position_number }}: {{ homework.lecture.lecture_name }}</p>
+              </div>
+              <a href="{% url 'admin_review_task' homework.pk %}" class="btn btn-sm">Перевірити</a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="list-item">
+            <div class="item-info">
+              <p><strong>Наразі немає дз на перевірку...</strong></p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-chart-line"></i>
+        <h3>Прогрес студентів (останній і перший)</h3>
+      </div>
+      <div class="admin-list">
+        {% if min_progress %}
+          <div class="list-item">
+            <div class="item-info" style="width: 100%;">
+              <strong>{{ min_progress.get_full_name }} -------> {{ min_progress.progress|default:0 }}%📉</strong>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill error" style="width: {{ min_progress.progress|default:0 }}%;"></div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if max_progress and max_progress != min_progress %}
+          <div class="list-item">
+            <div class="item-info" style="width: 100%;">
+              <strong>{{ max_progress.get_full_name }} -------> {{ max_progress.progress|default:0 }}%🏆</strong>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success" style="width: {{ max_progress.progress|default:0 }}%;"></div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if not max_progress and not min_progress %}
+          <div class="list-item">
+            <div class="item-info" style="width: 100%;">
+              <strong>Немає користувачів....</strong>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="admin-card full-width">
+      <div class="admin-card-header">
+        <i class="fas fa-comments"></i>
+        <h3>Останні повідомлення</h3>
+      </div>
+      <div class="admin-list">
+        {% if last_messages %}
+          {% for msg in last_messages %}
+            <div class="list-item">
+              <img class="avatar" src="{{ msg.user.avatar.url }}" alt="Avatar">
+              <div class="item-info">
+                <strong>{{ msg.user.get_full_name }}</strong>
+                <p>"{{ msg.text|truncatewords:3 }}..."</p>
+              </div>
+              <a href="{% url 'admin_chat' msg.chat_id %}" class="btn btn-sm">До чату</a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="list-item">
+            <div class="item-info">
+              <p><strong>Поки що повідомлень немає...</strong></p>
+            </div>
+
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

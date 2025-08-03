@@ -1,0 +1,31 @@
+{% extends 'admin_templates/../base-admin.html' %}
+{% load static %}
+
+{% block title %}Список лекцій - {{ block.super }}{% endblock %}
+{% block header_title %}Керування лекціями{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="list-controls" style="justify-content: flex-end;">
+        <a href="{% url 'admin_lecture_create' %}" class="btn">
+            <i class="fas fa-plus"></i> Створити нову лекцію
+        </a>
+    </div>
+
+    <div class="admin-modern-list" id="lectures-list">
+      {% for lecture in lectures %}
+        <div class="list-item" data-lecture-id="1">
+            <div class="item-info">
+                <strong>Урок {{ lecture.position_number }}: {{ lecture.lecture_name }}</strong>
+                <p>{{ lecture.under_name }}</p>
+            </div>
+            <div class="item-actions">
+                <a href="{% url 'admin_lecture_edit' lecture.pk %}" class="btn btn-secondary btn-sm">Редагувати</a>
+              <form method="post" action="{% url 'admin_lecture_delete' lecture.pk %}"></form>
+                <a href="{% url 'admin_lecture_delete' lecture.pk %}" class="btn btn-secondary btn-sm delete-btn">Видалити</a>
+            </div>
+        </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}

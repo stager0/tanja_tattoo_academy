@@ -1,0 +1,170 @@
+{% extends base_template %}
+{% load static %}
+
+{% block title %}Налаштування профілю - {{ block.super }}{% endblock %}
+
+{% block header_title %}Налаштування профілю{% endblock %}
+
+{% block styles %}
+  {{ block.super }}
+  <style>
+      /* Эти стили делают загрузчик аватара красивым и интерактивным */
+      .avatar-upload {
+          position: relative;
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+      }
+
+      #avatar-preview {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+          border: 3px solid #333;
+      }
+
+      .avatar-edit-overlay {
+          position: absolute;
+          bottom: 5px;
+          right: 5px;
+          width: 36px;
+          height: 36px;
+          background-color: #fff;
+          color: #1a1a1a;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          border: 1px solid #ddd;
+      }
+
+      .avatar-edit-overlay:hover {
+          background-color: #f0f0f0;
+      }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="non-field-errors" style="margin-bottom: 20px;">
+        {% for error in form.non_field_errors %}
+          <p class="error-text">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="profile-grid">
+      <div class="card profile-avatar-card">
+        <div class="avatar-upload">
+          <img src="{{ user.avatar.url }}" alt="User Avatar" id="avatar-preview">
+          <label for="{{ form.avatar.id_for_label }}" class="avatar-edit-overlay"><i class="fas fa-camera"></i></label>
+
+          <div style="display: none;">
+            {{ form.avatar }}
+          </div>
+        </div>
+
+        <h3 style="margin-top: 20px;">{{ user.get_full_name|default:user.username }}</h3>
+        <p class="text-medium">{{ user.email }}</p>
+        {% if form.avatar.errors %}
+          <p class="error-text" style="margin-top: 10px;">{{ form.avatar.errors.as_text }}</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>Особисті дані</h3>
+        <div class="form-body-separator">
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="{{ form.first_name.id_for_label }}">Ім'я</label>
+              {{ form.first_name }}
+              {% if form.first_name.errors %}<p class="error-text">{{ form.first_name.errors.as_text }}</p>{% endif %}
+            </div>
+            <div class="input-group">
+              <label for="{{ form.last_name.id_for_label }}">Прізвище</label>
+              {{ form.last_name }}
+              {% if form.last_name.errors %}<p class="error-text">{{ form.last_name.errors.as_text }}</p>{% endif %}
+            </div>
+            <div class="input-group">
+              <label for="{{ form.email.id_for_label }}">Email</label>
+              {{ form.email }}
+              {% if form.email.errors %}<p class="error-text">{{ form.email.errors.as_text }}</p>{% endif %}
+            </div>
+            <div class="input-group">
+              <label for="{{ form.phone.id_for_label }}">Телефон</label>
+              {{ form.phone }}
+              {% if form.phone.errors %}<p class="error-text">{{ form.phone.errors.as_text }}</p>{% endif %}
+            </div>
+          </div>
+          <button type="submit" name="update_profile" class="btn" style="margin-top: 10px;">Зберегти зміни</button>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top: 30px;">
+      <h3>Зміна паролю</h3>
+      <div class="form-body-separator">
+        <div class="form-grid">
+          <div class="input-group">
+            <label for="{{ form.current_password.id_for_label }}">Поточний пароль</label>
+            {{ form.current_password }}
+            {% if form.current_password.errors %}
+              <p class="error-text">{{ form.current_password.errors.as_text }}</p>{% endif %}
+          </div>
+          <div class="input-group">
+            <label for="{{ form.new_password1.id_for_label }}">Новий пароль</label>
+            {{ form.new_password1 }}
+            {% if form.new_password1.errors %}
+              <p class="error-text">{{ form.new_password1.errors.as_text }}</p>{% endif %}
+          </div>
+          <div class="input-group">
+            <label for="{{ form.new_password2.id_for_label }}">Підтвердьте новий пароль</label>
+            {{ form.new_password2 }}
+            {% if form.new_password2.errors %}
+              <p class="error-text">{{ form.new_password2.errors.as_text }}</p>{% endif %}
+          </div>
+        </div>
+        <button type="submit" value="1" name="change_password" class="btn btn-secondary" style="margin-top: 10px;">Оновити
+          пароль
+        </button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const avatarInput = document.getElementById('{{ form.avatar.id_for_label }}');
+          const avatarPreview = document.getElementById('avatar-preview');
+
+          if (avatarInput && avatarPreview) {
+              avatarInput.addEventListener('change', function (event) {
+                  const file = event.target.files[0];
+                  if (file) {
+                      const reader = new FileReader();
+                      reader.onload = function (e) {
+                          avatarPreview.src = e.target.result;
+                      }
+                      reader.readAsDataURL(file);
+                  }
+              });
+          }
+      });
+  </script>
+{% endblock %}

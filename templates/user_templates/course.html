@@ -1,0 +1,160 @@
+{% extends 'user_templates/../base.html' %}
+{% load static %}
+
+{% block title %}Урок {{ lecture.position_number }} - {{ block.super }}{% endblock %}
+
+{% block header_title %}Мій курс{% endblock %}
+
+{% block content %}
+  <div class="course-wrapper">
+    <aside class="lessons-sidebar">
+      <div class="lessons-sidebar-header">
+        <h3>Зміст курсу</h3>
+        <button class="lessons-toggle-btn"><i class="fas fa-chevron-down"></i></button>
+      </div>
+      <div class="lessons-list">
+        {% for lesson in page_obj %}
+          {# 1. Урок пройдено (має залік) #}
+          {% if lesson.position_number in homework_done_ids %}
+            <a href="{% url 'course' lesson.position_number %}?page={{ page_obj.number }}"
+               class="lesson-item{% if current_id == lesson.position_number %} active{% endif %}">
+              <span class="lesson-status status-completed"><i class="fas fa-check-circle"></i></span>
+              <div class="lesson-item-info">
+                <h5>{{ lesson.position_number }}. {{ lesson.lecture_name }}</h5>
+                <p>{{ lesson.under_name }}</p>
+              </div>
+            </a>
+          {# 2. Урок на перевірці #}
+          {% elif lesson.position_number in user_tasks_waiting_for_review_pos_nums %}
+            <a href="{% url 'course' lesson.position_number %}?page={{ page_obj.number }}"
+               class="lesson-item {% if current_id == lesson.position_number %}active{% endif %}">
+                <span class="lesson-status status-pending">
+              <i class="fas fa-hourglass-half"></i>
+              </span>
+              <div class="lesson-item-info">
+                <h5>{{ lesson.position_number }}. {{ lesson.lecture_name }}</h5>
+                <p>{{ lesson.under_name }}</p>
+              </div>
+            </a>
+          {# 3. Урок є поточним (активним для виконання) #}
+          {% elif lesson.position_number == current_task %}
+            <a href="{% url 'course' lesson.position_number %}?page={{ page_obj.number }}"
+               class="lesson-item{% if current_id == lesson.position_number %} active{% endif %}">
+              <span class="lesson-status status-current"><i class="fas fa-play-circle"></i></span>
+              <div class="lesson-item-info">
+                <h5>{{ lesson.position_number }}. {{ lesson.lecture_name }}</h5>
+                <p>{{ lesson.under_name|safe }}</p>
+              </div>
+            </a>
+          {# 4. Урок заблоковано #}
+          {% else %}
+            <a href="{% url 'course' lesson.position_number %}?page={{ page_obj.number }}"
+               class="lesson-item{% if current_id == lesson.position_number %} active{% endif %}">
+              <span class="lesson-status status-locked"><i class="far fa-circle"></i></span>
+              <div class="lesson-item-info">
+                <h5>{{ lesson.position_number }}. {{ lesson.lecture_name }}</h5>
+                <p>{{ lesson.under_name }}</p>
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {# Пагінація #}
+      {% if page_obj.paginator.num_pages > 1 %}
+        <nav class="pagination-nav">
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a></li>
+            {% else %}
+              <li class="disabled"><span><i class="fas fa-chevron-left"></i></span></li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <li class="active"><span>{{ num }}</span></li>
+              {% else %}
+                <li><a href="?page={{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a></li>
+            {% else %}
+              <li class="disabled"><span><i class="fas fa-chevron-right"></i></span></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+
+    </aside>
+
+    <div class="lesson-content">
+      <div class="lesson-card">
+        <div class="video-player-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+          <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+              src="{{ lecture.video_url }}"
+              title="Проигрыватель видео"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+          </iframe>
+        </div>
+        <div class="lesson-text" style="margin-top: 20px;">
+          <h2>Урок {{ lecture.position_number }}: {{ lecture.lecture_name }}. {{ lecture.under_name }}</h2>
+          <p>{{ lecture.lecture|safe }}</p>
+        </div>
+      </div>
+      <div class="lesson-card">
+        <div class="task-header">
+          <i class="fas fa-tasks"></i>
+          <h3>Завдання до уроку</h3>
+          {% if lecture.position_number in homework_done_ids %}
+            <p class="task-status status-completed"><strong>(ЗАВДАННЯ ЗАРАХОВАНО)</strong></p>
+          {% elif lecture.position_number in user_tasks_waiting_for_review_pos_nums %}
+            <p class="task-status status-pending"><strong>(ОЧІКУЄ НА ПЕРЕВІРКУ)</strong></p>
+          {% endif %}
+        </div>
+        <div class="task-description">
+          <p>{{ lecture.homework|safe }}</p>
+        </div>
+        <div class="task-submission">
+          <h4><i class="fas fa-upload"></i> Відправити на перевірку </h4>
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="file-upload-area"
+                 {% if lecture.position_number in homework_done_ids or lecture.position_number in user_tasks_waiting_for_review_pos_nums %}style="cursor:not-allowed; opacity:0.6;"{% endif %}>
+              <i class="fas fa-camera"></i>
+              <p>
+                {% if lecture.position_number in homework_done_ids %}
+                  Ви вже здали та отримали залік за цю роботу.
+                {% elif lecture.position_number in user_tasks_waiting_for_review_pos_nums %}
+                  Ваша робота очікує на перевірку ментором.
+                {% else %}
+                  Натисніть, щоб прикріпити сюди фото вашої роботи
+                {% endif %}
+              </p>
+              <input type="file" style="display: none;" accept="image/*" name="image"
+                     {% if lecture.position_number in homework_done_ids or lecture.position_number in user_tasks_waiting_for_review_pos_nums %}disabled{% endif %}>
+            </div>
+            <div class="input-group">
+              <label for="hw-comment">Ваш коментар</label>
+              <textarea id="hw-comment" class="autoresize-textarea" name="text"
+                        placeholder="Ваш коментар або питання для ментора..."
+                        {% if lecture.position_number in homework_done_ids or lecture.position_number in user_tasks_waiting_for_review_pos_nums %}disabled{% endif %}
+              >{% if homework_text %}{{ homework_text }}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="btn"
+                    {% if lecture.position_number in homework_done_ids or lecture.position_number in user_tasks_waiting_for_review_pos_nums %}disabled{% endif %}>
+              {% if lecture.position_number in homework_done_ids %}
+                Завдання зараховано
+              {% elif lecture.position_number in user_tasks_waiting_for_review_pos_nums %}
+                Очікує на перевірку
+              {% else %}
+                Відправити завдання
+              {% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

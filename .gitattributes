@@ -1,0 +1,6 @@
+templates/** linguist-vendored
+static/** linguist-vendored
+staticfiles/** linguist-vendored
+
+
+*.py linguist-language=Python

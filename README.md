@@ -251,3 +251,7 @@ Over 200 hours were invested in this project. It was made with passion.
 ## 🧪 Testing
 
 The project is extensively covered by over **600 lines of tests** using the **Pytest** framework, ensuring the reliability and stability of all key application features and business logic.
+
+```bash
+    pytest
+```

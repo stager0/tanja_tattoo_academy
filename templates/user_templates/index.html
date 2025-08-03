@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tanja Tattoo Academy - Курси тату для початківців та профі</title>
+  <title>GodArt Tattoo Academy - Курси тату для початківців та профі</title>
   <meta name="description"
-        content="Навчіться мистецтву татуювання з нуля. Онлайн-курси від Tanja Tattoo Academy з підтримкою ментора, домашніми завданнями та практикою.">
+        content="Навчіться мистецтву татуювання з нуля. Онлайн-курси від GodArt Tattoo Academy з підтримкою ментора, домашніми завданнями та практикою.">
 
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
@@ -18,7 +18,7 @@
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
 
 <header class="main-header" id="main-header">
   <div class="container header-content">
-    <a href="#hero" class="logo">Tanja<span>Tattoo</span></a>
+    <a href="#hero" class="logo">GodArt<span>Tattoo</span></a>
     <nav class="main-nav" id="main-nav">
       <ul>
         <li><a href="#about">Про курс</a></li>
@@ -72,7 +72,7 @@
   <section id="about">
     <div class="container about-content">
       <div class="about-text animate-on-scroll" data-animation="fade-in-left">
-        <h3>Що таке Tanja Tattoo Academy?</h3>
+        <h3>Що таке GodArt Tattoo Academy?</h3>
         <p>Це не просто курс, а повна система навчання, яка перетворить вас з новачка на впевненого тату-майстра. Ми
           розробили унікальну програму, що поєднує глибоку теорію, практичні домашні завдання на штучній шкірі та
           постійний зворотний зв'язок від досвідченого ментора.</p>
@@ -273,12 +273,12 @@
       <h2 class="animate-on-scroll" data-animation="fade-in-up">Ваш ментор</h2>
       <div class="mentor-content">
         <div class="mentor-photo animate-on-scroll" data-animation="fade-in-right">
-          <img src="{% if mentor %}{{ mentor.avatar.url }}{% endif %}" alt="Фото ментора Tanja">
+          <img src="{% if mentor %}{{ mentor.avatar.url }}{% endif %}" alt="Фото ментора GodArt">
         </div>
         <div class="mentor-bio animate-on-scroll" data-animation="fade-in-left">
-          <h3>{% if mentor %}{{ mentor.get_full_name }}{% else %}Tanja Mentor{% endif %}</h3>
+          <h3>{% if mentor %}{{ mentor.get_full_name }}{% else %}GodArt Mentor{% endif %}</h3>
           <span class="title">Тату-майстриня з 15-річним досвідом</span>
-          <p>Привіт! Я Таня, і я допоможу тобі пройти шлях від першого дотику голки до шкіри до твоїх перших задоволених
+          <p>Привіт! Я ваш ментор, і я допоможу тобі пройти шлях від першого дотику голки до шкіри до твоїх перших задоволених
             клієнтів. Я вірю, що талант — це лише 10% успіху, а решта — практика та правильні знання. Я зібрала весь
             свій досвід, помилки та лайфхаки в цьому курсі, щоб твій старт був максимально ефективним та безпечним. Я
             буду з тобою на кожному етапі, перевірятиму твої роботи та відповідатиму на всі питання.</p>
@@ -387,7 +387,7 @@
       <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
       <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
     </div>
-    <p class="footer-copyright">© <span id="current-year">2025</span> Tanja Tattoo Academy. Всі права захищено.</p>
+    <p class="footer-copyright">© <span id="current-year">2025</span> GodArt Tattoo Academy. Всі права захищено.</p>
   </div>
 </footer>
 
@@ -515,7 +515,7 @@
         </li>
         <li class="feature-item">
           <div class="feature-name"><i class="fas fa-comments"></i><strong>Особиста консультація:</strong></div>
-          <div class="feature-desc">Стратегічна сесія з Танею для побудови вашої кар'єри.</div>
+          <div class="feature-desc">Стратегічна сесія з ментором для побудови вашої кар'єри.</div>
         </li>
         <li class="feature-item">
           <div class="feature-name"><i class="fas fa-images"></i><strong>Допомога з портфоліо:</strong></div>
@@ -544,7 +544,7 @@
   <i class="fas fa-arrow-up"></i>
 </a>
 
-<script src="{% static 'script.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 
 </body>
 </html>

@@ -227,7 +227,7 @@ Over 200 hours were invested in this project. It was made with passion.
 
 ![Success Pay Page](media/readme_images/success_pay.jpg)
 ![Cancel Pay Page](media/readme_images/cancel-pay.jpg)
-![Error Pay Page](media/readme_images/error-pay.jpg)
+![Error Pay Page](media/readme_images/error_pay.jpg)
 ![404 Page](media/readme_images/404.jpg)
 ![500 Page](media/readme_images/500.jpg)
 </details>

@@ -21,24 +21,32 @@
   <div class="auth-box">
     <a href="{% url 'index' %}" class="logo">GodArt<span>Tattoo</span></a>
     <h2>Вхід до кабінету</h2>
-
     <p class="auth-subtitle">Введіть ваші дані, щоб отримати доступ до курсу</p>
+
     <form action="{% url 'login' %}" method="post">
       {% csrf_token %}
-      {% if form.errors %}
-        <p style="color: red">Invalid Credentials</p>
-        {{ form.errors }}
+
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+          {% for error in form.non_field_errors %}
+            <p class="error-text">{{ error }}</p>
+          {% endfor %}
+        </div>
       {% endif %}
+
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="username" required placeholder="example@email.com">
       </div>
+
       <div class="input-group">
         <label for="password">Пароль</label>
         <input type="password" id="password" name="password" required placeholder="••••••••">
       </div>
+
       <button type="submit" class="btn">Увійти</button>
     </form>
+
     <div class="form-footer">
       <p>Ще не маєте акаунту? <a href="{% url 'register' %}">Зареєструватись</a></p>
       <a href="{% url 'change_password_request' %}" class="forgot-password">Забули пароль?</a>

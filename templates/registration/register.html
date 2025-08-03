@@ -22,40 +22,59 @@
     <a href="{% url 'index' %}" class="logo">GodArt<span>Tattoo</span></a>
     <h2>Створення акаунту</h2>
     <p class="auth-subtitle">Заповніть форму, щоб почати свій шлях тату-майстра</p>
+
     <form action="{% url 'register' %}" method="post">
       {% csrf_token %}
-      {% if form.errors %}
-        <p style="color: red">Invalid Data {{ form.errors }}</p>
+
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+            {% for error in form.non_field_errors %}
+                <p class="error-text">{{ error }}</p>
+            {% endfor %}
+        </div>
       {% endif %}
+
       <div class="input-row">
         <div class="input-group">
           <label for="first_name">Ім'я</label>
-          <input type="text" id="first_name" name="first_name" required placeholder="Таня">
+          <input type="text" id="first_name" name="first_name" required placeholder="Таня" class="{% if form.first_name.errors %}input-error{% endif %}">
+          {% if form.first_name.errors %}<p class="error-text">{{ form.first_name.errors.as_text }}</p>{% endif %}
         </div>
         <div class="input-group">
           <label for="last_name">Прізвище</label>
-          <input type="text" id="last_name" name="last_name" required placeholder="Іванова">
+          <input type="text" id="last_name" name="last_name" required placeholder="Іванова" class="{% if form.last_name.errors %}input-error{% endif %}">
+          {% if form.last_name.errors %}<p class="error-text">{{ form.last_name.errors.as_text }}</p>{% endif %}
         </div>
       </div>
+
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="example@email.com">
+        <input type="email" id="email" name="email" required placeholder="example@email.com" class="{% if form.email.errors %}input-error{% endif %}">
+        {% if form.email.errors %}<p class="error-text">{{ form.email.errors.as_text }}</p>{% endif %}
       </div>
+
       <div class="input-group">
         <label for="password">Пароль</label>
-        <input type="password" id="password" name="password1" required placeholder="Мінімум 8 символів">
+        <input type="password" id="password" name="password" required placeholder="Мінімум 8 символів" class="{% if form.password.errors %}input-error{% endif %}">
+        {% if form.password.errors %}<p class="error-text">{{ form.password.errors.as_text }}</p>{% endif %}
       </div>
+
       <div class="input-group">
-        <label for="password">Повтор пароля</label>
-        <input type="password" id="password" name="password2" required placeholder="Мінімум 8 символів">
+        <label for="password2">Повтор пароля</label>
+        <input type="password" id="password2" name="password2" required placeholder="Мінімум 8 символів" class="{% if form.password2.errors %}input-error{% endif %}">
+        {% if form.password2.errors %}<p class="error-text">{{ form.password2.errors.as_text }}</p>{% endif %}
       </div>
+
       <div class="input-group">
         <label for="phone">Телефон (необов'язково)</label>
-        <input type="tel" id="phone" name="phone" placeholder="+380123456789">
+        <input type="tel" id="phone" name="phone" placeholder="+380123456789" class="{% if form.phone.errors %}input-error{% endif %}">
+        {% if form.phone.errors %}<p class="error-text">{{ form.phone.errors.as_text }}</p>{% endif %}
       </div>
+
       <div class="input-group">
         <label for="subscription_code">Код підписки</label>
-        <input type="text" id="subscription_code" name="code" required placeholder="XXXX-XXXX-XXXX">
+        <input type="text" id="subscription_code" name="code" required placeholder="XXXX-XXXX-XXXX" class="{% if form.code.errors %}input-error{% endif %}">
+        {% if form.code.errors %}<p class="error-text">{{ form.code.errors.as_text }}</p>{% endif %}
       </div>
 
       <button type="submit" class="btn">Зареєструватись</button>

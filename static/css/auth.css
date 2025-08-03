@@ -283,3 +283,28 @@ form {
         width: 100%;
     }
 }
+/* --- Error Handling Styles --- */
+.error-text {
+    color: var(--error-color);
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+.input-group input.input-error {
+    border-color: var(--error-color);
+    box-shadow: 0 0 10px rgba(220, 53, 69, 0.5);
+}
+
+.non-field-errors {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid var(--error-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.non-field-errors .error-text {
+    margin: 0;
+}

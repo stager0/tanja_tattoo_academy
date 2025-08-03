@@ -1,6 +1,6 @@
 # Tanja Tattoo / GodArt Tattoo - Full Stack Training Platform
 
-![Tanja Tattoo Academy](media/readme_images/logo.jpg) 
+![Tanja Tattoo Academy](media/readme_images/logo.jpg)
 
 **Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. This project provides an immersive and interactive learning experience for students, complemented by a powerful, custom-built administrative panel that gives the mentor complete control over the educational content, student management, and overall platform operations.
 
@@ -17,16 +17,29 @@ Over 200 hours were invested in this project. It was made with passion.
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-| :--- | :--- |
+| Category          | Technology                                                                                                                                                                                                                                                                                                                      |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Django ORM](https://img.shields.io/badge/Django-ORM-092E20?style=for-the-badge&logo=django&logoColor=white) |
-| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white) |
-| **Authentication** | Custom `User` model (email-based, no `username`) |
-| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white) |
-| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) |
-| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white) |
-| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines) |
-| **Additional** | Custom Middleware for error handling (404, 500) |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)                                                                                                         |
+| **Authentication**| Custom `User` model (email-based, no `username`)                                                                                                                                                                                                                                                                                |
+| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white)   |
+| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)         |
+| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white)         |
+| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines)                                                                                                                                                                                                               |
+| **Additional** | Custom Middleware for error handling (404, 500)                                                                                                                                                                                                                                                                                 |
+
+## 🏛️ Architectural Highlights & Key Logic
+
+This project incorporates several advanced backend features to ensure robustness, scalability, and a superior user experience:
+
+* **Custom User Model & Avatars:** The platform utilizes a custom Django User model that replaces the default `username` with `email` for a modern authentication experience. Users have the ability to upload and manage their own personal avatars.
+* **Positional Numbering for Lectures:** To avoid issues with deleted objects and non-sequential primary keys, all lectures are ordered using a dedicated `position_number` field. This allows the mentor to easily and reliably reorder lessons at any time.
+* **Automatic `last_activity` Tracking:** Custom middleware automatically updates a `last_activity` timestamp for a user with every request, allowing the mentor to see who is active on the platform.
+* **Smart Chat System:** The chat leverages `is_read_user` and `is_read_admin` boolean flags on each message. This powers the real-time unread message counters and ensures that notifications are sent only when necessary.
+
+## 🧪 Database Diagram
+
+![Database Diagram](media/readme_images/tanja_tattoo_diagram.png)
 
 ## 🚀 Key Features
 
@@ -93,7 +106,7 @@ Over 200 hours were invested in this project. It was made with passion.
 
 4.  **Course Page**
     * An interactive lesson list with pagination and clear visual statuses: "Completed" (✅), "Pending Review" (⏳), and "Locked" (⚪).
-    * Each lesson includes a video, a detailed text lecture, and a homework assignment.
+    * Each lesson page includes a video, a detailed text lecture, and a homework assignment.
     * A submission form allows students to upload photos and add comments for their assignments. The form is automatically disabled after submission to prevent duplicate entries.
     * **Telegram** notifications are sent to the student (confirming submission) and the mentor (alerting to a new review).
 
@@ -215,19 +228,17 @@ Over 200 hours were invested in this project. It was made with passion.
     ![Box Application List](media/readme_images/box-application-list.jpg)
     </details>
 
-### IV. Additional Pages & Architectural Highlights
+### IV. Additional Pages & Status Handling
 
 * **Custom Error Pages:** Beautifully designed pages for 404, 500, and other HTTP errors, handled by custom middleware.
 * **Payment Status Pages:** Themed pages for successful, canceled, and failed payments to maintain a consistent user experience.
-* **Database Optimization:** All database queries are highly optimized using `select_related`, `prefetch_related`, and advanced annotation techniques (`Subquery`, `Count`) to ensure maximum performance.
-* **Custom Validation:** Forms include custom validation logic to ensure data integrity and provide helpful user feedback.
 
 <details>
 <summary>🖼️ View Screenshots</summary>
 
 ![Success Pay Page](media/readme_images/success_pay.jpg)
 ![Cancel Pay Page](media/readme_images/cancel-pay.jpg)
-![Error Pay Page](media/readme_images/error-pay.jpg)
+![Error Pay Page](media/readme_images/error_pay.jpg)
 ![404 Page](media/readme_images/404.jpg)
 ![500 Page](media/readme_images/500.jpg)
 </details>
@@ -252,6 +263,7 @@ Over 200 hours were invested in this project. It was made with passion.
 
 The project is extensively covered by over **600 lines of tests** using the **Pytest** framework, ensuring the reliability and stability of all key application features and business logic.
 
+To run the tests:
 ```bash
-    pytest
+pytest
 ```

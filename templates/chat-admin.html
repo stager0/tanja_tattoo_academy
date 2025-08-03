@@ -1,4 +1,4 @@
-{% extends "base-admin.html" %}
+{% extends "admin_templates/../base-admin.html" %}
 {% load static %}
 {% block styles %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7,8 +7,8 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
       rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'platform-student.css' %}">
-  <link rel="stylesheet" href="{% static 'platform-student-responsive.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
 {% endblock %}
 
 {% block title %}Чат з Учнем - {{ block.super }}{% endblock %}

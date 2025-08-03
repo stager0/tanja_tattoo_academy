@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Tanja Tattoo Academy{% endblock %}</title>
+  <title>{% block title %}GodArtAcademy{% endblock %}</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,20 +13,22 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
       rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'platform-student.css' %}">
-  <link rel="stylesheet" href="{% static 'platform-student-responsive.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
   {% block styles %}{% endblock %}
 </head>
 <body>
 <div class="platform-wrapper">
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="{% url 'dashboard' %}" class="logo">Tanja<span>Tattoo</span></a>
+        {% block logo %}
+            <a href="{% url 'dashboard' %}" class="logo">GodArt<span>Tattoo</span></a>
+        {% endblock %}
     </div>
     <nav class="main-menu">
       <a href="{% url 'dashboard' %}" id="nav-dashboard"><i class="fas fa-home"></i> Головна</a>
-      {% if next_lesson %}
-        <a href="{% url 'course' pk=next_lesson %}" id="nav-course">
+      {% if lesson %}
+        <a href="{% url 'course' pk=lesson.position_number %}" id="nav-course">
           <i class="fas fa-book-open"></i> Мій курс
         </a>
       {% else %}
@@ -73,7 +75,7 @@
   </main>
 </div>
 <div class="sidebar-overlay"></div>
-<script src="{% static 'platform.js' %}"></script>
+<script src="{% static 'js/platform.js' %}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

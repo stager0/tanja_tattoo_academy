@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-
+{% extends "user_templates/../base.html" %}
 {% load static %}
 
 {% block title %}Чат з ментором - {{ block.super }}{% endblock %}
@@ -8,39 +7,41 @@
 {% block content %}
   <div class="chat-container">
     <div class="chat-messages">
-      {% if messages %}
-        {% for msg in messages %}
-          {% if msg.user in admin_ids %}
-            <div class="message received">
-              <img src="{{ interlocutor_avatar }}" alt="Mentor Avatar" class="message-avatar">
-              <div class="message-bubble">
-                <p>{{ msg.text }}</p>
-                {% if msg.image %}
-                  <div class="message-attachment">
-                    <img src="{{ msg.image.url }}" alt="Homework Image">
-                  </div>
-                {% endif %}
-                <div class="message-time">{{ msg.send_time }}</div>
-              </div>
-            </div>
-          {% elif msg.user not in admin_ids %}
-            <div class="message sent">
-              <img src="{{ user.avatar.url }}"
-                   alt="User Avatar"
-                   class="message-avatar">
-              <div class="message-bubble">
-                <p>{{ msg.text }}</p>
-                {% if msg.image %}
-                  <div class="message-attachment">
-                    <img src="{{ msg.image.url }}" alt="Homework Image">
-                  </div>
-                {% endif %}
-                <div class="message-time">{{ msg.send_time }}</div>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+      {% if page_obj.has_previous %}
+        <div class="load-more-container">
+          <button id="load-more-btn" class="btn btn-secondary">Завантажити попередні</button>
+        </div>
       {% endif %}
+
+      {% for msg in messages %}
+        {% if msg.from_admin %}
+          <div class="message received">
+            <img src="{{ interlocutor_avatar }}" alt="Mentor Avatar" class="message-avatar">
+            <div class="message-bubble">
+              <p>{{ msg.text|safe }}</p>
+              {% if msg.image %}
+                <div class="message-attachment">
+                  <img src="{{ msg.image.url }}" alt="Homework Image">
+                </div>
+              {% endif %}
+              <div class="message-time">{{ msg.date }}</div>
+            </div>
+          </div>
+        {% else %}
+          <div class="message sent">
+            <img src="{{ user.avatar.url }}" alt="User Avatar" class="message-avatar">
+            <div class="message-bubble">
+              <p>{{ msg.text }}</p>
+              {% if msg.image %}
+                <div class="message-attachment">
+                  <img src="{{ msg.image.url }}" alt="Homework Image">
+                </div>
+              {% endif %}
+              <div class="message-time">{{ msg.date }}</div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     </div>
 
     <div class="chat-input-area">
@@ -48,7 +49,7 @@
       <form class="chat-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="file-upload-input" class="btn-icon" aria-label="Прикріпити фото">
-            <i class="fas fa-paperclip"></i>
+          <i class="fas fa-paperclip"></i>
         </label>
         <input type="file" id="file-upload-input" name="image" accept="image/*" style="display: none;">
         <textarea class="autoresize-textarea" name="text" placeholder="Напишіть повідомлення..." rows="1"></textarea>
@@ -64,15 +65,59 @@
     <img class="modal-content" id="modalImage">
   </div>
 {% endblock %}
-{% block scripts %}
-{{ block.super }}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const chatMessages = document.querySelector('.chat-messages');
 
-        if (chatMessages) {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    });
-</script>
+{% block scripts %}
+  {{ block.super }}
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const chatMessages = document.querySelector('.chat-messages');
+          if (chatMessages) {
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+
+          const loadMoreBtn = document.getElementById('load-more-btn');
+          if (!loadMoreBtn) return;
+
+          // ВИПРАВЛЕНО: Починаємо з поточної сторінки
+          let currentPageNumber = parseInt("{{ page_obj.number }}");
+
+          loadMoreBtn.addEventListener('click', async () => {
+              // ВИПРАВЛЕНО: Перевіряємо, чи є попередня сторінка
+              if (currentPageNumber <= 1) {
+                  loadMoreBtn.style.display = 'none';
+                  return;
+              }
+
+              // ВИПРАВЛЕНО: Запитуємо попередню сторінку
+              const previousPageNumber = currentPageNumber - 1;
+              const loadUrl = "{% url 'load_more_messages' chat_pk %}";
+
+              loadMoreBtn.textContent = 'Завантаження...';
+              loadMoreBtn.disabled = true;
+
+              const response = await fetch(`${loadUrl}?page=${previousPageNumber}`);
+              const newMessagesHtml = await response.text();
+
+              // Зберігаємо поточну висоту скролу, щоб чат не "стрибав"
+              const oldScrollHeight = chatMessages.scrollHeight;
+
+              // Вставляємо нові повідомлення після кнопки
+              loadMoreBtn.parentElement.insertAdjacentHTML('afterend', newMessagesHtml);
+
+              // Відновлюємо позицію скролу
+              chatMessages.scrollTop = chatMessages.scrollHeight - oldScrollHeight;
+
+              loadMoreBtn.textContent = 'Завантажити попередні';
+              loadMoreBtn.disabled = false;
+
+              // Оновлюємо номер поточної сторінки
+              currentPageNumber = previousPageNumber;
+
+              // Ховаємо кнопку, якщо дійшли до першої сторінки
+              if (currentPageNumber <= 1) {
+                  loadMoreBtn.style.display = 'none';
+              }
+          });
+      });
+  </script>
 {% endblock %}

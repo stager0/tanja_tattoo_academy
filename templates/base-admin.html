@@ -12,14 +12,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'platform-admin.css' %}">
-    <link rel="stylesheet" href="{% static 'platform-admin-responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/platform-admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/platform-admin-responsive.css' %}">
+    {% if css %}
+        <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
+    {% endif %}
     {% block styles %}{% endblock %}
 </head>
 <body>
 <div class="platform-wrapper">
     <aside class="sidebar">
-        <div class="sidebar-header"><a href="{% url 'admin_dashboard' %}" class="logo">Tanja<span>Tattoo</span></a></div>
+        <div class="sidebar-header"><a href="{% url 'admin_dashboard' %}" class="logo">GodArt<span>Tattoo</span></a></div>
         <nav class="main-menu">
             <a href="{% url 'admin_dashboard' %}" id="nav-admin-dashboard"><i class="fas fa-home"></i> Головна</a>
         </nav>
@@ -30,6 +34,7 @@
             <a href="{% url 'admin_lecture_list' %}" id="nav-admin-lectures"><i class="fas fa-book-open"></i> Керування лекціями</a>
             <a href="{% url 'admin_students' %}" id="nav-admin-students"><i class="fas fa-users"></i> Усі учні</a>
             <a href="{% url 'admin_boxes' %}?type=active" id="nav-admin-boxes"><i class="fas fa-shipping-fast"></i> Бокси на відправку</a>
+            <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
         </nav>
     </aside>
     <main class="main-content">
@@ -42,8 +47,8 @@
                 <div class="user-profile">
                     <img src="{{ user.avatar.url }}"
                          alt="Admin Avatar">
-                    <div class="user-info"><span class="user-name">Ментор Таня</span><span
-                            class="user-role">Адміністратор</span>
+                    <div class="user-info"><span class="user-name">{{ user.first_name }} {{ user.last_name }}</span><span
+                            class="user-role">Ментор</span>
                     </div>
                 </div>
             </div>
@@ -54,7 +59,7 @@
     </main>
 </div>
 <div class="sidebar-overlay"></div>
-<script src="{% static 'platform.js' %}"></script>
+<script src="{% static 'js/platform.js' %}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

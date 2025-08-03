@@ -1,39 +1,8 @@
-{% extends 'base-admin.html' %}
+{% extends 'admin_templates/../base-admin.html' %}
 {% load static %}
 
-{% block title %}Редагування лекції - {{ block.super }}{% endblock %}
-{% block header_title %}Редагування лекції{% endblock %}
-
-{% block styles %}
-  {{ block.super }}
-  <style>
-      /* Стиль для полей ввода, который пропал */
-      .form-control {
-          width: 100%;
-          background-color: var(--bg-dark);
-          border: 1px solid var(--border-color);
-          border-radius: var(--border-radius-small);
-          padding: 14px;
-          color: var(--text-light);
-          font-family: var(--font-primary);
-          font-size: 1rem;
-          transition: all var(--transition-fast);
-      }
-
-      .form-control:focus {
-          outline: none;
-          border-color: var(--primary-orange);
-          box-shadow: 0 0 0 3px var(--accent-glow);
-      }
-
-      /* Адаптивность для сетки формы на мобильных устройствах */
-      @media (max-width: 768px) {
-          .form-grid {
-              grid-template-columns: 1fr; /* На мобильных сетка будет в одну колонку */
-          }
-      }
-  </style>
-{% endblock %}
+{% block title %}Створення лекції - {{ block.super }}{% endblock %}
+{% block header_title %}Створення нової лекції{% endblock %}
 
 {% block content %}
   <div class="card">
@@ -87,7 +56,7 @@
         <div id="editor-container"></div>
         {{ form.lecture }}
         {% if form.lecture.errors %}
-            <div class="error-text">{{ form.lecture.errors }}</div>
+          <div class="error-text">{{ form.lecture.errors }}</div>
         {% endif %}
       </div>
 
@@ -99,7 +68,7 @@
         <div id="homework-editor-container"></div>
         {{ form.homework }}
         {% if form.homework.errors %}
-            <div class="error-text">{{ form.homework.errors }}</div>
+          <div class="error-text">{{ form.homework.errors }}</div>
         {% endif %}
       </div>
 
@@ -115,31 +84,41 @@
   {{ block.super }}
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
   <script>
       document.addEventListener('DOMContentLoaded', function () {
+
+          // Эта функция находит поле Django и заменяет его на редактор Quill
           function createQuillEditor(textareaSelector, placeholder, isSimpleToolbar = false) {
               const textarea = document.querySelector(textareaSelector);
               if (!textarea) return null;
+
               const editorDiv = document.createElement('div');
               textarea.parentNode.insertBefore(editorDiv, textarea);
               textarea.style.display = 'none';
+
               const toolbarOptions = isSimpleToolbar
                   ? [['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean']]
                   : [[{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link', 'image'], ['clean']];
+
               const quill = new Quill(editorDiv, {
                   theme: 'snow',
                   modules: {toolbar: toolbarOptions},
                   placeholder: placeholder
               });
+
               quill.root.innerHTML = textarea.value;
+
               return {quill, textarea};
           }
 
-          const lectureEditor = createQuillEditor('#id_lecture', 'Редагуйте текст лекції тут...');
+          // Инициализируем редакторы для полей лекции и домашнего задания
+          const lectureEditor = createQuillEditor('#id_lecture', 'Почніть писати текст лекції тут...');
           const homeworkEditor = createQuillEditor('#id_homework', 'Опишіть домашнє завдання тут...', true);
 
-          const editForm = document.getElementById('edit-lecture-form');
-          editForm.addEventListener('submit', function () {
+          // Перед отправкой формы, копируем HTML-контент из редакторов обратно в скрытые поля
+          const createForm = document.getElementById('create-lecture-form');
+          createForm.addEventListener('submit', function () {
               if (lectureEditor) {
                   lectureEditor.textarea.value = lectureEditor.quill.root.innerHTML;
               }

@@ -24,6 +24,7 @@ packaging==25.0
 pillow==11.3.0
 pluggy==1.6.0
 propcache==0.3.2
+psycopg2-binary==2.9.10
 Pygments==2.19.2
 pyTelegramBotAPI==4.28.0
 pytest==8.4.1

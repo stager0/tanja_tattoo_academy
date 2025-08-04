@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'cloudinary',
     "debug_toolbar",
     "web",
+    "authentication"
 ]
 
 MIDDLEWARE = [
@@ -94,8 +95,12 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_NAME"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "POST": os.getenv("POSTGRES_POST")
     }
 }
 
@@ -130,7 +135,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "web.UserModel"
+AUTH_USER_MODEL = "authentication.UserModel"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

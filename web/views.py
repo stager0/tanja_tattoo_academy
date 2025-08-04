@@ -95,7 +95,7 @@ class CreateCheckoutSessionView(View):
                 success_url=request.build_absolute_uri(reverse("success_pay")),
                 cancel_url=request.build_absolute_uri(reverse("cancel_pay")),
                 metadata={"order_id": order.pk, "tariff": tariff},
-                customer_creation = 'always'
+                customer_creation='always'
             )
             response = HttpResponseRedirect(checkout_session.url)
             response.status_code = 303
@@ -342,7 +342,7 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
 
 class ChatView(LoginRequiredMixin, generic.FormView):
     form_class = ChatForm
-    template_name = "user_templates/../templates/chat.html"
+    template_name = "chat.html"
 
     def get_chat(self):
         user = self.request.user
@@ -497,27 +497,22 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         return context
 
     def form_valid(self, form):
-        is_password_change = 'change_password' in self.request.POST
 
-        if is_password_change:
+        if 'change_password' in self.request.POST:
             new_password = form.cleaned_data.get('new_password1')
             if new_password:
-                user = self.request.user
-                user.set_password(new_password)
-                user.save()
-                messages.success(self.request, "Ваш пароль було успішно змінено!")
+                form.instance.set_password(new_password)
                 update_session_auth_hash(self.request, user)
+                messages.success(self.request, "Your password was changed successfully!")
         else:
-            if 'avatar' in form.changed_data:
-                old_user_instance = self.get_object()
-                old_avatar = old_user_instance.avatar
-                if old_avatar and "base_icon.png" not in old_avatar.name:
-                    if os.path.exists(old_avatar.path):
-                        old_avatar.delete(save=False)
+            messages.success(self.request, "Your profile was updated successfully.")
 
-            messages.success(self.request, "Ваші дані було успішно оновлено.")
+        response = super().form_valid(form)
 
-        return super().form_valid(form)
+        if 'change_password' in self.request.POST and form.cleaned_data.get('new_password1'):
+            update_session_auth_hash(self.request, form.instance)
+
+        return response
 
 
 @method_decorator(redirect_superuser, name="dispatch")

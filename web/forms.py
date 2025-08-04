@@ -114,7 +114,7 @@ class ProfileForm(forms.ModelForm):
                 raise forms.ValidationError("Розмір фото має бути максимум 2МБ.")
             if avatar.content_type not in ["image/jpeg", "image/png", "image/webp"]:
                 raise forms.ValidationError("Аватар має бути файлом у форматі JPG, PNG або WEBP.")
-
+        self.user.avatar.delete()
         return avatar
 
     def clean(self):

@@ -4,7 +4,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
-from .custom_auth_user_manager import EmailAbstractUser
+from authentication.custom_auth_user_manager import EmailAbstractUser
+from authentication.models import UserModel
 
 
 class SubscribeTariff(models.Model):
@@ -40,28 +41,6 @@ class Code(models.Model):
     start_box_coupon_is_activated = models.BooleanField(default=False, null=True, blank=True)
 
 
-def profile_avatar(instance, filename):
-    filename_end = filename.split(".")[-1]
-    if filename_end not in ["jpg", "jpeg", "png", "webp"]:
-        raise ValueError("File must be photo!")
-    filename_slug = slugify(instance.get_full_name()) or "user"
-    return f"user_avatars/{instance.id}_{filename_slug}.{filename_end}"
-
-# user
-class UserModel(EmailAbstractUser):
-    code = models.OneToOneField(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
-    phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
-    avatar = models.ImageField(upload_to=profile_avatar, blank=True, storage=MediaCloudinaryStorage(), default="base_icon_k7nhiw")
-    last_activity = models.DateTimeField(null=True, blank=True)
-    telegram_chat_id = models.CharField(null=True, blank=True)
-
-    def __str__(self):
-        return self.email
-
-    def get_full_name(self):
-        return f"{self.first_name} {self.last_name}"
-
-
 class Chat(models.Model):
     user = models.OneToOneField(UserModel, related_name="chats", on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
@@ -76,7 +55,7 @@ class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
     text = models.CharField(max_length=512, null=False, blank=False)
     user = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=upload_message_image, storage=MediaCloudinaryStorage(), blank=True, null=True)
+    image = models.ImageField(upload_to=upload_message_image, max_length=300, storage=MediaCloudinaryStorage(), blank=True, null=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     is_read_user = models.BooleanField(default=False, blank=True, null=True)
     is_read_admin = models.BooleanField(default=False, blank=True, null=True)
@@ -102,7 +81,7 @@ class HomeWork(models.Model):
     lecture = models.ForeignKey(Lecture, related_name="home_works", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(UserModel, related_name="home_works", on_delete=models.CASCADE)
     was_checked = models.BooleanField(default=False, null=True, blank=True)
-    image = models.ImageField(upload_to=upload_homework_images, default="system_files/not_found", storage=MediaCloudinaryStorage(), null=True, blank=True)
+    image = models.ImageField(upload_to=upload_homework_images, max_length=300, default="system_files/not_found", storage=MediaCloudinaryStorage(), null=True, blank=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     text = models.CharField(max_length=512, null=True, blank=True, default="Користувач відправив дз без запитань.")
 

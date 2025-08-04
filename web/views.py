@@ -1,6 +1,5 @@
 import os
 
-from datetime import timedelta
 from decimal import Decimal
 from functools import wraps
 
@@ -22,19 +21,18 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import generic, View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import CreateView
 from dotenv import load_dotenv
 
-from web.email_sender import send_password_change_email, send_after_register_email, send_email_subscribe_code
-from web.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm, BoxApplicationForm, \
-    ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm
-from web.generators import generate_reset_password_code, generate_subscribe_code
-from web.models import ResetCode, Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
+from web.email_sender import send_email_subscribe_code
+from web.forms import BoxApplicationForm, ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm
+from web.generators import generate_subscribe_code
+from web.models import Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
     SubscribeTariff, Order, Code
 from web.telegram_bot import send_message_in_telegram
 
 load_dotenv()
 
+UserModel = get_user_model()
 
 def redirect_superuser(view_func):
     @wraps(view_func)
@@ -144,125 +142,6 @@ class Webhook(View):
                 send_email_subscribe_code(email=email, code=new_code.code, full_name=full_name)
 
         return HttpResponse(status=200)
-
-
-class RegisterView(CreateView):
-    form_class = CustomRegisterForm
-    template_name = "registration/register.html"
-    success_url = reverse_lazy('login')
-
-    def form_valid(self, form):
-        with transaction.atomic():
-            try:
-                code_obj = form.cleaned_data.get("code", None)
-                if code_obj:
-                    code_obj.is_activated = True
-                    code_obj.activated_date = timezone.now()
-                    code_obj.save()
-
-                email = form.cleaned_data.get("email", "")
-                full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
-                if email and full_name:
-                    send_after_register_email(email=email, full_name=full_name)
-
-                self.object = form.save()
-
-                Chat.objects.create(
-                    user=self.object
-                )
-                mentor = UserModel.objects.filter(is_superuser=True).first()
-                if mentor:
-                    mentor_chat_id = mentor.telegram_chat_id if mentor.telegram_chat_id else None
-                    if mentor_chat_id:
-                        send_message_in_telegram(chat_id=mentor_chat_id,
-                                                 text=f"Юзер '{full_name}' тільки що зареєструвався на платформі.")
-                return super().form_valid(form)
-            except Exception as e:
-                print(e)
-                response = HttpResponseRedirect(reverse("register"))
-                response.status_code = 400
-                return response
-
-
-class ChangePasswordRequestView(generic.FormView):
-    form_class = PasswordChangeRequestForm
-    template_name = "registration/change_password_request.html"
-    success_url = reverse_lazy("email_sent_info")
-
-    def form_valid(self, form):
-        if form.cleaned_data["email"] is not None and form.cleaned_data["full_name"] is not None:
-            email = form.cleaned_data.get("email")
-            full_name = form.cleaned_data.get("full_name")
-            code = generate_reset_password_code()
-            ResetCode.objects.create(
-                user_email=email,
-                code=code,
-            )
-            user = UserModel.objects.filter(email=email).first()
-            chat_id = None
-
-            if user and user.telegram_chat_id:
-                chat_id = user.telegram_chat_id
-
-            if chat_id:
-                send_message_in_telegram(
-                    chat_id=chat_id,
-                    text=(
-                        "✉️ Хтось запросив код для зміни вашого пароля. Ми вже надіслали його на вашу електронну пошту.\n"
-                        "Якщо це були не ви — просто проігноруйте це повідомлення. Ваш обліковий запис залишиться в безпеці. 🔒")
-                )
-
-            send_password_change_email(email=email, full_name=full_name, activation_code=code)
-            return super().form_valid(form)
-
-        else:
-            return super().form_valid(form)
-
-
-class ChangePasswordView(generic.FormView):
-    form_class = ChangePasswordForm
-    template_name = "registration/change_password.html"
-    success_url = reverse_lazy("change_password_success")
-
-    def form_valid(self, form):
-        code = form.cleaned_data.get("code")
-        password = form.cleaned_data.get("password1")
-
-        try:
-            code_obj = ResetCode.objects.get(code=code)
-
-            if code_obj.is_activated:
-                form.add_error('code', "На жаль, ваш код вже активований.")
-                return self.form_invalid(form)
-
-            if code_obj.created_date + timedelta(minutes=15) < timezone.now():
-                form.add_error('code', "На жаль, ваш код прострочений.")
-                return self.form_invalid(form)
-
-            user = get_user_model().objects.get(email=code_obj.user_email)
-
-        except (ResetCode.DoesNotExist, get_user_model().DoesNotExist):
-            form.add_error('code', "Введений код недійсний або пов'язаний з ним акаунт не знайдено.")
-            return self.form_invalid(form)
-
-        user.set_password(password)
-        user.save()
-
-        code_obj.is_activated = True
-        code_obj.save()
-
-        if user and user.telegram_chat_id:
-            send_message_in_telegram(
-                chat_id=user.telegram_chat_id,
-                text=(
-                    "✅ Ваш пароль було успішно змінено!\n"
-                    "Тепер ви можете використовувати свій акаунт з новими даними.\n"
-                    "Якщо це були не ви — негайно зверніться в підтримку. 🔒"
-                )
-            )
-
-        return super().form_valid(form)
-
 
 class IndexView(generic.FormView):
     template_name = "user_templates/index.html"
@@ -497,6 +376,7 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         return context
 
     def form_valid(self, form):
+        user = self.request.user
 
         if 'change_password' in self.request.POST:
             new_password = form.cleaned_data.get('new_password1')
@@ -505,6 +385,10 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
                 update_session_auth_hash(self.request, user)
                 messages.success(self.request, "Your password was changed successfully!")
         else:
+            if "avatar" in self.request.FILES:
+                if user.avatar and user.avatar.name != self.request.FILES["avatar"].name:
+                    user.avatar.delete(save=False)
+
             messages.success(self.request, "Your profile was updated successfully.")
 
         response = super().form_valid(form)

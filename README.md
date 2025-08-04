@@ -39,7 +39,7 @@ This project incorporates several advanced backend features to ensure robustness
 
 ## 🧪 Database Diagram
 
-![Database Diagram](media/readme_images/tanja_tattoo_diagram.png)
+![Database Diagram](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/tanja_tattoo_diagram_c9kukr.png)
 
 ## 🚀 Key Features
 
@@ -55,19 +55,19 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Homepage Section 1](media/readme_images/index_1.jpg)
-    ![Homepage Section 2](media/readme_images/index_2.jpg)
-    ![Homepage Section 3](media/readme_images/index_3.jpg)
-    ![Homepage Section 4](media/readme_images/index_4.jpg)
-    ![Homepage Section 5](media/readme_images/index_5.jpg)
-    ![Homepage Section 6](media/readme_images/index_6.jpg)
-    ![Homepage Section 7](media/readme_images/index_7.jpg)
-    ![Homepage Section 8](media/readme_images/index_8.jpg)
-    ![Pricing Tiers](media/readme_images/index_tiers.jpg)
-    ![Tier Details Modal](media/readme_images/index_tarif.jpg)
-    ![Stripe Checkout Page](media/readme_images/stripe.jpg)
-    ![Subscription Code Email](media/readme_images/stripe-email.jpg)
-    ![Telegram Notification from Contact Form](media/readme_images/telegram-form.jpg)
+    ![Homepage Section 1](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_1_i40vmu.jpg)
+    ![Homepage Section 2](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_2_czjjay.jpg)
+    ![Homepage Section 3](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_3_zjtifq.jpg)
+    ![Homepage Section 4](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_4_muq9qn.jpg)
+    ![Homepage Section 5](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_5_qnmkrw.jpg)
+    ![Homepage Section 6](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_6_hetny6.jpg)
+    ![Homepage Section 7](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_7_o0umb9.jpg)
+    ![Homepage Section 8](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_8_mbuacg.jpg)
+    ![Pricing Tiers](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/index_tiers_vlmaj0.jpg)
+    ![Tier Details Modal](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_tarif_tfooou.jpg)
+    ![Stripe Checkout Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/stripe_wiuvzc.jpg)
+    ![Subscription Code Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/stripe-email_ucj8px.png)
+    ![Telegram Notification from Contact Form](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-form_tspjhz.png)
     </details>
 
 2.  **Authentication System**
@@ -79,16 +79,16 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Login Page](media/readme_images/login.jpg)
-    ![Registration Page](media/readme_images/register.jpg)
-    ![Welcome Email](media/readme_images/welcome_email.jpg)
-    ![Welcome Telegram Notification](media/readme_images/telegram-user-registered.jpg)
-    ![Forgot Password Page](media/readme_images/forgot-password.jpg)
-    ![Success Request Page](media/readme_images/forgot-password-sent.jpg)
-    ![Recovery Code Email](media/readme_images/forgot-password-email.jpg)
-    ![Reset Password Form](media/readme_images/forgot-password-form.jpg)
-    ![Reset Password Success](media/readme_images/forgot-password-success.jpg)
-    ![Telegram Password Change Notification](media/readme_images/telegram-change-password.jpg)
+    ![Login Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/login_urgbwp.png)
+    ![Registration Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/register_i9obeu.png)
+    ![Welcome Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/welcome_email_lcnufe.png)
+    ![Welcome Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-user-registered_ch48h2.png)
+    ![Forgot Password Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password_pjy8dl.jpg)
+    ![Success Request Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-sent_urwopx.jpg)
+    ![Recovery Code Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/forgot-password-email_wylrat.png)
+    ![Reset Password Form](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-form_fhvxm2.jpg)
+    ![Reset Password Success](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-success_biw7nd.jpg)
+    ![Telegram Password Change Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-change-password_bf7kn0.png)
     </details>
 
 ### II. Student Platform
@@ -101,7 +101,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Student Dashboard](media/readme_images/dashboard.jpg)
+    ![Student Dashboard](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/dashboard_xv3jql.jpg)
     </details>
 
 4.  **Course Page**
@@ -113,9 +113,9 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Course Page View 1](media/readme_images/my_course.jpg)
-    ![Course Page View 2](media/readme_images/my_course1.jpg)
-    ![Mentor's Telegram Notification for New Homework](media/readme_images/telegram-homework.jpg)
+    ![Course Page View 1](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/my_course_ap3aws.jpg)
+    ![Course Page View 2](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/my_course1_alyvsz.jpg)
+    ![Mentor's Telegram Notification for New Homework](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-homework_frl7ef.png)
     </details>
 
 5.  **Start Box Application**
@@ -127,11 +127,11 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Box Application Page](media/readme_images/box-application.jpg)
-    ![Box Application Success Modal](media/readme_images/box-application-success.jpg)
-    ![Box Application Already Sent View](media/readme_images/box-application-sent.jpg)
-    ![Mentor's Telegram Notification for New Application](media/readme_images/telegram-box-application.jpg)
-    ![Student's Telegram Notification of Application Receipt](media/readme_images/telegram-box-application-user.jpg)
+    ![Box Application Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/box-application_geqlum.jpg)
+    ![Box Application Success Modal](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/box-application-success_arrhb7.jpg)
+    ![Box Application Already Sent View](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/box-application-sent_tyqgx2.jpg)
+    ![Mentor's Telegram Notification for New Application](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/telegram-box-application_ycwbsw.png)
+    ![Student's Telegram Notification of Application Receipt](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/telegram-box-application-user_znkty0.png)
     </details>
 
 6.  **Chat with Mentor**
@@ -143,9 +143,9 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Student Chat Page](media/readme_images/chat.jpg)
-    ![Student's Telegram Notification](media/readme_images/telegram-chat.jpg)
-    ![Mentor's Telegram Notification](media/readme_images/telegram-chat-admin.jpg)
+    ![Student Chat Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/chat_ga0pxy.jpg)
+    ![Student's Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-chat_rd8mud.png)
+    ![Mentor's Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-chat-admin_fnx55e.png)
     </details>
 
 7.  **User Profile**
@@ -154,7 +154,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Profile Page](media/readme_images/profile.jpg)
+    ![Profile Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326034/profile_edy6bl.jpg)
     </details>
 
 ### III. Custom Admin Panel for Mentor
@@ -165,7 +165,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Mentor Dashboard](media/readme_images/mentor-dashboard.jpg)
+    ![Mentor Dashboard](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/mentor-dashboard_uhe0we.jpg)
     </details>
 
 9.  **Homework Review Workflow**
@@ -176,12 +176,12 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Homework Review List](media/readme_images/tasks-list.jpg)
-    ![Detailed Review Page](media/readme_images/tasks-detail.jpg)
-    ![Homework Submission Notification to Admin](media/readme_images/telegram-tasks-detail-admin.jpg)
-    ![Homework Approval Notification to User](media/readme_images/user-telegram-tasks.jpg)
-    ![Homework Rejection Notification to User](media/readme_images/tasks-detail_1.jpg)
-    ![Platform Chat Notification after Review](media/readme_images/user-task-review-chat.jpg)
+    ![Homework Review List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-list_qxu0oz.jpg)
+    ![Detailed Review Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_ehxigr.jpg)
+    ![Homework Submission Notification to Admin](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_1_ibkzza.jpg)
+    ![Homework Approval Notification to User](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/user-telegram-tasks_fhhtst.png)
+    ![Homework Rejection Notification to User](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_1_ibkzza.jpg)
+    ![Platform Chat Notification after Review](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/user-task-review-chat_ehdpry.jpg)
     </details>
 
 10. **Chat Management**
@@ -191,7 +191,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Admin Chat List](media/readme_images/admin-all-chats.jpg)
+    ![Admin Chat List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/admin-all-chats_hdgvwx.jpg)
     </details>
 
 11. **Lecture Management (CRUD)**
@@ -201,10 +201,10 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Lecture List](media/readme_images/lecture-list.jpg)
-    ![Edit Lecture](media/readme_images/lecture-edit.jpg)
-    ![Delete Lecture Confirmation](media/readme_images/lecture-delete.jpg)
-    ![Create Lecture](media/readme_images/lecture-create.jpg)
+    ![Lecture List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/lecture-list_qu6o59.jpg)
+    ![Edit Lecture](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/lecture-list_qu6o59.jpg)
+    ![Delete Lecture Confirmation](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/lecture-delete_xaaunm.jpg)
+    ![Create Lecture](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/lecture-create_ubbufw.jpg)
     </details>
 
 12. **Student List**
@@ -214,8 +214,8 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Student List (Grid View)](media/readme_images/students-list.jpg)
-    ![Student List (List View)](media/readme_images/students-list_1.jpg)
+    ![Student List (Grid View)](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/students-list_zvq6e1.jpg)
+    ![Student List (List View)](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/students-list_1_uaohlo.jpg)
     </details>
 
 13. **Start Box Application Management**
@@ -225,7 +225,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Box Application List](media/readme_images/box-application-list.jpg)
+    ![Box Application List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/box-application-list_esixpn.jpg)
     </details>
 
 ### IV. Additional Pages & Status Handling
@@ -236,11 +236,11 @@ This project incorporates several advanced backend features to ensure robustness
 <details>
 <summary>🖼️ View Screenshots</summary>
 
-![Success Pay Page](media/readme_images/success_pay.jpg)
-![Cancel Pay Page](media/readme_images/cancel-pay.jpg)
-![Error Pay Page](media/readme_images/error_pay.jpg)
-![404 Page](media/readme_images/404.jpg)
-![500 Page](media/readme_images/500.jpg)
+![Success Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/success_pay_w7n5j3.jpg)
+![Cancel Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/cancel-pay_mc95pu.jpg)
+![Error Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/error_pay_gulohe.jpg)
+![404 Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326024/404_dweekt.jpg)
+![500 Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/500_wa3w5h.jpg)
 </details>
 
 ## 🚀 Installation & Launch

@@ -1,5 +1,4 @@
-import os
-
+from cloudinary_storage.storage import MediaCloudinaryStorage
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils import timezone
@@ -52,7 +51,7 @@ def profile_avatar(instance, filename):
 class UserModel(EmailAbstractUser):
     code = models.OneToOneField(Code, related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
-    avatar = models.ImageField(upload_to=profile_avatar, blank=True, default="user_avatars/base_icon.png")
+    avatar = models.ImageField(upload_to=profile_avatar, blank=True, storage=MediaCloudinaryStorage(), default="base_icon_k7nhiw")
     last_activity = models.DateTimeField(null=True, blank=True)
     telegram_chat_id = models.CharField(null=True, blank=True)
 
@@ -68,12 +67,16 @@ class Chat(models.Model):
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
 
+def upload_message_image(instance, filename):
+    slug = slugify(instance.user.get_full_name()) or "user"
+    return f"message_images/{slug}_{instance.user.pk}_{instance.pk}_{filename}"
+
 # for chat
 class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
     text = models.CharField(max_length=512, null=False, blank=False)
     user = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="message_images/", blank=True, null=True)
+    image = models.ImageField(upload_to=upload_message_image, storage=MediaCloudinaryStorage(), blank=True, null=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     is_read_user = models.BooleanField(default=False, blank=True, null=True)
     is_read_admin = models.BooleanField(default=False, blank=True, null=True)
@@ -90,12 +93,16 @@ class Lecture(models.Model):
     homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
 
 
+def upload_homework_images(instance, filename):
+    slug = slugify(instance.user.get_full_name()) or "user"
+    return f"homework_images/{slug}_{instance.user.pk}_{instance.date}_{filename}"
+
 # Users homeworks
 class HomeWork(models.Model):
     lecture = models.ForeignKey(Lecture, related_name="home_works", on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(UserModel, related_name="home_works", on_delete=models.CASCADE)
     was_checked = models.BooleanField(default=False, null=True, blank=True)
-    image = models.ImageField(upload_to="homework_images", default="system_files/not_found.jpeg", null=True, blank=True)
+    image = models.ImageField(upload_to=upload_homework_images, default="system_files/not_found", storage=MediaCloudinaryStorage(), null=True, blank=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
     text = models.CharField(max_length=512, null=True, blank=True, default="Користувач відправив дз без запитань.")
 

@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${POSTGRES_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - MAILJET_API_KEY=${MAILJET_API_KEY}
+      - MAILJET_API_SECRET_KEY=${MAILJET_API_SECRET_KEY}
+      - URL_BASE=${URL_BASE}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - EMAIL_FIRST_PART=${EMAIL_FIRST_PART}
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+      - HOST=${HOST}
+      - TELEGRAM_BOT_KEY=${TELEGRAM_BOT_KEY}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_SECRET_KEY=${CLOUDINARY_SECRET_KEY}
+      - CLOUDINARY_NAME=${CLOUDINARY_NAME}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

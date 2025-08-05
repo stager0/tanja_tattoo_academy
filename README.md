@@ -2,40 +2,43 @@
 
 ![Tanja Tattoo Academy](media/readme_images/logo.jpg)
 
-**Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. This project provides an immersive and interactive learning experience for students, complemented by a powerful, custom-built administrative panel that gives the mentor complete control over the educational content, student management, and overall platform operations.
-
-The platform was developed with a strong focus on high-quality UI/UX, robust performance through optimized database queries, and the automation of routine tasks to create a seamless experience for both students and administrators.
+**Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. Developed as a commercial project for a real-world client, this application was built to be deployed in a live production environment on **Render**. This document provides a detailed overview of the project, with a special focus on its backend architecture, business logic, and API integrations. The project combines an intuitive user interface with a powerful, custom-built administrative panel, all powered by a robust and scalable backend.
 
 Over 200 hours were invested in this project. It was made with passion.
 
 ## ✨ Core Philosophy
 
-* **User-Centric Design:** Every feature, from the sales funnel to the learning dashboard, is designed to be intuitive and engaging.
-* **Automation & Efficiency:** Repetitive tasks, such as sending notifications and updating statuses, are fully automated to allow the mentor to focus on teaching, not administration.
-* **Performance First:** Database interactions are carefully optimized using advanced Django ORM techniques to ensure a fast and responsive experience, even with a large number of users and lessons.
-* **Seamless Integration:** The platform tightly integrates with external services like Stripe, Telegram, and Mailjet to create a unified and professional ecosystem.
+* **User-Centric Design:** Every feature, from the sales funnel to the learning dashboard, is designed to be intuitive and engaging for the end-user.
+* **Automation & Efficiency:** The backend is designed to automate repetitive tasks, such as sending notifications and updating statuses, allowing the mentor to focus on teaching, not administration.
+* **Performance First:** Backend performance is critical. Database interactions are carefully optimized using advanced Django ORM techniques to ensure a fast and responsive experience, even with a large number of users and lessons.
+* **Seamless Integration:** The platform's backend tightly integrates with external services like Stripe, Telegram, and Mailjet to create a unified and professional ecosystem.
 
 ## 🛠️ Tech Stack
 
-| Category          | Technology                                                                                                                                                                                                                                                                                                                      |
-| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Django ORM](https://img.shields.io/badge/Django-ORM-092E20?style=for-the-badge&logo=django&logoColor=white) |
-| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)                                                                                                         |
-| **Authentication**| Custom `User` model (email-based, no `username`)                                                                                                                                                                                                                                                                                |
-| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white)   |
-| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)         |
-| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white)         |
-| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines)                                                                                                                                                                                                               |
-| **Additional** | Custom Middleware for error handling (404, 500)                                                                                                                                                                                                                                                                                 |
+| Category | Technology                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| :--- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Django ORM](https://img.shields.io/badge/Django-ORM-092E20?style=for-the-badge&logo=django&logoColor=white)                                                                                                                       |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)                                                                                                                                                                                                                         |
+| **Authentication**| Custom `User` model (email-based, no `username`)                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)                                                                                                                            |
+| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white) |
+| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white)    ![Ngrok](https://img.shields.io/badge/ngrok-FF0000?style=for-the-badge&logo=ngrok&logoColor=white)                                                                                                        |
+| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines)                                                                                                                                                                                                                                                                                                                              |
+| **Key Libraries** | ![Pillow](https://img.shields.io/badge/Pillow-9747FF?style=for-the-badge) ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white) ![django-debug-toolbar](https://img.shields.io/badge/django--debug--toolbar-44B78B?style=for-the-badge)                                                                                                                                             |
+| **Additional** | Custom Middleware for error handling and printing (404, 500)                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## 🏛️ Architectural Highlights & Key Logic
 
 This project incorporates several advanced backend features to ensure robustness, scalability, and a superior user experience:
 
 * **Custom User Model & Avatars:** The platform utilizes a custom Django User model that replaces the default `username` with `email` for a modern authentication experience. Users have the ability to upload and manage their own personal avatars.
-* **Positional Numbering for Lectures:** To avoid issues with deleted objects and non-sequential primary keys, all lectures are ordered using a dedicated `position_number` field. This allows the mentor to easily and reliably reorder lessons at any time.
-* **Automatic `last_activity` Tracking:** Custom middleware automatically updates a `last_activity` timestamp for a user with every request, allowing the mentor to see who is active on the platform.
-* **Smart Chat System:** The chat leverages `is_read_user` and `is_read_admin` boolean flags on each message. This powers the real-time unread message counters and ensures that notifications are sent only when necessary.
+* **Positional Numbering for Lectures:** To avoid data integrity issues from object deletion, all lectures are ordered using a dedicated `position_number` field. This allows the mentor to reliably reorder lessons via a simple API endpoint, independent of the database primary key.
+**Automatic `last_activity` Tracking:** To monitor user engagement, the `last_activity` timestamp is updated upon every visit to the main Dashboard. This logic is handled within the view's `dispatch` method, providing an efficient way to track real-time activity in the admin panel.
+* **Smart Chat System:** The chat's backend logic leverages `is_read_user` and `is_read_admin` boolean flags on the `Message` model. This allows for highly efficient database queries to calculate unread message counts and ensures notifications are triggered only when necessary.
+* **Automated Webhook Development with Ngrok:** To facilitate local development and testing of incoming webhooks from services like Stripe and Telegram, the project uses a sophisticated, automated `ngrok` setup.
+    * The `Dockerfile` handles the installation of `ngrok` directly into the container image.
+    * On container startup, the `entrypoint.sh` script automatically starts an `ngrok` tunnel to expose the local port 8000.
+    * The script then retrieves the public URL from the ngrok API and uses it to dynamically configure the application, for instance, by programmatically setting the `Telegram webhook`. This level of automation streamlines the development workflow significantly.
 
 ## 🧪 Database Diagram
 
@@ -160,7 +163,7 @@ This project incorporates several advanced backend features to ensure robustness
 ### III. Custom Admin Panel for Mentor
 
 8.  **Mentor Dashboard**
-    * An "at-a-glance" dashboard summarizing the most critical information: pending homework, recent unread messages, and widgets for the highest and lowest student progress.
+    * An "at-a-glance" dashboard summarizing the most critical information: pending homework, recent unread messages, and widgets for the highest and lowest student progress. All data is aggregated via optimized backend queries for fast loading.
 
     <details>
     <summary>🖼️ View Screenshots</summary>
@@ -245,25 +248,28 @@ This project incorporates several advanced backend features to ensure robustness
 
 ## 🚀 Installation & Launch
 
-1.  **Configure Environment Variables:**
-    Create a `.env` file in the project root and fill in all required variables (API keys, database settings, `NGROK_AUTHTOKEN`, etc.).
+### Prerequisites
 
-2.  **Build the Docker Image:**
-    ```bash
-    docker build -t tanja-tattoo-app .
-    ```
+Make sure you have the following software installed on your system:
+* [Docker](https://www.docker.com/get-started)
+* [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
 
-3.  **Run the Container:**
-    Pass the environment variables from your local `.env` file to the container for a seamless startup.
+### Environment Configuration
+Create a `.env` file in the project root and fill in all required variables (API keys, database settings, `NGROK_AUTHTOKEN`, etc.). The `docker-compose.yaml` lists all required environment variables for the web service.
+
+### Using Docker Compose (Recommended)
+This is the simplest way to start the application and its database service for local development.
+
+1.  **Build and Run the Containers:**
+    Open your terminal in the project root and run:
     ```bash
-    docker run --env-file .env -p 8000:8000 tanja-tattoo-app
+    docker-compose up --build
     ```
 
 ## 🧪 Testing
 
-The project is extensively covered by over **600 lines of tests** using the **Pytest** framework, ensuring the reliability and stability of all key application features and business logic.
+The project is extensively covered by over **600 lines of tests** using the **Pytest** framework. Tests are focused on the backend, covering API endpoints, business logic, and model methods to ensure reliability.
 
-To run the tests:
+To run the tests with Docker Compose:
 ```bash
-pytest
-```
+docker-compose exec web pytest

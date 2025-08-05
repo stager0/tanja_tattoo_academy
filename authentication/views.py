@@ -10,8 +10,8 @@ from django.views.generic import CreateView
 
 from authentication.forms import CustomRegisterForm, PasswordChangeRequestForm, ChangePasswordForm
 from authentication.models import UserModel
-from web.email_sender import send_password_change_email, send_after_register_email
-from web.generators import generate_reset_password_code
+from authentication.email_sender import send_password_change_email, send_after_register_email
+from authentication.generators import generate_reset_password_code
 from web.models import ResetCode, Chat
 from web.telegram_bot import send_message_in_telegram
 

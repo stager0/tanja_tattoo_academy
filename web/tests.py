@@ -245,9 +245,9 @@ def test_stripe_webhook_changes_order_and_creates_new_code_also_sends_email(db, 
 
 @pytest.mark.django_db
 def test_register_user_with_code(db, client, mocker, code_master, user, admin_user):
-    mocker_mailjet = mocker.patch("web.views.send_after_register_email")
+    mocker_mailjet = mocker.patch("authentication.views.send_after_register_email")
     mocker_mailjet.return_value.status_code = 200
-    mocker_notification = mocker.patch("web.views.send_message_in_telegram")
+    mocker_notification = mocker.patch("authentication.views.send_message_in_telegram")
     mocker_notification.return_value.status_code = 200
     data = {
         "first_name": "Dmytro",
@@ -284,12 +284,12 @@ def test_register_user_with_code(db, client, mocker, code_master, user, admin_us
 
 @pytest.mark.django_db
 def test_change_password_request(db, client, mocker, user, user_without_chat):
-    mocker_send_password_change_email = mocker.patch("web.views.send_password_change_email")
+    mocker_send_password_change_email = mocker.patch("authentication.views.send_password_change_email")
     mocker_send_password_change_email.return_value.status_code = 200
-    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram = mocker.patch("authentication.views.send_message_in_telegram")
     mocker_send_message_in_telegram.return_value.status_code = 200
-    mocker_generate_reset_password_code = mocker.patch("web.views.generate_reset_password_code")
-    mocker_generate_reset_password_code.return_value = "AAAA-AAAA-AAAA"
+    mocker_generate_reset_password_code = mocker.patch("authentication.views.generate_reset_password_code")
+    mocker_generate_reset_password_code.return_value = "132432"
 
     url = reverse("change_password_request")
     request_correct = client.post(url, data={"email": user.email})
@@ -304,7 +304,7 @@ def test_change_password_request(db, client, mocker, user, user_without_chat):
     assert mocker_generate_reset_password_code.call_count == 2
     assert new_reset_code.count() == 2
     assert new_reset_code.first().user_email == user.email
-    assert new_reset_code.first().code == "AAAA-AAAA-AAAA"
+    assert new_reset_code.first().code == "132432"
 
 
 @pytest.mark.django_db
@@ -315,7 +315,7 @@ def test_change_password_view_302(db, client, user, code_reset_user_with_chat, u
         "password1": "qejejejj39123-=",
         "password2": "qejejejj39123-="
     }
-    mocker_send_message_in_telegram = mocker.patch("web.views.send_message_in_telegram")
+    mocker_send_message_in_telegram = mocker.patch("authentication.views.send_message_in_telegram")
     mocker_send_message_in_telegram.return_value.status_code = 200
 
     user.refresh_from_db()
@@ -438,16 +438,19 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
 
     response_change_name = client.post(url, data={"first_name": "Dmytro", "action": "update_profile"}, follow=True)
     user.refresh_from_db()
+    print(response_change_name)
     assert user.first_name == "Dmytro"
     assert "Ваші дані було успішно оновлено." in response_change_name.content.decode()
 
     response_change_last_name = client.post(url, data={"last_name": "Kozak", "action": "update_profile"}, follow=True)
     user.refresh_from_db()
+    print(response_change_last_name)
     assert user.last_name == "Kozak"
     assert "Ваші дані було успішно оновлено." in response_change_last_name.content.decode()
 
     response_change_phone = client.post(url, data={"phone": "+380666681625", "action": "update_profile"}, follow=True)
     user.refresh_from_db()
+    print(response_change_phone)
     assert user.phone == "+380666681625"
     assert "Ваші дані було успішно оновлено." in response_change_phone.content.decode()
 
@@ -460,6 +463,7 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
 
     response_change_password = client.post(url, data=password_change_data, follow=True)
     user.refresh_from_db()
+    print(response_change_password)
     assert user.check_password("47263r8y3he8dyj91jd") == True
     assert response_change_password.status_code == 200
     assert "Ваш пароль було успішно змінено!" in response_change_password.content.decode()
@@ -468,6 +472,7 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     password_change_data["new_password1"] = "fake_password"
     response_passwords_are_not_equal = client.post(url, data=password_change_data, follow=True)
     user.refresh_from_db()
+    print(response_passwords_are_not_equal)
     assert user.check_password("fake_password") == False
     assert "Паролі не співпадають." in response_passwords_are_not_equal.content.decode()
     assert "Ваші дані було успішно оновлено." not in response_passwords_are_not_equal.content.decode()
@@ -477,6 +482,7 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     password_change_data["new_password2"] = "nuihaidhudwddsuu"
     response_without_current_password = client.post(url, data=password_change_data, follow=True)
     user.refresh_from_db()
+    print(response_without_current_password)
     assert user.check_password("nuihaidhudwddsuu") == False
     assert response_without_current_password.status_code == 200
     assert "Введіть поточний пароль, щоб встановити новий." in response_without_current_password.content.decode()
@@ -484,6 +490,7 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
     password_change_data["current_password"] = "fake_current_password"
     response_fake_current_password = client.post(url, data=password_change_data, follow=True)
     user.refresh_from_db()
+    print(response_fake_current_password)
     assert user.check_password("nuihaidhudwddsuu") == False
     assert response_fake_current_password.status_code == 200
     assert "Неправильний поточний пароль." in response_fake_current_password.content.decode()

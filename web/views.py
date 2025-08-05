@@ -23,9 +23,9 @@ from django.views import generic, View
 from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 
-from web.email_sender import send_email_subscribe_code
+from authentication.email_sender import send_email_subscribe_code
 from web.forms import BoxApplicationForm, ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm
-from web.generators import generate_subscribe_code
+from authentication.generators import generate_subscribe_code
 from web.models import Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
     SubscribeTariff, Order, Code
 from web.telegram_bot import send_message_in_telegram
@@ -383,13 +383,13 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
             if new_password:
                 form.instance.set_password(new_password)
                 update_session_auth_hash(self.request, user)
-                messages.success(self.request, "Your password was changed successfully!")
+                messages.success(self.request, "Ваш пароль було успішно змінено!")
         else:
             if "avatar" in self.request.FILES:
                 if user.avatar and user.avatar.name != self.request.FILES["avatar"].name:
                     user.avatar.delete(save=False)
 
-            messages.success(self.request, "Your profile was updated successfully.")
+            messages.success(self.request, "Ваші дані було успішно оновлено.")
 
         response = super().form_valid(form)
 

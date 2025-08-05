@@ -1,6 +1,6 @@
 # Tanja Tattoo / GodArt Tattoo - Full Stack Training Platform
 
-![Tanja Tattoo Academy](media/readme_images/logo.jpg)
+![Tanja Tattoo Academy](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/logo_hqeenn.jpg))
 
 **Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. Developed as a commercial project for a real-world client, this application was built to be deployed in a live production environment on **Render**. This document provides a detailed overview of the project, with a special focus on its backend architecture, business logic, and API integrations. The project combines an intuitive user interface with a powerful, custom-built administrative panel, all powered by a robust and scalable backend.
 

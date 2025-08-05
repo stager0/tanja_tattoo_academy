@@ -47,14 +47,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'cloudinary',
     "debug_toolbar",
     "web",
+    "authentication"
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'web.middleware.ExceptionHandleMiddleware',
@@ -93,8 +95,12 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("POSTGRES_NAME"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "db",
+        "POST": "5432"
     }
 }
 
@@ -129,7 +135,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "web.UserModel"
+AUTH_USER_MODEL = "authentication.UserModel"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -141,16 +147,18 @@ import stripe
 stripe.api_key = STRIPE_SECRET_KEY
 
 STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = "/media/"
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_ROOT = BASE_DIR / "media"
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_SECRET_KEY'),
+}
 
 HANDLER404 = "web.views.custom_404_view"
 HANDLER500 = "web.views.custom_500_view"

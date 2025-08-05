@@ -2,44 +2,47 @@
 
 ![Tanja Tattoo Academy](media/readme_images/logo.jpg)
 
-**Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. This project provides an immersive and interactive learning experience for students, complemented by a powerful, custom-built administrative panel that gives the mentor complete control over the educational content, student management, and overall platform operations.
-
-The platform was developed with a strong focus on high-quality UI/UX, robust performance through optimized database queries, and the automation of routine tasks to create a seamless experience for both students and administrators.
+**Tanja Tattoo / GodArt Tattoo** is a comprehensive, production-ready Full Stack platform for online tattoo art training. Developed as a commercial project for a real-world client, this application was built to be deployed in a live production environment on **Render**. This document provides a detailed overview of the project, with a special focus on its backend architecture, business logic, and API integrations. The project combines an intuitive user interface with a powerful, custom-built administrative panel, all powered by a robust and scalable backend.
 
 Over 200 hours were invested in this project. It was made with passion.
 
 ## ✨ Core Philosophy
 
-* **User-Centric Design:** Every feature, from the sales funnel to the learning dashboard, is designed to be intuitive and engaging.
-* **Automation & Efficiency:** Repetitive tasks, such as sending notifications and updating statuses, are fully automated to allow the mentor to focus on teaching, not administration.
-* **Performance First:** Database interactions are carefully optimized using advanced Django ORM techniques to ensure a fast and responsive experience, even with a large number of users and lessons.
-* **Seamless Integration:** The platform tightly integrates with external services like Stripe, Telegram, and Mailjet to create a unified and professional ecosystem.
+* **User-Centric Design:** Every feature, from the sales funnel to the learning dashboard, is designed to be intuitive and engaging for the end-user.
+* **Automation & Efficiency:** The backend is designed to automate repetitive tasks, such as sending notifications and updating statuses, allowing the mentor to focus on teaching, not administration.
+* **Performance First:** Backend performance is critical. Database interactions are carefully optimized using advanced Django ORM techniques to ensure a fast and responsive experience, even with a large number of users and lessons.
+* **Seamless Integration:** The platform's backend tightly integrates with external services like Stripe, Telegram, and Mailjet to create a unified and professional ecosystem.
 
 ## 🛠️ Tech Stack
 
-| Category          | Technology                                                                                                                                                                                                                                                                                                                      |
-| :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Django ORM](https://img.shields.io/badge/Django-ORM-092E20?style=for-the-badge&logo=django&logoColor=white) |
-| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)                                                                                                         |
-| **Authentication**| Custom `User` model (email-based, no `username`)                                                                                                                                                                                                                                                                                |
-| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white)   |
-| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)         |
-| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white)         |
-| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines)                                                                                                                                                                                                               |
-| **Additional** | Custom Middleware for error handling (404, 500)                                                                                                                                                                                                                                                                                 |
+| Category | Technology                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| :--- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white) ![Django ORM](https://img.shields.io/badge/Django-ORM-092E20?style=for-the-badge&logo=django&logoColor=white)                                                                                                                       |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)                                                                                                                                                                                                                         |
+| **Authentication**| Custom `User` model (email-based, no `username`)                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Frontend** | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)                                                                                                                            |
+| **Deployment** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white) ![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=for-the-badge&logo=gunicorn&logoColor=white) |
+| **APIs & Webhooks**| ![Stripe](https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=stripe&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white) ![Mailjet](https://img.shields.io/badge/Mailjet-000000?style=for-the-badge&logo=mailjet&logoColor=white)    ![Ngrok](https://img.shields.io/badge/ngrok-FF0000?style=for-the-badge&logo=ngrok&logoColor=white)                                                                                                        |
+| **Testing** | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white) (600+ lines)                                                                                                                                                                                                                                                                                                                              |
+| **Key Libraries** | ![Pillow](https://img.shields.io/badge/Pillow-9747FF?style=for-the-badge) ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white) ![django-debug-toolbar](https://img.shields.io/badge/django--debug--toolbar-44B78B?style=for-the-badge)                                                                                                                                             |
+| **Additional** | Custom Middleware for error handling and printing (404, 500)                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ## 🏛️ Architectural Highlights & Key Logic
 
 This project incorporates several advanced backend features to ensure robustness, scalability, and a superior user experience:
 
 * **Custom User Model & Avatars:** The platform utilizes a custom Django User model that replaces the default `username` with `email` for a modern authentication experience. Users have the ability to upload and manage their own personal avatars.
-* **Positional Numbering for Lectures:** To avoid issues with deleted objects and non-sequential primary keys, all lectures are ordered using a dedicated `position_number` field. This allows the mentor to easily and reliably reorder lessons at any time.
-* **Automatic `last_activity` Tracking:** Custom middleware automatically updates a `last_activity` timestamp for a user with every request, allowing the mentor to see who is active on the platform.
-* **Smart Chat System:** The chat leverages `is_read_user` and `is_read_admin` boolean flags on each message. This powers the real-time unread message counters and ensures that notifications are sent only when necessary.
+* **Positional Numbering for Lectures:** To avoid data integrity issues from object deletion, all lectures are ordered using a dedicated `position_number` field. This allows the mentor to reliably reorder lessons via a simple API endpoint, independent of the database primary key.
+**Automatic `last_activity` Tracking:** To monitor user engagement, the `last_activity` timestamp is updated upon every visit to the main Dashboard. This logic is handled within the view's `dispatch` method, providing an efficient way to track real-time activity in the admin panel.
+* **Smart Chat System:** The chat's backend logic leverages `is_read_user` and `is_read_admin` boolean flags on the `Message` model. This allows for highly efficient database queries to calculate unread message counts and ensures notifications are triggered only when necessary.
+* **Automated Webhook Development with Ngrok:** To facilitate local development and testing of incoming webhooks from services like Stripe and Telegram, the project uses a sophisticated, automated `ngrok` setup.
+    * The `Dockerfile` handles the installation of `ngrok` directly into the container image.
+    * On container startup, the `entrypoint.sh` script automatically starts an `ngrok` tunnel to expose the local port 8000.
+    * The script then retrieves the public URL from the ngrok API and uses it to dynamically configure the application, for instance, by programmatically setting the `Telegram webhook`. This level of automation streamlines the development workflow significantly.
 
 ## 🧪 Database Diagram
 
-![Database Diagram](media/readme_images/tanja_tattoo_diagram.png)
+![Database Diagram](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/tanja_tattoo_diagram_c9kukr.png)
 
 ## 🚀 Key Features
 
@@ -55,19 +58,19 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Homepage Section 1](media/readme_images/index_1.jpg)
-    ![Homepage Section 2](media/readme_images/index_2.jpg)
-    ![Homepage Section 3](media/readme_images/index_3.jpg)
-    ![Homepage Section 4](media/readme_images/index_4.jpg)
-    ![Homepage Section 5](media/readme_images/index_5.jpg)
-    ![Homepage Section 6](media/readme_images/index_6.jpg)
-    ![Homepage Section 7](media/readme_images/index_7.jpg)
-    ![Homepage Section 8](media/readme_images/index_8.jpg)
-    ![Pricing Tiers](media/readme_images/index_tiers.jpg)
-    ![Tier Details Modal](media/readme_images/index_tarif.jpg)
-    ![Stripe Checkout Page](media/readme_images/stripe.jpg)
-    ![Subscription Code Email](media/readme_images/stripe-email.jpg)
-    ![Telegram Notification from Contact Form](media/readme_images/telegram-form.jpg)
+    ![Homepage Section 1](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_1_i40vmu.jpg)
+    ![Homepage Section 2](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_2_czjjay.jpg)
+    ![Homepage Section 3](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326028/index_3_zjtifq.jpg)
+    ![Homepage Section 4](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_4_muq9qn.jpg)
+    ![Homepage Section 5](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_5_qnmkrw.jpg)
+    ![Homepage Section 6](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326029/index_6_hetny6.jpg)
+    ![Homepage Section 7](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_7_o0umb9.jpg)
+    ![Homepage Section 8](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_8_mbuacg.jpg)
+    ![Pricing Tiers](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/index_tiers_vlmaj0.jpg)
+    ![Tier Details Modal](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326030/index_tarif_tfooou.jpg)
+    ![Stripe Checkout Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/stripe_wiuvzc.jpg)
+    ![Subscription Code Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/stripe-email_ucj8px.png)
+    ![Telegram Notification from Contact Form](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-form_tspjhz.png)
     </details>
 
 2.  **Authentication System**
@@ -79,16 +82,16 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Login Page](media/readme_images/login.jpg)
-    ![Registration Page](media/readme_images/register.jpg)
-    ![Welcome Email](media/readme_images/welcome_email.jpg)
-    ![Welcome Telegram Notification](media/readme_images/telegram-user-registered.jpg)
-    ![Forgot Password Page](media/readme_images/forgot-password.jpg)
-    ![Success Request Page](media/readme_images/forgot-password-sent.jpg)
-    ![Recovery Code Email](media/readme_images/forgot-password-email.jpg)
-    ![Reset Password Form](media/readme_images/forgot-password-form.jpg)
-    ![Reset Password Success](media/readme_images/forgot-password-success.jpg)
-    ![Telegram Password Change Notification](media/readme_images/telegram-change-password.jpg)
+    ![Login Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/login_urgbwp.png)
+    ![Registration Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/register_i9obeu.png)
+    ![Welcome Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/welcome_email_lcnufe.png)
+    ![Welcome Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-user-registered_ch48h2.png)
+    ![Forgot Password Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password_pjy8dl.jpg)
+    ![Success Request Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-sent_urwopx.jpg)
+    ![Recovery Code Email](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/forgot-password-email_wylrat.png)
+    ![Reset Password Form](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-form_fhvxm2.jpg)
+    ![Reset Password Success](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326027/forgot-password-success_biw7nd.jpg)
+    ![Telegram Password Change Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-change-password_bf7kn0.png)
     </details>
 
 ### II. Student Platform
@@ -101,7 +104,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Student Dashboard](media/readme_images/dashboard.jpg)
+    ![Student Dashboard](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/dashboard_xv3jql.jpg)
     </details>
 
 4.  **Course Page**
@@ -113,9 +116,9 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Course Page View 1](media/readme_images/my_course.jpg)
-    ![Course Page View 2](media/readme_images/my_course1.jpg)
-    ![Mentor's Telegram Notification for New Homework](media/readme_images/telegram-homework.jpg)
+    ![Course Page View 1](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/my_course_ap3aws.jpg)
+    ![Course Page View 2](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/my_course1_alyvsz.jpg)
+    ![Mentor's Telegram Notification for New Homework](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326044/telegram-homework_frl7ef.png)
     </details>
 
 5.  **Start Box Application**
@@ -127,11 +130,11 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Box Application Page](media/readme_images/box-application.jpg)
-    ![Box Application Success Modal](media/readme_images/box-application-success.jpg)
-    ![Box Application Already Sent View](media/readme_images/box-application-sent.jpg)
-    ![Mentor's Telegram Notification for New Application](media/readme_images/telegram-box-application.jpg)
-    ![Student's Telegram Notification of Application Receipt](media/readme_images/telegram-box-application-user.jpg)
+    ![Box Application Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/box-application_geqlum.jpg)
+    ![Box Application Success Modal](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/box-application-success_arrhb7.jpg)
+    ![Box Application Already Sent View](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/box-application-sent_tyqgx2.jpg)
+    ![Mentor's Telegram Notification for New Application](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/telegram-box-application_ycwbsw.png)
+    ![Student's Telegram Notification of Application Receipt](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/telegram-box-application-user_znkty0.png)
     </details>
 
 6.  **Chat with Mentor**
@@ -143,9 +146,9 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Student Chat Page](media/readme_images/chat.jpg)
-    ![Student's Telegram Notification](media/readme_images/telegram-chat.jpg)
-    ![Mentor's Telegram Notification](media/readme_images/telegram-chat-admin.jpg)
+    ![Student Chat Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/chat_ga0pxy.jpg)
+    ![Student's Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-chat_rd8mud.png)
+    ![Mentor's Telegram Notification](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326038/telegram-chat-admin_fnx55e.png)
     </details>
 
 7.  **User Profile**
@@ -154,18 +157,18 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Profile Page](media/readme_images/profile.jpg)
+    ![Profile Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326034/profile_edy6bl.jpg)
     </details>
 
 ### III. Custom Admin Panel for Mentor
 
 8.  **Mentor Dashboard**
-    * An "at-a-glance" dashboard summarizing the most critical information: pending homework, recent unread messages, and widgets for the highest and lowest student progress.
+    * An "at-a-glance" dashboard summarizing the most critical information: pending homework, recent unread messages, and widgets for the highest and lowest student progress. All data is aggregated via optimized backend queries for fast loading.
 
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Mentor Dashboard](media/readme_images/mentor-dashboard.jpg)
+    ![Mentor Dashboard](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326033/mentor-dashboard_uhe0we.jpg)
     </details>
 
 9.  **Homework Review Workflow**
@@ -176,12 +179,12 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Homework Review List](media/readme_images/tasks-list.jpg)
-    ![Detailed Review Page](media/readme_images/tasks-detail.jpg)
-    ![Homework Submission Notification to Admin](media/readme_images/telegram-tasks-detail-admin.jpg)
-    ![Homework Approval Notification to User](media/readme_images/user-telegram-tasks.jpg)
-    ![Homework Rejection Notification to User](media/readme_images/tasks-detail_1.jpg)
-    ![Platform Chat Notification after Review](media/readme_images/user-task-review-chat.jpg)
+    ![Homework Review List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-list_qxu0oz.jpg)
+    ![Detailed Review Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_ehxigr.jpg)
+    ![Homework Submission Notification to Admin](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_1_ibkzza.jpg)
+    ![Homework Approval Notification to User](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/user-telegram-tasks_fhhtst.png)
+    ![Homework Rejection Notification to User](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326037/tasks-detail_1_ibkzza.jpg)
+    ![Platform Chat Notification after Review](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326045/user-task-review-chat_ehdpry.jpg)
     </details>
 
 10. **Chat Management**
@@ -191,7 +194,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Admin Chat List](media/readme_images/admin-all-chats.jpg)
+    ![Admin Chat List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/admin-all-chats_hdgvwx.jpg)
     </details>
 
 11. **Lecture Management (CRUD)**
@@ -201,10 +204,10 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Lecture List](media/readme_images/lecture-list.jpg)
-    ![Edit Lecture](media/readme_images/lecture-edit.jpg)
-    ![Delete Lecture Confirmation](media/readme_images/lecture-delete.jpg)
-    ![Create Lecture](media/readme_images/lecture-create.jpg)
+    ![Lecture List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/lecture-list_qu6o59.jpg)
+    ![Edit Lecture](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326032/lecture-list_qu6o59.jpg)
+    ![Delete Lecture Confirmation](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/lecture-delete_xaaunm.jpg)
+    ![Create Lecture](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326031/lecture-create_ubbufw.jpg)
     </details>
 
 12. **Student List**
@@ -214,8 +217,8 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
     
-    ![Student List (Grid View)](media/readme_images/students-list.jpg)
-    ![Student List (List View)](media/readme_images/students-list_1.jpg)
+    ![Student List (Grid View)](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326035/students-list_zvq6e1.jpg)
+    ![Student List (List View)](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/students-list_1_uaohlo.jpg)
     </details>
 
 13. **Start Box Application Management**
@@ -225,7 +228,7 @@ This project incorporates several advanced backend features to ensure robustness
     <details>
     <summary>🖼️ View Screenshots</summary>
 
-    ![Box Application List](media/readme_images/box-application-list.jpg)
+    ![Box Application List](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/box-application-list_esixpn.jpg)
     </details>
 
 ### IV. Additional Pages & Status Handling
@@ -236,34 +239,37 @@ This project incorporates several advanced backend features to ensure robustness
 <details>
 <summary>🖼️ View Screenshots</summary>
 
-![Success Pay Page](media/readme_images/success_pay.jpg)
-![Cancel Pay Page](media/readme_images/cancel-pay.jpg)
-![Error Pay Page](media/readme_images/error_pay.jpg)
-![404 Page](media/readme_images/404.jpg)
-![500 Page](media/readme_images/500.jpg)
+![Success Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326036/success_pay_w7n5j3.jpg)
+![Cancel Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/cancel-pay_mc95pu.jpg)
+![Error Pay Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326026/error_pay_gulohe.jpg)
+![404 Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326024/404_dweekt.jpg)
+![500 Page](https://res.cloudinary.com/dpxuxiswa/image/upload/v1754326025/500_wa3w5h.jpg)
 </details>
 
 ## 🚀 Installation & Launch
 
-1.  **Configure Environment Variables:**
-    Create a `.env` file in the project root and fill in all required variables (API keys, database settings, `NGROK_AUTHTOKEN`, etc.).
+### Prerequisites
 
-2.  **Build the Docker Image:**
-    ```bash
-    docker build -t tanja-tattoo-app .
-    ```
+Make sure you have the following software installed on your system:
+* [Docker](https://www.docker.com/get-started)
+* [Docker Compose](https://docs.docker.com/compose/install/) (usually included with Docker Desktop)
 
-3.  **Run the Container:**
-    Pass the environment variables from your local `.env` file to the container for a seamless startup.
+### Environment Configuration
+Create a `.env` file in the project root and fill in all required variables (API keys, database settings, `NGROK_AUTHTOKEN`, etc.). The `docker-compose.yaml` lists all required environment variables for the web service.
+
+### Using Docker Compose (Recommended)
+This is the simplest way to start the application and its database service for local development.
+
+1.  **Build and Run the Containers:**
+    Open your terminal in the project root and run:
     ```bash
-    docker run --env-file .env -p 8000:8000 tanja-tattoo-app
+    docker-compose up --build
     ```
 
 ## 🧪 Testing
 
-The project is extensively covered by over **600 lines of tests** using the **Pytest** framework, ensuring the reliability and stability of all key application features and business logic.
+The project is extensively covered by over **600 lines of tests** using the **Pytest** framework. Tests are focused on the backend, covering API endpoints, business logic, and model methods to ensure reliability.
 
-To run the tests:
+To run the tests with Docker Compose:
 ```bash
-pytest
-```
+docker-compose exec web pytest

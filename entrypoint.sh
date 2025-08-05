@@ -46,4 +46,7 @@ python manage.py shell -c "from web.telegram_bot import set_telegram_webhook; se
 # ------------------------------------
 
 echo "Запускаем основной процесс..."
-exec "$@"
+
+python manage.py loaddata fixture_tariffs.json
+
+exec python manage.py runserver 0.0.0.0:8000

@@ -1,0 +1,48 @@
+[
+  {
+    "model": "web.code", "pk": 1, "fields": {"code": "PROD-NEED-2025", "is_activated": true, "activated_date": "2025-07-11T11:30:00Z", "created_date": "2025-07-02T14:00:00Z", "tariff": "pro", "start_box_coupon_is_activated": false}
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$XNMomk2RyejvFRaX2h7FWO$ga+oax/M7pY0bxDFQEefvjoFNjwT1S4fuP9e6obc0+s=",
+      "last_login": "2025-07-15T15:00:00Z",
+      "is_superuser": true,
+      "email": "admin@tattoo-school.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-07-01T08:00:00Z",
+      "first_name": "Майстер",
+      "last_name": "Інструктор",
+      "code": null,
+      "phone": "+380501234567",
+      "avatar": "tanja_foto_rclia4",
+      "last_activity": "2025-07-15T17:55:00Z"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 1,
+    "fields": {
+      "name": "base",
+      "price": 300
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 2,
+    "fields": {
+      "name": "pro",
+      "price": 600
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 3,
+    "fields": {
+      "name": "master",
+      "price": 900
+    }
+  }
+]

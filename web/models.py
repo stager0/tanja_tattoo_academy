@@ -38,10 +38,15 @@ class Code(models.Model):
     is_activated = models.BooleanField(default=False, null=True, blank=True)
     activated_date = models.DateTimeField(null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    order = models.OneToOneField("Order", null=True, blank=True, on_delete=models.CASCADE, related_name="codes")
-    tariff = models.CharField(choices=SubscribeChoices.choices, max_length=10, default="base")
+    order = models.OneToOneField("Order", null=True, blank=True, on_delete=models.CASCADE, related_name="code")
+    tariff = models.ForeignKey("SubscribeTariff", related_name="code", on_delete=models.CASCADE)
     start_box_coupon_is_activated = models.BooleanField(default=False, null=True, blank=True)
 
+
+class LendingImage(models.Model):
+    name = models.CharField(max_length=20)
+    direction = models.CharField(max_length=30, null=True)
+    image = models.ImageField(upload_to="lending_images/", storage=MediaCloudinaryStorage(), blank=True, null=True)
 
 class Chat(models.Model):
     user = models.OneToOneField(UserModel, related_name="chats", on_delete=models.CASCADE)

@@ -9,9 +9,11 @@ from authentication.models import UserModel
 
 
 class SubscribeTariff(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
+    user_friendly_name = models.CharField(max_length=30)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
-    with_startbox = models.BooleanField(default=False,)
+    with_startbox = models.BooleanField(default=False, blank=True)
+    direction = models.CharField(max_length=20, default="tattoo", blank=True)
 
 
 # used for change password.

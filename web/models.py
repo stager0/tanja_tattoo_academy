@@ -27,11 +27,6 @@ class ResetCode(models.Model):
         return self.code
 
 
-class SubscribeChoices(models.TextChoices):
-    base = "base"
-    pro = "pro"
-    master = "master"
-
 # subscribe code
 class Code(models.Model):
     code = models.CharField(max_length=14, unique=True, validators=[MinLengthValidator(14)])
@@ -78,6 +73,10 @@ class Message(models.Model):
     from_admin = models.BooleanField(default=False, blank=True, null=True)
 
 
+class DirectionsEnum(models.TextChoices):
+    tattoo = "tattoo", "Тату"
+    piercing = "piercing", "Пірсинг"
+
 # Lectures
 class Lecture(models.Model):
     lecture_name = models.CharField(max_length=100)
@@ -86,7 +85,7 @@ class Lecture(models.Model):
     video_url = models.URLField(unique=False)
     lecture = models.CharField(max_length=712, blank=True, null=True, default="До цього уроку наразі немає лекції.")
     homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
-
+    direction = models.CharField(max_length=15, choices=DirectionsEnum.choices, default=DirectionsEnum.tattoo)
 
 def upload_homework_images(instance, filename):
     slug = slugify(instance.user.get_full_name()) or "user"

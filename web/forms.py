@@ -122,7 +122,39 @@ class LectureEditForm(forms.ModelForm):
         }
 
 
-class LectureCreateForm(forms.ModelForm):
-    class Meta:
-        model = Lecture
-        fields = ["lecture_name", "under_name", "position_number", "video_url", "lecture", "homework"]
+class LendingChangeForm(forms.Form):
+    # tattoo
+    tattoo_base_name = forms.CharField(max_length=40, required=False)
+    tattoo_base_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    tattoo_pro_name = forms.CharField(max_length=40, required=False)
+    tattoo_pro_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    tattoo_master_name = forms.CharField(max_length=40, required=False)
+    tattoo_master_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    tattoo_about_image = forms.ImageField(required=False)
+    tattoo_trial_lesson_title = forms.CharField(max_length=80, required=False)
+    tattoo_video_id = forms.CharField(max_length=300, required=False)
+    tattoo_trial_lesson_text = forms.CharField(max_length=500, required=False)
+    tattoo_work_1 = forms.ImageField(required=False)
+    tattoo_work_2 = forms.ImageField(required=False)
+    tattoo_work_3 = forms.ImageField(required=False)
+    tattoo_work_4 = forms.ImageField(required=False)
+    tattoo_work_5 = forms.ImageField(required=False)
+    tattoo_work_6 = forms.ImageField(required=False)
+
+    # piercing
+    piercing_start_name = forms.CharField(max_length=40, required=False)
+    piercing_start_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    piercing_pro_name = forms.CharField(max_length=40, required=False)
+    piercing_pro_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    piercing_master_name = forms.CharField(max_length=40, required=False)
+    piercing_master_price = forms.DecimalField(max_digits=10, decimal_places=2, required=False)
+    piercing_about_image = forms.ImageField(required=False)
+    piercing_trial_lesson_title = forms.CharField(max_length=80, required=False)
+    piercing_video_id = forms.CharField(max_length=300, required=False)
+    piercing_trial_lesson_text = forms.CharField(max_length=500, required=False)
+    piercing_work_7 = forms.ImageField(required=False)
+    piercing_work_8 = forms.ImageField(required=False)
+    piercing_work_9 = forms.ImageField(required=False)
+    piercing_work_10 = forms.ImageField(required=False)
+    piercing_work_11 = forms.ImageField(required=False)
+    piercing_work_12 = forms.ImageField(required=False)

@@ -48,6 +48,15 @@ class LendingImage(models.Model):
     direction = models.CharField(max_length=30, null=True)
     image = models.ImageField(upload_to="lending_images/", storage=MediaCloudinaryStorage(), blank=True, null=True)
 
+
+class LendingData(models.Model):
+    direction = models.CharField(max_length=15)
+    lecture_name = models.CharField(max_length=80)
+    lecture_description = models.CharField(max_length=500)
+    preview = models.ImageField("lending_images/", storage=MediaCloudinaryStorage(), blank=True, null=True)
+    hello_video_id = models.CharField(max_length=300, blank=True, null=True)
+
+
 class Chat(models.Model):
     user = models.OneToOneField(UserModel, related_name="chats", on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now, null=True, blank=True)

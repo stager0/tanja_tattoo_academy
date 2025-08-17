@@ -194,15 +194,28 @@ class IndexView(generic.FormView):
         if name and contact_method and contact_details:
             mentor = UserModel.objects.filter(is_superuser=True).first()
             if mentor and mentor.telegram_chat_id:
-                send_message_in_telegram(
-                    chat_id=mentor.telegram_chat_id,
-                    text=(
-                        "📩 Отримано нову форму зворотного зв'язку!\n\n"
-                        f"👤 Ім'я: {name}\n"
-                        f"🌐 Соцмережа: {contact_method}\n"
-                        f"📞 Контакт: {contact_details}"
+                if not "piercing" in self.request.path:
+                    send_message_in_telegram(
+                        chat_id=mentor.telegram_chat_id,
+                        text=(
+                            "📩 Отримано нову форму зворотного зв'язку!\n\n"
+                            f"👤 Ім'я: {name}\n"
+                            f"🌐 Соцмережа: {contact_method}\n"
+                            f"📞 Контакт: {contact_details}\n"
+                            f"🔗 Направлення: Tattoo"
+                        )
                     )
-                )
+                else:
+                    send_message_in_telegram(
+                        chat_id=mentor.telegram_chat_id,
+                        text=(
+                            "📩 Отримано нову форму зворотного зв'язку!\n\n"
+                            f"👤 Ім'я: {name}\n"
+                            f"🌐 Соцмережа: {contact_method}\n"
+                            f"📞 Контакт: {contact_details}\n"
+                            f"🔗 Направлення: Piercing"
+                        )
+                    )
         return super().form_valid(form)
 
     def form_invalid(self, form):

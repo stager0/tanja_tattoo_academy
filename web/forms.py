@@ -6,10 +6,12 @@ from web.models import Message, StartBox, HomeWork, HomeWorkReview, Lecture
 
 UserModel = get_user_model()
 
+
 class BoxApplicationForm(forms.ModelForm):
     class Meta:
         model = StartBox
         fields = ("full_name", "phone", "address", "comments")
+
 
 # web/forms.py
 
@@ -110,7 +112,7 @@ class ReviewTaskForm(forms.ModelForm):
 class LectureEditForm(forms.ModelForm):
     class Meta:
         model = Lecture
-        fields = ["lecture_name", "under_name", "position_number", "video_url", "lecture", "homework"]
+        fields = ["lecture_name", "under_name", "position_number", "video_url", "lecture", "homework", "direction"]
         widgets = {
             'lecture_name': forms.TextInput(attrs={'class': 'form-control'}),
             'under_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -119,6 +121,7 @@ class LectureEditForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'https://googleusercontent.com/...'}),
             'lecture': forms.Textarea(),
             'homework': forms.Textarea(),
+            'direction': forms.RadioSelect,
         }
 
 

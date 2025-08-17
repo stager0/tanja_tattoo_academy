@@ -154,6 +154,36 @@ class IndexView(generic.FormView):
 
         context["user"] = user
         context["mentor"] = UserModel.objects.filter(is_superuser=True).first()
+
+        if not "piercing" in self.request.path:
+            lending_data = LendingData.objects.filter(direction="tattoo").first()
+
+            context["tariff_master"] = SubscribeTariff.objects.filter(name="master").first()
+            context["tariff_pro"] = SubscribeTariff.objects.filter(name="pro").first()
+            context["tariff_base"] = SubscribeTariff.objects.filter(name="base").first()
+            context["video_id"] = lending_data.hello_video_id
+            context["first_lesson"] = lending_data
+            context["tattoo_work_1"] = LendingImage.objects.filter(name="tattoo_work_1").first()
+            context["tattoo_work_2"] = LendingImage.objects.filter(name="tattoo_work_2").first()
+            context["tattoo_work_3"] = LendingImage.objects.filter(name="tattoo_work_3").first()
+            context["tattoo_work_4"] = LendingImage.objects.filter(name="tattoo_work_4").first()
+            context["tattoo_work_5"] = LendingImage.objects.filter(name="tattoo_work_5").first()
+            context["tattoo_work_6"] = LendingImage.objects.filter(name="tattoo_work_6").first()
+        else:
+            lending_piercing = LendingData.objects.filter(direction="piercing").first()
+
+            context["tariff_master"] = SubscribeTariff.objects.filter(name="master_piercing").first()
+            context["video_id"] = lending_piercing.hello_video_id
+            context["tariff_pro"] = SubscribeTariff.objects.filter(name="pro_piercing").first()
+            context["tariff_base"] = SubscribeTariff.objects.filter(name="base_piercing").first()
+            context["first_lesson"] = lending_piercing
+            context["piercing_work_1"] = LendingImage.objects.filter(name="piercing_work_1").first()
+            context["piercing_work_2"] = LendingImage.objects.filter(name="piercing_work_2").first()
+            context["piercing_work_3"] = LendingImage.objects.filter(name="piercing_work_3").first()
+            context["piercing_work_4"] = LendingImage.objects.filter(name="piercing_work_4").first()
+            context["piercing_work_5"] = LendingImage.objects.filter(name="piercing_work_5").first()
+            context["piercing_work_6"] = LendingImage.objects.filter(name="piercing_work_6").first()
+
         return context
 
     def form_valid(self, form):

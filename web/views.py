@@ -208,6 +208,12 @@ class IndexView(generic.FormView):
     def form_invalid(self, form):
         return JsonResponse({"errors": form.errors}, status=400)
 
+    def get_template_names(self):
+        if "piercing" not in self.request.path:
+            return "user_templates/index.html"
+        else:
+            return "user_templates/piercing_index.html"
+
 
 @method_decorator(redirect_superuser, name="dispatch")
 class DashboardView(LoginRequiredMixin, generic.TemplateView):

@@ -18,21 +18,25 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 from web.telegram_bot import webhook_telegram
 from web.views import IndexView, CreateCheckoutSessionView, Webhook
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index"),
+    path("piercing/", IndexView.as_view(), name="piercing_index"),
     path("checkout_session/", CreateCheckoutSessionView.as_view(), name="checkout_session"),
     path("stripe_webhook/", Webhook.as_view(), name="webhook"),
     path("telegram_webhook/<str:token>/", webhook_telegram, name="webhook_telegram"),
     path('admin/', admin.site.urls),
     path("platform/", include("web.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", include("authentication.urls"))
+    path("", include("authentication.urls")),
+    path("datenschutzerklarung/", TemplateView.as_view(template_name="docs/datenschutzerklarung.html"), name="datenschutzerklarung"),
+    path("impressum/", TemplateView.as_view(template_name="docs/impressum.html"), name="impressum"),
+    path("agb/", TemplateView.as_view(template_name="docs/agb.html"), name="agb")
 ]
-
 
 if settings.DEBUG:
     import debug_toolbar

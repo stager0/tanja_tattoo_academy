@@ -2,16 +2,18 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="ecb938eb-b8f6-4d6e-a684-5a26aa30100a"
+          data-blockingmode="auto" type="text/javascript"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вхід - GodArt Tattoo Academy</title>
+  <title>Вхід - GodArt Tattoo School</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
-      rel="stylesheet">
+      rel="stylesheet" type="text/plain" data-cookieconsent="marketing">
 
   <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
@@ -53,6 +55,33 @@
     </div>
   </div>
 </div>
+<footer class="auth-footer" style="width: 100%; text-align: center; padding: 20px 0; margin-top: auto;">
+  <div class="footer-legal-links" style="font-size: 0.9rem; line-height: 1.8;">
+    <a href="{% url 'agb' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">AGB</a>
+    <span style="color: #555;">|</span>
+    <a href="{% url 'impressum' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Impressum</a>
+    <span style="color: #555;">|</span>
+    <a href="{% url 'datenschutzerklarung' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Datenschutzerklärung</a>
+    <br>
+    <a href="javascript:void(0)" onclick="Cookiebot.show()" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Cookie-Einstellungen</a>
+  </div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function loadConsentAwareContent() {
+            document.querySelectorAll('link[data-cookieconsent]').forEach(link => {
+                link.setAttribute('type', 'text/css');
+            });
+        }
 
+        if (window.Cookiebot && window.Cookiebot.consented) {
+            loadConsentAwareContent();
+        }
+
+        window.addEventListener('CookiebotOnAccept', function () {
+            loadConsentAwareContent();
+        }, false);
+    });
+</script>
 </body>
 </html>

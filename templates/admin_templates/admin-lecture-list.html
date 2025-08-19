@@ -6,24 +6,35 @@
 
 {% block content %}
 <div class="card">
-    <div class="list-controls" style="justify-content: flex-end;">
-        <a href="{% url 'admin_lecture_create' %}" class="btn">
+    <div class="filter-tabs">
+        <a href="?course=tattoo" class="filter-tab {% if course_type == 'tattoo' %}active{% endif %}">
+            <i class="fas fa-paint-brush"></i> Tattoo лекції
+        </a>
+        <a href="?course=piercing" class="filter-tab {% if course_type == 'piercing' %}active{% endif %}">
+            <i class="fas fa-gem"></i> Piercing лекції
+        </a>
+    </div>
+    <div class="list-controls" style="justify-content: flex-end; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+        <a href="{% url 'admin_lecture_create' %}?course={{ course_type|default:'tattoo' }}" class="btn">
             <i class="fas fa-plus"></i> Створити нову лекцію
         </a>
     </div>
 
     <div class="admin-modern-list" id="lectures-list">
       {% for lecture in lectures %}
-        <div class="list-item" data-lecture-id="1">
+        <div class="list-item" data-lecture-id="{{ lecture.id }}">
             <div class="item-info">
                 <strong>Урок {{ lecture.position_number }}: {{ lecture.lecture_name }}</strong>
                 <p>{{ lecture.under_name }}</p>
             </div>
             <div class="item-actions">
                 <a href="{% url 'admin_lecture_edit' lecture.pk %}" class="btn btn-secondary btn-sm">Редагувати</a>
-              <form method="post" action="{% url 'admin_lecture_delete' lecture.pk %}"></form>
                 <a href="{% url 'admin_lecture_delete' lecture.pk %}" class="btn btn-secondary btn-sm delete-btn">Видалити</a>
             </div>
+        </div>
+      {% empty %}
+        <div class="card-body text-center" style="padding: 20px; text-align: center;">
+            <p>Лекцій для цього напрямку ще не створено.</p>
         </div>
       {% endfor %}
     </div>

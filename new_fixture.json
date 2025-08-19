@@ -1,0 +1,3993 @@
+[
+  {
+    "model": "authentication.usermodel",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$XNMomk2RyejvFRaX2h7FWO$ga+oax/M7pY0bxDFQEefvjoFNjwT1S4fuP9e6obc0+s=",
+      "last_login": "2025-07-15T15:00:00Z",
+      "is_superuser": true,
+      "email": "admin@tattoo-school.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-07-01T08:00:00Z",
+      "first_name": "Майстер",
+      "last_name": "Інструктор",
+      "code": null,
+      "phone": "+380501234567",
+      "avatar": "tanja_foto_rclia4",
+      "last_activity": "2025-07-15T17:55:00Z"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 1,
+    "fields": {
+      "name": "base",
+      "user_friendly_name": "Base Tattoo",
+      "price": 300,
+      "with_startbox": false,
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 2,
+    "fields": {
+      "name": "pro",
+      "user_friendly_name": "Pro Tattoo",
+      "price": 600,
+      "with_startbox": true,
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 3,
+    "fields": {
+      "name": "master",
+      "user_friendly_name": "Master Tattoo",
+      "price": 900,
+      "with_startbox": true,
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 4,
+    "fields": {
+      "name": "base_piercing",
+      "user_friendly_name": "Base Piercing",
+      "price": 300,
+      "with_startbox": false,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 5,
+    "fields": {
+      "name": "pro_piercing",
+      "user_friendly_name": "Pro Piercing",
+      "price": 600,
+      "with_startbox": true,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 6,
+    "fields": {
+      "name": "master_piercing",
+      "user_friendly_name": "Master Piercing",
+      "price": 900,
+      "with_startbox": true,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 1,
+    "fields": {
+      "name": "tattoo_work_1",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 2,
+    "fields": {
+      "name": "tattoo_work_2",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 3,
+    "fields": {
+      "name": "tattoo_work_3",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 4,
+    "fields": {
+      "name": "tattoo_work_4",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 5,
+    "fields": {
+      "name": "tattoo_work_5",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 6,
+    "fields": {
+      "name": "tattoo_work_6",
+      "direction": "tattoo",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 7,
+    "fields": {
+      "name": "piercing_work_1",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 8,
+    "fields": {
+      "name": "piercing_work_2",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 9,
+    "fields": {
+      "name": "piercing_work_3",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 10,
+    "fields": {
+      "name": "piercing_work_4",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 11,
+    "fields": {
+      "name": "piercing_work_5",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 12,
+    "fields": {
+      "name": "piercing_work_6",
+      "direction": "piercing",
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lendingdata",
+    "pk": 1,
+    "fields": {
+      "direction": "tattoo",
+      "lecture_name": "1. Вступ. Все про професію тату-майстра",
+      "lecture_description": "У цьому уроці ми поговоримо про те, хто такий тату-майстер, які перспективи відкриває ця професія, та що потрібно для успішного старту. Розвіємо популярні міфи та налаштуємось на продуктивне навчання.",
+      "hello_video_id": "CqMWqOqzO1Q",
+      "preview": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOUg"
+    }
+  },
+  {
+    "model": "web.lendingdata",
+    "pk": 2,
+    "fields": {
+      "direction": "piercing",
+      "lecture_name": "1. Вступ. Професія майстра пірсингу",
+      "lecture_description": "У цьому уроці ми поговоримо про те, хто такий майстер пірсингу, які перспективи відкриває ця професія, та що потрібно для успішного старту. Розвіємо популярні міфи та налаштуємось на продуктивне навчання.",
+      "hello_video_id": "CqMWqOqzO1Q",
+      "preview": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 1,
+    "fields": {
+      "lecture_name": "1. Вступ. Професія тату-майстра",
+      "under_name": "Перспективи, міфи та реальність",
+      "position_number": 1,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "У цьому вступному уроці ми детально розберемо, хто такий тату-майстер, які навички потрібні для успіху, та з якими труднощами можна зіткнутися на початку шляху.",
+      "homework": "Напишіть коротке есе на тему 'Чому я хочу стати тату-майстром?' та які цілі ви ставите перед собою на цьому курсі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 2,
+    "fields": {
+      "lecture_name": "2. Історія татуювання. Стилі та напрямки",
+      "under_name": "Від полінезії до сучасності",
+      "position_number": 2,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Поринемо в історію тату-культури. Розглянемо ключові стилі: Old School, New School, Traditional, Realism, Blackwork та інші. Визначимо їх характерні риси.",
+      "homework": "Виберіть 3 стилі татуювання, які вам найбільше сподобалися, та знайдіть по 5 прикладів робіт для кожного.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 3,
+    "fields": {
+      "lecture_name": "3. Санітарія та гігієна",
+      "under_name": "Основа безпеки клієнта і майстра",
+      "position_number": 3,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Найважливіший урок курсу. Дезінфекція, стерилізація, обробка поверхонь. Робота з автоклавом. Правила особистої гігієни.",
+      "homework": "Складіть чек-лист підготовки робочого місця до сеансу та прибирання після нього.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 4,
+    "fields": {
+      "lecture_name": "4. Асептика та антисептика. Бар'єрний захист",
+      "under_name": "Запобігання перехресному зараженню",
+      "position_number": 4,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Вчимося правильно використовувати бар'єрний захист на обладнанні. Розбираємо антисептичні засоби для шкіри та правила їх застосування.",
+      "homework": "Зніміть коротке відео, як ви надягаєте бар'єрний захист на кліп-корд, машинку та спрей-батл.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 5,
+    "fields": {
+      "lecture_name": "5. Огляд обладнання. Тату-машинки",
+      "under_name": "Індукція, ротор, пен",
+      "position_number": 5,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Детальний огляд типів тату-машинок. Їхні переваги та недоліки, принципи роботи. Для яких завдань підходить кожен тип.",
+      "homework": "Дослідіть ринок і порівняйте 3 популярні моделі тату-пенів для початківців за ціною та характеристиками.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 6,
+    "fields": {
+      "lecture_name": "6. Голки та картриджі",
+      "under_name": "Конфігурації та їх застосування",
+      "position_number": 6,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Розбираємо маркування голок: RL, RS, M, RM, F. Вчимося вибирати правильну конфігурацію для контуру, зафарбовування та тіней.",
+      "homework": "Створіть таблицю з типами голок (RL, RS, M1, RM) і опишіть, для яких технік ви б їх використовували.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 7,
+    "fields": {
+      "lecture_name": "7. Пігменти та колористика",
+      "under_name": "Основи роботи з кольором",
+      "position_number": 7,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Види пігментів, їх склад. Базові принципи колористики та колірного кола. Правила змішування кольорів та створення палітри.",
+      "homework": "Використовуючи колірне коло, створіть 3 гармонійні палітри по 4 кольори кожна.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 8,
+    "fields": {
+      "lecture_name": "8. Блоки живлення та інше обладнання",
+      "under_name": "Все, що потрібно для роботи",
+      "position_number": 8,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд блоків живлення, кліп-кордів, педалей. Витратні матеріали: ковпачки, гріпи, бандажні стрічки. Що має бути в аптечці майстра.",
+      "homework": "Складіть повний список покупок для тату-майстра-початківця з орієнтовними цінами.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 9,
+    "fields": {
+      "lecture_name": "9. Підготовка ескізу та трансфер",
+      "under_name": "Від ідеї до відбитка на шкірі",
+      "position_number": 9,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Етапи створення ескізу. Робота з трансферним папером та принтером. Правила нанесення трансферу на шкіру.",
+      "homework": "Роздрукуйте та перенесіть простий ескіз на штучну шкіру або фрукт (банан, грейпфрут).",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 10,
+    "fields": {
+      "lecture_name": "10. Шкіра: анатомія та особливості",
+      "under_name": "Наш головний 'холст'",
+      "position_number": 10,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Будова шкіри. Глибина внесення пігменту. Особливості роботи на різних ділянках тіла. Протипоказання до сеансу.",
+      "homework": "Складіть список з 5 найскладніших та 5 найпростіших місць для татуювання та обґрунтуйте свій вибір.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 11,
+    "fields": {
+      "lecture_name": "11. Практика на штучній шкірі: Лінії",
+      "under_name": "Ставимо впевнену руку",
+      "position_number": 11,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Перші кроки. Налаштування машинки. Правильна постановка руки. Відпрацювання прямих, круглих та вигнутих ліній.",
+      "homework": "Заповніть аркуш штучної шкіри (А5) вправами на лінії: сітка, кола, спіралі, хвилі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 12,
+    "fields": {
+      "lecture_name": "12. Практика на штучній шкірі: Зафарбовування",
+      "under_name": "Щільний та рівномірний прокрас",
+      "position_number": 12,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Техніки щільного зафарбовування. Робота голками Magnum. Як уникнути 'пробілів' та травматизації шкіри.",
+      "homework": "На штучній шкірі намалюйте та щільно зафарбуйте 5 геометричних фігур (квадрат, коло, трикутник і т.д.).",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 13,
+    "fields": {
+      "lecture_name": "13. Практика на штучній шкірі: Тіні",
+      "under_name": "Створення об'єму та глибини",
+      "position_number": 13,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Техніка 'Whip Shading'. Створення м'яких тіней та градієнтів. Робота з розбавленим пігментом (грейвош).",
+      "homework": "На штучній шкірі відпрацюйте градієнт від 100% чорного до 0% на смужці 10х2 см.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 14,
+    "fields": {
+      "lecture_name": "14. Поєднання технік. Проста робота",
+      "under_name": "Від контуру до тіней",
+      "position_number": 14,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Збираємо всі отримані навички. Виконуємо просту роботу на штучній шкірі, поєднуючи контур, зафарбовування та тіні.",
+      "homework": "Виконайте татуювання в стилі 'Олд Скул' (напр., серце або троянда) на штучній шкірі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 15,
+    "fields": {
+      "lecture_name": "15. Юридичні аспекти та згода клієнта",
+      "under_name": "Як захистити себе та клієнта",
+      "position_number": 15,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Важливість інформованої згоди. Збір анамнезу. Правила роботи з неповнолітніми. Відповідальність майстра.",
+      "homework": "Складіть свій варіант бланку інформованої згоди для клієнта.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 16,
+    "fields": {
+      "lecture_name": "16. Консультація з клієнтом",
+      "under_name": "Від першого повідомлення до сеансу",
+      "position_number": 16,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Як правильно вести діалог. Обговорення ідеї, розміру, місця нанесення. Ціноутворення. Психологічні аспекти.",
+      "homework": "Напишіть шаблон відповіді на запит 'Привіт, скільки коштує тату?'.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 17,
+    "fields": {
+      "lecture_name": "17. Догляд за свіжим татуюванням",
+      "under_name": "Інструкції для клієнта",
+      "position_number": 17,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Два методи загоєння: класичний (з пелюшками) та з загоювальною плівкою. Можливі проблеми під час загоєння.",
+      "homework": "Створіть пам'ятку по догляду за татуюванням для своїх майбутніх клієнтів.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 18,
+    "fields": {
+      "lecture_name": "18. Робота в Procreate/Photoshop для тату-майстра",
+      "under_name": "Створення ескізів та візуалізацій",
+      "position_number": 18,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Базові інструменти програм. Як малювати ескізи, робити 'примірку' тату на фото клієнта, готувати дизайн до друку.",
+      "homework": "Створіть простий ескіз у графічному редакторі та зробіть його візуалізацію на фотографії руки.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 19,
+    "fields": {
+      "lecture_name": "19. Стиль: Графіка та Лайнворк",
+      "under_name": "Тонкі лінії та деталізація",
+      "position_number": 19,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Особливості роботи тонкими голками. Техніка нанесення. Як досягти чіткості та довговічності тонких ліній.",
+      "homework": "Виконайте невелику роботу в стилі 'Лайнворк' на штучній шкірі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 20,
+    "fields": {
+      "lecture_name": "20. Стиль: Дотворк та Віпшейдинг",
+      "under_name": "Точкова техніка та повітряні тіні",
+      "position_number": 20,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Створення зображень за допомогою точок. Побудова градієнтів в дотворку. Особливості техніки віпшейдинг.",
+      "homework": "Намалюйте та виконайте на штучній шкірі мандалу, використовуючи техніки дотворк та віпшейдинг.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 21,
+    "fields": {
+      "lecture_name": "21. Стиль: Блекворк та Орнаментал",
+      "under_name": "Робота з великими чорними площами",
+      "position_number": 21,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Техніка щільного чорного зафарбовування. Як уникнути 'дірок' та 'підпливів'. Побудова складних геометричних візерунків.",
+      "homework": "Зафарбуйте щільним чорним кольором квадрат 5х5 см на штучній шкірі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 22,
+    "fields": {
+      "lecture_name": "22. Стиль: Акварель",
+      "under_name": "Імітація малюнка фарбами",
+      "position_number": 22,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Створення ефекту легкості та прозорості. Робота з кольором без чіткого контуру. Побудова 'бризок' та 'розводів'.",
+      "homework": "Спробуйте відтворити простий акварельний малюнок (напр., перо або квітка) на штучній шкірі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 23,
+    "fields": {
+      "lecture_name": "23. Стиль: Чорно-білий реалізм",
+      "under_name": "Фотографічна точність",
+      "position_number": 23,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Побудова об'єму та текстури. Робота з грейвошами. Створення реалістичних портретів та об'єктів.",
+      "homework": "Виконайте на штучній шкірі реалістичне зображення ока.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 24,
+    "fields": {
+      "lecture_name": "24. Стиль: Кольоровий реалізм",
+      "under_name": "Живі та яскраві роботи",
+      "position_number": 24,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Теорія кольору в реалізмі. Підбір палітри. Техніки змішування кольорів на шкірі. Робота з білим пігментом.",
+      "homework": "Виконайте на штучній шкірі реалістичне зображення полуниці або іншого яскравого фрукта.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 25,
+    "fields": {
+      "lecture_name": "25. Підготовка до першої моделі",
+      "under_name": "Моральна та технічна готовність",
+      "position_number": 25,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Як зрозуміти, що ви готові. Пошук першої моделі. Вибір ескізу. Психологічна підготовка до роботи з живою людиною.",
+      "homework": "Складіть оголошення про пошук моделі на перше татуювання.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 26,
+    "fields": {
+      "lecture_name": "26. Робота на складних ділянках тіла",
+      "under_name": "Ребра, лікті, ключиці",
+      "position_number": 26,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Особливості шкіри та анатомії на рухомих та чутливих зонах. Техніки натягування шкіри. Як мінімізувати больові відчуття клієнта.",
+      "homework": "Теоретичне завдання: опишіть, які голки та техніку ви б обрали для тату на ребрах.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 27,
+    "fields": {
+      "lecture_name": "27. Перекриття старих татуювань (Cover-up)",
+      "under_name": "Правила та секрети",
+      "position_number": 27,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Аналіз старого тату. Як правильно підібрати ескіз для перекриття. Використання темних та світлих тонів. Робота з лазерним видаленням.",
+      "homework": "Знайдіть в інтернеті 3 приклади невдалих тату. Запропонуйте свої ідеї для їх перекриття.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 28,
+    "fields": {
+      "lecture_name": "28. Робота зі шрамами",
+      "under_name": "Маскування та естетика",
+      "position_number": 28,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Види шрамів та можливість роботи з ними. Коли можна починати працювати по рубцю. Технічні особливості та ризики.",
+      "homework": "Дослідіть, з якими типами шрамів категорично не можна працювати тату-майстру.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 29,
+    "fields": {
+      "lecture_name": "29. Корекція татуювання",
+      "under_name": "Коли і як це робити",
+      "position_number": 29,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Чому потрібна корекція. Як оцінити загоєну роботу. Техніка оновлення контурів та кольору. Ціноутворення на корекцію.",
+      "homework": "Напишіть клієнту повідомлення-нагадування про необхідність прийти на огляд загоєної роботи.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 30,
+    "fields": {
+      "lecture_name": "30. Психологія роботи з клієнтом",
+      "under_name": "Як уникнути конфліктів",
+      "position_number": 30,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Робота зі складними клієнтами. Як впоратися з хвилюванням клієнта. Етика спілкування. Як відмовити клієнту.",
+      "homework": "Розіграйте діалог: клієнт просить зробити тату на обличчі як перше тату. Ваші дії.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 31,
+    "fields": {
+      "lecture_name": "31. Створення портфоліо",
+      "under_name": "Ваша візитна картка",
+      "position_number": 31,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Що має бути в портфоліо. Як відбирати роботи. Важливість якісних фото. Де розміщувати портфоліо (соцмережі, сайти).",
+      "homework": "Створіть структуру свого майбутнього портфоліо (розділи за стилями, хронологія тощо).",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 32,
+    "fields": {
+      "lecture_name": "32. Фотографування та обробка робіт",
+      "under_name": "Як показати тату у найкращому світлі",
+      "position_number": 32,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Правильне світло, ракурси. Фото свіжої та загоєної роботи. Базова обробка фото на телефоні (Lightroom, Snapseed).",
+      "homework": "Зробіть фото своєї роботи на штучній шкірі у 3 різних ракурсах та обробіть найкраще фото.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 33,
+    "fields": {
+      "lecture_name": "33. Просування в Instagram",
+      "under_name": "Основний інструмент майстра",
+      "position_number": 33,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Оформлення профілю. Створення контент-плану. Використання Reels, Stories. Хештеги та геотеги. Основи таргетованої реклами.",
+      "homework": "Проаналізуйте 3 профілі успішних тату-майстрів. Що вам в них подобається, а що ні?",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 34,
+    "fields": {
+      "lecture_name": "34. Просування в TikTok та інших мережах",
+      "under_name": "Пошук нової аудиторії",
+      "position_number": 34,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Формати контенту для TikTok. Як знімати вірусні відео. Використання Pinterest, Behance, Facebook для просування.",
+      "homework": "Придумайте 5 ідей для коротких відео (Reels/TikTok) про процес створення тату.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 35,
+    "fields": {
+      "lecture_name": "35. Ціноутворення",
+      "under_name": "Як оцінити свою роботу",
+      "position_number": 35,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Фактори, що впливають на ціну. Погодинна оплата vs фіксована ціна. Мінімальна вартість сеансу. Як підвищувати ціни.",
+      "homework": "Розрахуйте собівартість одного сеансу тату (витратні матеріали).",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 36,
+    "fields": {
+      "lecture_name": "36. Відкриття власної студії або оренда місця",
+      "under_name": "Наступний крок у кар'єрі",
+      "position_number": 36,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Плюси та мінуси роботи в студії та вдома. Вимоги до приміщення. Юридичне оформлення діяльності (ФОП).",
+      "homework": "Дослідіть вартість оренди робочого місця тату-майстра у вашому місті.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 37,
+    "fields": {
+      "lecture_name": "37. Тату-конвенції та фестивалі",
+      "under_name": "Нетворкінг та професійний розвиток",
+      "position_number": 37,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Як потрапити на конвенцію. Підготовка до участі. Номінації та конкурси. Важливість спілкування з колегами.",
+      "homework": "Знайдіть інформацію про 2-3 найбільші тату-конвенції в Європі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 38,
+    "fields": {
+      "lecture_name": "38. Співпраця з іншими майстрами та брендами",
+      "under_name": "Колаборації та спонсорство",
+      "position_number": 38,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Спільні проекти (guest spot). Як отримати спонсорство від виробників обладнання. Робота з блогерами.",
+      "homework": "Напишіть коротке 'промо-повідомлення' про себе для потенційного спонсора.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 39,
+    "fields": {
+      "lecture_name": "39. Етика тату-майстра",
+      "under_name": "Правила професійної поведінки",
+      "position_number": 39,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Повага до клієнтів та колег. Конфіденційність. Відмова від плагіату. Як поводитися в спірних ситуаціях.",
+      "homework": "Опишіть ситуацію: до вас прийшов клієнт з ескізом, який є точною копією роботи іншого майстра. Ваші дії.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 40,
+    "fields": {
+      "lecture_name": "40. Тренди в тату-індустрії 2025",
+      "under_name": "Що популярно сьогодні",
+      "position_number": 40,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Аналіз сучасних трендів. Мікрореалізм, кібер-сигілізм, 'ignorant' стиль. Як адаптувати тренди під свій стиль, не втрачаючи індивідуальності.",
+      "homework": "Створіть мудборд з трендовими татуюваннями, які вас надихають.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 41,
+    "fields": {
+      "lecture_name": "41. Freehand: техніка малювання на шкірі",
+      "under_name": "Імпровізація та унікальність",
+      "position_number": 41,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Що таке фріхенд. Інструменти для малювання на шкірі. Плюси та мінуси техніки. Як інтегрувати фріхенд у свою роботу.",
+      "homework": "Намалюйте маркерами для шкіри простий візерунок у стилі фріхенд на своїй руці або нозі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 42,
+    "fields": {
+      "lecture_name": "42. Робота з великими проектами (рукави, спини)",
+      "under_name": "Планування та реалізація",
+      "position_number": 42,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Розробка концепції великого тату. Розбивка на сеанси. Як зберегти цілісність композиції. Робота з анатомією.",
+      "homework": "Схематично намалюйте на шаблоні руки план розташування елементів для майбутнього 'рукава'.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 43,
+    "fields": {
+      "lecture_name": "43. Поглиблена колористика",
+      "under_name": "Складні колірні схеми",
+      "position_number": 43,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Триадичні, тетрадичні колірні схеми. Вплив тону шкіри на кінцевий результат. Як зберегти яскравість кольору надовго.",
+      "homework": "Створіть ескіз, використовуючи тріадичну колірну схему.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 44,
+    "fields": {
+      "lecture_name": "44. Особливості роботи з темною шкірою",
+      "under_name": "Контрастність та вибір кольору",
+      "position_number": 44,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Як пігменти виглядають на темних відтінках шкіри. Які кольори використовувати, а яких уникати. Важливість контрасту в дизайні.",
+      "homework": "Знайдіть 5 прикладів якісних кольорових татуювань на темній шкірі.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 45,
+    "fields": {
+      "lecture_name": "45. Стиль: Нео-традишнл",
+      "under_name": "Сучасний погляд на класику",
+      "position_number": 45,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Характерні риси стилю: чіткі контури, обмежена, але яскрава палітра, деталізація. Відмінності від олд скулу та традиційного стилю.",
+      "homework": "Намалюйте ескіз тварини в стилі Нео-традишнл.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 46,
+    "fields": {
+      "lecture_name": "46. Стиль: Японське татуювання (Irezumi)",
+      "under_name": "Символізм та канони",
+      "position_number": 46,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Основні сюжети та їх значення (дракони, карпи коі, тигри). Характерні елементи: фон, хвилі, хмари. Правила композиції.",
+      "homework": "Намалюйте ескіз карпа коі з традиційним японським фоном.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 47,
+    "fields": {
+      "lecture_name": "47. Handpoke: техніка без машинки",
+      "under_name": "Медитативний процес",
+      "position_number": 47,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд техніки. Необхідні інструменти. Плюси та мінуси. Стилі, які найкраще підходять для хендпоуку.",
+      "homework": "Спробуйте зробити декілька ліній та точок на апельсині, використовуючи голку для хендпоуку.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 48,
+    "fields": {
+      "lecture_name": "48. Здоров'я тату-майстра",
+      "under_name": "Як уникнути професійних захворювань",
+      "position_number": 48,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Ергономіка робочого місця. Проблеми зі спиною, шиєю, зап'ястями. Вправи для профілактики. Захист зору та органів дихання.",
+      "homework": "Організуйте своє робоче місце максимально ергономічно та зробіть фото.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 49,
+    "fields": {
+      "lecture_name": "49. Управління фінансами та податки",
+      "under_name": "Бізнес-аспекти професії",
+      "position_number": 49,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Ведення обліку доходів та витрат. Податкова система для ФОП. Планування бюджету на розвиток та маркетинг.",
+      "homework": "Складіть приблизний фінансовий план на перші 3 місяці роботи.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 50,
+    "fields": {
+      "lecture_name": "50. Підготовка до випускного проекту",
+      "under_name": "Демонстрація ваших навичок",
+      "position_number": 50,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Вибір теми та стилю для фінальної роботи. Етапи підготовки: від ескізу до повного загоєння. Критерії оцінювання.",
+      "homework": "Представте 3 ідеї для свого випускного проекту з коротким описом та референсами.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 51,
+    "fields": {
+      "lecture_name": "51. БОНУС: Перманентний макіяж",
+      "under_name": "Основи для тату-майстра",
+      "position_number": 51,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд технік (пудрові брови, акварельні губи). Відмінності в обладнанні та пігментах. Можливості для розширення послуг.",
+      "homework": "Дослідіть, які сертифікати потрібні для роботи майстром перманентного макіяжу у вашій країні.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 52,
+    "fields": {
+      "lecture_name": "52. БОНУС: Лазерне видалення тату",
+      "under_name": "Теоретичний огляд",
+      "position_number": 52,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Принцип роботи неодимового лазера. Як це допомагає в роботі з cover-up. Протипоказання та процес загоєння.",
+      "homework": "Підготуйте відповідь на питання клієнта: 'Скільки сеансів лазера потрібно, щоб підготувати тату до перекриття?'.",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 53,
+    "fields": {
+      "lecture_name": "1. Вступ у професію майстра пірсингу",
+      "under_name": "Історія, культура та відповідальність",
+      "position_number": 1,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Знайомство зі світом професійного пірсингу. Розглянемо історію бодімодифікацій, культурне значення пірсингу та обговоримо ключові аспекти відповідальності майстра перед клієнтом.",
+      "homework": "Дослідіть історію одного з видів пірсингу (напр., септум) та підготуйте коротку доповідь.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 54,
+    "fields": {
+      "lecture_name": "2. Санітарія, дезінфекція та стерилізація",
+      "under_name": "Золотий стандарт безпеки",
+      "position_number": 2,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Ключовий урок про безпеку. Відмінності між санітарією, дезінфекцією та стерилізацією. Робота з автоклавом. Правила обробки інструментів та прикрас.",
+      "homework": "Складіть покрокову інструкцію стерилізації інструментів в автоклаві.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 55,
+    "fields": {
+      "lecture_name": "3. Організація робочого місця",
+      "under_name": "Стерильна зона та її межі",
+      "position_number": 3,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Правильне зонування кабінету. Підготовка стерильного поля для процедури. Використання одноразових матеріалів та бар'єрного захисту.",
+      "homework": "Намалюйте схему ідеального, на вашу думку, робочого місця майстра пірсингу.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 56,
+    "fields": {
+      "lecture_name": "4. Анатомія людини для пірсера",
+      "under_name": "Що потрібно знати, щоб не нашкодити",
+      "position_number": 4,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд будови вушної раковини, носа, губ, язика, пупка. Розташування великих судин та нервових закінчень. Небезпечні зони для проколів.",
+      "homework": "На схемі вуха позначте місця для проколів: хелікс, трагус, конч, дейс, рук.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 57,
+    "fields": {
+      "lecture_name": "5. Протипоказання та алергічні реакції",
+      "under_name": "Коли варто сказати 'ні'",
+      "position_number": 5,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Абсолютні та відносні протипоказання до пірсингу. Алергія на метали (нікель). Збір анамнезу у клієнта. Інформована згода.",
+      "homework": "Складіть анкету-опитувальник для клієнта перед процедурою пірсингу.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 58,
+    "fields": {
+      "lecture_name": "6. Голки для пірсингу та їх види",
+      "under_name": "Головний інструмент майстра",
+      "position_number": 6,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Професійні голки для пірсингу з лазерною заточкою. Катетери та їх недоліки. Розмірна сітка (Gauge). Вибір голки під тип проколу та товщину прикраси.",
+      "homework": "Створіть таблицю відповідності: тип проколу (мочка, хрящ, ніс, пупок) - рекомендований розмір голки (G).",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 59,
+    "fields": {
+      "lecture_name": "7. Інструменти: затискачі, приймальні трубки",
+      "under_name": "Надійні помічники в роботі",
+      "position_number": 7,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд інструментів: затискачі (Пеннінгтон, Форстер), ножиці, приймальні трубки, тапери. Їх призначення та правила використання.",
+      "homework": "Для яких проколів використовується затискач з проріззю (Пеннінгтон), а для яких - без (Форстер)?",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 60,
+    "fields": {
+      "lecture_name": "8. Прикраси: матеріали та види",
+      "under_name": "Безпека та естетика",
+      "position_number": 8,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Біосумісні матеріали: імплантаційний титан (ASTM F-136), ніобій, безнікелеве золото. Види прикрас: лабрет, банан, ностріл, кільце, циркуляр.",
+      "homework": "Знайдіть та порівняйте ціни на базовий лабрет з імплантаційного титану у 3 різних постачальників.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 61,
+    "fields": {
+      "lecture_name": "9. Розміри прикрас: товщина, довжина, діаметр",
+      "under_name": "Як не помилитися з вибором",
+      "position_number": 9,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Підбір первинної прикраси з урахуванням набряку. Що таке 'даунсайз' (downsize) і чому він важливий. Вимірювання місця проколу.",
+      "homework": "Опишіть, чому для первинного проколу ставиться довша прикраса, ніж для постійного носіння.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 62,
+    "fields": {
+      "lecture_name": "10. Техніка проколу: розмітка та підготовка",
+      "under_name": "Сім разів відміряй",
+      "position_number": 10,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Важливість правильної розмітки. Узгодження з клієнтом. Обробка шкіри антисептиком. Психологічна підготовка клієнта.",
+      "homework": "Зробіть на папері симетричну розмітку для проколів 'Snake Bites' (симетричні проколи губи).",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 63,
+    "fields": {
+      "lecture_name": "11. Прокол мочки вуха (Lobe)",
+      "under_name": "Класика пірсингу",
+      "position_number": 11,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Покрокова демонстрація процедури. Вибір місця, техніка проколу голкою. Чому не можна використовувати пістолет. Встановлення лабрета.",
+      "homework": "Відпрацюйте прокол мочки на манекені або силіконовому вусі.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 64,
+    "fields": {
+      "lecture_name": "12. Прокол хряща (Helix)",
+      "under_name": "Найпопулярніший прокол хряща",
+      "position_number": 12,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Особливості роботи з хрящовою тканиною. Техніка проколу з використанням приймальної трубки. Ризики та можливі ускладнення.",
+      "homework": "Відпрацюйте прокол хелікса на манекені.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 65,
+    "fields": {
+      "lecture_name": "13. Складні проколи вуха: Трагус, Конч, Рук, Дейс",
+      "under_name": "Пірсинг для просунутих",
+      "position_number": 13,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Розбір анатомічних особливостей та технік для кожного з проколів. Вибір прикрас. Специфіка загоєння.",
+      "homework": "Теоретичне завдання: опишіть, яку прикрасу ви б обрали для первинного проколу 'Дейс' і чому.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 66,
+    "fields": {
+      "lecture_name": "14. Прокол 'Індастріал' (Industrial)",
+      "under_name": "Два проколи - одна прикраса",
+      "position_number": 14,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Складність розмітки та виконання. Важливість співвісності проколів. Як уникнути тиску штанги на хрящ. Догляд та загоєння.",
+      "homework": "Намалюйте на схемі вуха правильний та неправильний кут для проколу 'Індастріал'.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 67,
+    "fields": {
+      "lecture_name": "15. Прокол крила носа (Nostril)",
+      "under_name": "Техніка та вибір прикрас",
+      "position_number": 15,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Вибір правильного місця з урахуванням анатомії. Техніка проколу. Встановлення ностріла або лабрета.",
+      "homework": "Відпрацюйте прокол крила носа на манекені.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 68,
+    "fields": {
+      "lecture_name": "16. Прокол перегородки носа (Septum)",
+      "under_name": "Пошук 'sweet spot'",
+      "position_number": 16,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Анатомія септума. Як знайти правильне місце для проколу (sweet spot), щоб уникнути проколу хряща. Техніка з використанням затискача.",
+      "homework": "Опишіть, як пояснити клієнту, де знаходиться 'sweet spot' і чому важливо колоти саме туди.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 69,
+    "fields": {
+      "lecture_name": "17. Пірсинг губи: Лабрет, Монро, Медуза",
+      "under_name": "Проколи навколо рота",
+      "position_number": 17,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Техніка виконання проколів губ. Важливість симетричної розмітки. Особливості догляду за пірсингом, що контактує зі слизовою оболонкою.",
+      "homework": "Відпрацюйте розмітку та прокол 'Медуза' на манекені.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 70,
+    "fields": {
+      "lecture_name": "18. Прокол язика",
+      "under_name": "Техніка безпеки та ризики",
+      "position_number": 18,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Анатомія язика, розташування вуздечки та вен. Техніка проколу. Підбір первинної прикраси. Ризики пошкодження зубної емалі.",
+      "homework": "Складіть пам'ятку по догляду за проколом язика, включаючи рекомендації по харчуванню в перші дні.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 71,
+    "fields": {
+      "lecture_name": "19. Прокол брови (Eyebrow)",
+      "under_name": "Вертикальний та горизонтальний",
+      "position_number": 19,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Вибір місця та кута нахилу. Ризики зачеплення одягом. Техніка виконання. Схильність до міграції.",
+      "homework": "Опишіть, чому прокол брови має високий ризик відторгнення та як його мінімізувати.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 72,
+    "fields": {
+      "lecture_name": "20. Прокол 'Брідж' (Bridge)",
+      "under_name": "Пірсинг перенісся",
+      "position_number": 20,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Особливості роботи в зоні перенісся. Важливість правильної оцінки кількості тканини. Техніка площинного проколу. Високий ризик міграції.",
+      "homework": "Теоретичне завдання: як визначити, чи підходить клієнту пірсинг 'Брідж' з точки зору анатомії?",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 73,
+    "fields": {
+      "lecture_name": "21. Прокол пупка (Navel)",
+      "under_name": "Класичний та нижній",
+      "position_number": 21,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Анатомія пупка. Як визначити, чи підходить клієнту цей прокол. Техніка виконання. Ризики при вагітності та зміні ваги.",
+      "homework": "Відпрацюйте прокол пупка на силіконовому тренажері.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 74,
+    "fields": {
+      "lecture_name": "22. Прокол сосків (Nipple piercing)",
+      "under_name": "Горизонтальний, вертикальний, діагональний",
+      "position_number": 22,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Анатомічні особливості чоловічих та жіночих сосків. Розмітка та техніка проколу. Особливості загоєння та догляду.",
+      "homework": "Складіть список рекомендацій для клієнта на перші 2 тижні після проколу сосків.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 75,
+    "fields": {
+      "lecture_name": "23. Мікродермали",
+      "under_name": "Встановлення та видалення",
+      "position_number": 23,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Принцип встановлення якоря під шкіру. Інструменти: панч, тапер. Вибір місця для встановлення. Техніка безпечного видалення.",
+      "homework": "Відпрацюйте встановлення мікродермала на силіконовому килимку.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 76,
+    "fields": {
+      "lecture_name": "24. Площинні проколи (Surface piercing)",
+      "under_name": "Робота зі 'скобами'",
+      "position_number": 24,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Використання спеціальних П-подібних штанг. Техніка проколу. Найпопулярніші місця: ключиці, потилиця. Високий ризик відторгнення.",
+      "homework": "Поясніть, чому для площинних проколів не можна використовувати звичайні прямі штанги.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 77,
+    "fields": {
+      "lecture_name": "25. Інтимний пірсинг (теоретичний огляд)",
+      "under_name": "Види, ризики та етика",
+      "position_number": 25,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд основних видів чоловічого та жіночого інтимного пірсингу. Анатомічні особливості, ризики. Етичні аспекти роботи.",
+      "homework": "Дослідіть, які види інтимного пірсингу мають найкоротший період загоєння.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 78,
+    "fields": {
+      "lecture_name": "26. Догляд за свіжим проколом",
+      "under_name": "Загальні правила та рекомендації",
+      "position_number": 26,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Чим обробляти прокол (сольовий розчин, антисептики без спирту). Як часто. Що не можна робити під час загоєння.",
+      "homework": "Створіть універсальну пам'ятку по догляду за пірсингом для клієнтів.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 79,
+    "fields": {
+      "lecture_name": "27. Можливі ускладнення: інфекції, міграція",
+      "under_name": "Як розпізнати та що робити",
+      "position_number": 27,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Ознаки інфекції. Міграція та відторгнення прикраси. Алергічні реакції. Коли потрібно звернутися до лікаря.",
+      "homework": "Опишіть різницю між нормою (невелике почервоніння, виділення лімфи) та ознаками інфекції.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 80,
+    "fields": {
+      "lecture_name": "28. Келоїдні та гіпертрофічні рубці",
+      "under_name": "Профілактика та боротьба з 'шишками'",
+      "position_number": 28,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Причини виникнення 'шишок' біля проколу. Відмінності між келоїдом та гіпертрофією. Методи лікування та профілактики.",
+      "homework": "Що таке 'No-Pull Piercing Disc' і як він допомагає в боротьбі з гіпертрофічними рубцями?",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 81,
+    "fields": {
+      "lecture_name": "29. Заміна прикраси та 'Даунсайз' (Downsize)",
+      "under_name": "Важливий етап загоєння",
+      "position_number": 29,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Чому і коли потрібно міняти первинну прикрасу на коротшу. Як безпечно провести процедуру даунсайзу.",
+      "homework": "Напишіть шаблон повідомлення-нагадування клієнту про необхідність записатися на даунсайз.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 82,
+    "fields": {
+      "lecture_name": "30. Психологія роботи з клієнтом",
+      "under_name": "Як заспокоїти та налаштувати на процедуру",
+      "position_number": 30,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Робота зі страхом болю. Як пояснювати свої дії під час процедури. Важливість впевненості та спокою майстра.",
+      "homework": "Придумайте 3 фрази, які допоможуть заспокоїти клієнта, який сильно хвилюється перед проколом.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 83,
+    "fields": {
+      "lecture_name": "31. Створення портфоліо пірсера",
+      "under_name": "Як показати свою майстерність",
+      "position_number": 31,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Важливість якісних фото. Фото свіжого та загоєного пірсингу. Демонстрація красивих прикрас. Ведення Instagram.",
+      "homework": "Створіть мудборд для свого майбутнього профілю в Instagram: стиль фото, кольорова гама, приклади робіт.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 84,
+    "fields": {
+      "lecture_name": "32. Фотографування пірсингу",
+      "under_name": "Макрозйомка та правильне світло",
+      "position_number": 32,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Обладнання для якісних фото (телефон з гарною камерою, кільцева лампа). Ракурси. Фокус на прикрасі та якості проколу. Обробка фото.",
+      "homework": "Зробіть якісне фото будь-якої своєї прикраси (сережки, кільця) крупним планом.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 85,
+    "fields": {
+      "lecture_name": "33. Ціноутворення на послуги",
+      "under_name": "Скільки коштує ваша робота?",
+      "position_number": 33,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Що входить у вартість послуги (робота, базова прикраса, витратні матеріали). Аналіз цін конкурентів. Формування прайс-листа.",
+      "homework": "Розрахуйте собівартість процедури проколу мочки вуха (голка, рукавички, серветки, антисептик і т.д.).",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 86,
+    "fields": {
+      "lecture_name": "34. Пошук постачальників прикрас та обладнання",
+      "under_name": "Де купувати якісні матеріали",
+      "position_number": 34,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Огляд перевірених брендів (вітчизняних та закордонних). Як відрізнити якісний титан. Оптові закупівлі.",
+      "homework": "Знайдіть 3 українських та 3 закордонних магазини, що продають професійні прикраси для пірсингу.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 87,
+    "fields": {
+      "lecture_name": "35. Етика роботи майстра пірсингу",
+      "under_name": "Професіоналізм та повага",
+      "position_number": 35,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Конфіденційність. Повага до тіла клієнта. Як коректно відмовити в проколі, якщо він небезпечний. Спілкування з колегами.",
+      "homework": "Опишіть ситуацію: клієнт просить зробити прокол, який йому анатомічно не підходить. Ваші дії.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 88,
+    "fields": {
+      "lecture_name": "36. Робота з неповнолітніми",
+      "under_name": "Юридичні та етичні аспекти",
+      "position_number": 36,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Законодавство щодо пірсингу для неповнолітніх. Обов'язкова присутність та письмова згода батьків. З якого віку можна робити ті чи інші проколи.",
+      "homework": "Складіть форму згоди для батьків на процедуру пірсингу для їхньої дитини.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 89,
+    "fields": {
+      "lecture_name": "37. Тренди в сучасному пірсингу",
+      "under_name": "Що актуально сьогодні",
+      "position_number": 37,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Популярні комбінації проколів. Модні прикраси. 'Curated Ear' як мистецтво. Нові види пірсингу.",
+      "homework": "Створіть в Pinterest дошку 'Piercing Trends 2025' та збережіть туди 10-15 робіт, які вас надихають.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 90,
+    "fields": {
+      "lecture_name": "38. 'Curated Ear' - підбір прикрас під анатомію",
+      "under_name": "Створення унікального образу",
+      "position_number": 38,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Що таке 'куроване вухо'. Як планувати композицію з кількох проколів. Підбір прикрас за стилем, формою та кольором металу.",
+      "homework": "На схемі вуха намалюйте свій варіант 'Curated Ear' з 4-5 проколів, вкажіть тип прикрас.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 91,
+    "fields": {
+      "lecture_name": "39. Техніка 'Freehand'",
+      "under_name": "Прокол без використання затискачів",
+      "position_number": 39,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Переваги та недоліки методу. Для яких проколів він підходить (септум, деякі проколи хрящів). Як контролювати голку.",
+      "homework": "Теоретичне завдання: опишіть, чому техніка 'freehand' вважається менш болючою для деяких проколів.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 92,
+    "fields": {
+      "lecture_name": "40. Розтягування тунелів",
+      "under_name": "Безпечне збільшення проколу",
+      "position_number": 40,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Інструменти: тапери, плаги. Правила безпечного розтягування (не більше розміру за раз). Як уникнути розривів ('blowout').",
+      "homework": "Складіть графік розтягування тунелів з 2мм до 10мм з рекомендованими термінами між етапами.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 93,
+    "fields": {
+      "lecture_name": "41. Основи першої допомоги",
+      "under_name": "Що робити, якщо клієнту стало зле",
+      "position_number": 41,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Непритомність, запаморочення, панічна атака. Як допомогти клієнту. Склад аптечки в кабінеті пірсера.",
+      "homework": "Опишіть покроковий алгоритм дій, якщо клієнт починає втрачати свідомість під час процедури.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 94,
+    "fields": {
+      "lecture_name": "42. Робота з існуючими проколами",
+      "under_name": "Заміна прикрас, вирішення проблем",
+      "position_number": 42,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Як допомогти клієнту, який прийшов з проблемою від іншого майстра. Заміна складних прикрас (кільця, накрутки).",
+      "homework": "Клієнт прийшов зі скаргою 'не можу зняти сережку'. Опишіть ваші можливі дії.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 95,
+    "fields": {
+      "lecture_name": "43. Просування в соціальних мережах",
+      "under_name": "Instagram, TikTok для пірсера",
+      "position_number": 43,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Специфіка контенту для пірсера. Відео процесу, огляди прикрас, 'загоєнці'. Робота з місцевими хештегами. Співпраця з блогерами.",
+      "homework": "Придумайте 5 ідей для Reels/TikTok на тему пірсингу.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 96,
+    "fields": {
+      "lecture_name": "44. Юридичне оформлення діяльності",
+      "under_name": "Робота в правовому полі",
+      "position_number": 44,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Реєстрація ФОП. Вибір групи та КВЕДів. Податки та звітність. Чи потрібна медична освіта (спойлер: ні, але є нюанси).",
+      "homework": "Дізнайтесь, які КВЕДи найбільше підходять для діяльності майстра пірсингу в Україні.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 97,
+    "fields": {
+      "lecture_name": "45. Участь у професійних конференціях",
+      "under_name": "Постійне навчання та розвиток",
+      "position_number": 45,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Важливість обміну досвідом. Огляд українських та міжнародних конференцій для пірсерів. Підвищення кваліфікації.",
+      "homework": "Знайдіть інформацію про Асоціацію Професійних Пірсерів (APP) та ознайомтесь з їх стандартами безпеки.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 98,
+    "fields": {
+      "lecture_name": "46. БОНУС: Анодування титану",
+      "under_name": "Створення кольорових прикрас",
+      "position_number": 46,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Що таке анодування. Необхідне обладнання. Процес створення різних кольорів на титанових прикрасах за допомогою електричного струму.",
+      "homework": "Створіть таблицю відповідності: напруга (вольтаж) - отриманий колір на титані.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 99,
+    "fields": {
+      "lecture_name": "47. БОНУС: Пірсинг-пістолет - абсолютне зло",
+      "under_name": "Чому його треба заборонити",
+      "position_number": 47,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Детальний розбір шкоди від пістолета: розрив тканин, неможливість стерилізації, неякісні прикраси, неправильний кут проколу.",
+      "homework": "Напишіть аргументовану відповідь на коментар 'А мені в дитинстві кололи пістолетом, і все нормально'.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 100,
+    "fields": {
+      "lecture_name": "48. Робота зі складними клієнтами",
+      "under_name": "Вирішення конфліктних ситуацій",
+      "position_number": 48,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Клієнт не дотримується рекомендацій. Клієнт незадоволений результатом. Як зберігати спокій та професіоналізм. Політика повернення коштів.",
+      "homework": "Розіграйте діалог: клієнт скаржиться на 'шишку' біля проколу, звинувачуючи вас, хоча сам спав на вусі.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 101,
+    "fields": {
+      "lecture_name": "49. Особистий бренд майстра",
+      "under_name": "Як виділитися серед конкурентів",
+      "position_number": 49,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Формування унікального стилю. Спеціалізація (напр., тільки пірсинг вух, або робота зі складними випадками). Створення впізнаваного візуального образу.",
+      "homework": "Сформулюйте в 1-2 реченнях свою унікальну торгову пропозицію як майстра пірсингу.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 102,
+    "fields": {
+      "lecture_name": "50. Підготовка до випускної роботи",
+      "under_name": "Демонстрація отриманих навичок",
+      "position_number": 50,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Вимоги до фінального іспиту. Вибір моделі та типу проколу. Критерії оцінки: стерильність, техніка, розмітка, спілкування з клієнтом.",
+      "homework": "Опишіть, який прокол ви б хотіли виконати на іспиті та чому. Підготуйте список необхідних інструментів.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 103,
+    "fields": {
+      "lecture_name": "51. Шляхи розвитку після курсу",
+      "under_name": "Від новачка до топ-майстра",
+      "position_number": 51,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Оренда місця в студії, відкриття власного кабінету, гостьові візити (guest spots) в інші міста, викладання. Як постійно рости у професії.",
+      "homework": "Напишіть свій план професійного розвитку на найближчий рік.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lecture",
+    "pk": 104,
+    "fields": {
+      "lecture_name": "52. Фінальний тест та відповіді на запитання",
+      "under_name": "Перевірка знань та напуття",
+      "position_number": 52,
+      "video_url": "https://www.youtube.com/watch?v=CqMWqOqzO1Q",
+      "lecture": "Комплексний тест по всьому пройденому матеріалу. Сесія запитань та відповідей з інструктором. Отримання сертифікату.",
+      "homework": "Напишіть 3 головні інсайти, які ви отримали за час навчання на курсі.",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash",
+      "last_login": "2025-07-15T15:00:00Z",
+      "is_superuser": false,
+      "email": "student_tattoo@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-02T10:00:00Z",
+      "first_name": "Анна",
+      "last_name": "Студентка",
+      "code": 1,
+      "phone": "+380991112233",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-16T11:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash2",
+      "last_login": "2025-07-14T12:00:00Z",
+      "is_superuser": false,
+      "email": "student_piercing@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-03T11:30:00Z",
+      "first_name": "Олексій",
+      "last_name": "Учень",
+      "code": 2,
+      "phone": "+380674445566",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-16T14:20:00Z"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 1,
+    "fields": {
+      "code": "TATTOO-PO-0001",
+      "is_activated": true,
+      "activated_date": "2025-07-02T10:00:00Z",
+      "created_date": "2025-07-01T12:00:00Z",
+      "order": 1,
+      "tariff": 2,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 2,
+    "fields": {
+      "code": "PIERC-MATER-01",
+      "is_activated": true,
+      "activated_date": "2025-07-03T11:30:00Z",
+      "created_date": "2025-07-02T14:00:00Z",
+      "order": 2,
+      "tariff": 6,
+      "start_box_coupon_is_activated": true
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 3,
+    "fields": {
+      "code": "TATOO-BASE-001",
+      "is_activated": false,
+      "activated_date": null,
+      "created_date": "2025-07-10T18:00:00Z",
+      "order": 3,
+      "tariff": 1,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 1,
+    "fields": {
+      "total_sum": 600.00,
+      "is_paid": true,
+      "user_email": "student_tattoo@example.com",
+      "session_id": "cs_test_a1B2c3d4E5f6G7h8I9j0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 2,
+    "fields": {
+      "total_sum": 900.00,
+      "is_paid": true,
+      "user_email": "student_piercing@example.com",
+      "session_id": "cs_test_b1C2d3e4F5g6H7i8J9k0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 3,
+    "fields": {
+      "total_sum": 300.00,
+      "is_paid": false,
+      "user_email": "new_user@example.com",
+      "session_id": "cs_test_c1D2e3f4G5h6I7j8K9l0"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "created_date": "2025-07-02T10:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "created_date": "2025-07-03T11:35:00Z"
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 1,
+    "fields": {
+      "chat": 1,
+      "text": "Доброго дня! Активувала курс по тату, з чого краще почати?",
+      "user": 2,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-02T10:06:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 2,
+    "fields": {
+      "chat": 1,
+      "text": "Вітаємо на курсі, Анно! Рекомендуємо почати з першого вступного уроку. Там детально розказано про структуру навчання. Успіхів!",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-02T10:15:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 3,
+    "fields": {
+      "chat": 2,
+      "text": "Привіт! Я замовив стартовий набір по пірсингу, коли його відправлять?",
+      "user": 3,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-04T09:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 4,
+    "fields": {
+      "chat": 2,
+      "text": "Доброго дня, Олексію! Ваш набір вже комплектується. Відправка протягом 1-2 робочих днів. Очікуйте номер накладної.",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-04T09:30:00Z",
+      "is_read_user": false,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 1,
+    "fields": {
+      "full_name": "Учень Олексій",
+      "address": "м. Київ, Нова Пошта №1, вул. Велика Васильківська, 1",
+      "user": 3,
+      "phone": "+380674445566",
+      "comments": "Бажано відправити якнайшвидше",
+      "is_sent": false,
+      "sent_date": null,
+      "direction": "piercing",
+      "created_date": "2025-07-03T12:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 1,
+    "fields": {
+      "lecture": 3,
+      "user": 2,
+      "was_checked": true,
+      "image": "homework_images/student2_checklist.jpg",
+      "date": "2025-07-05T18:00:00Z",
+      "text": "Ось мій чек-лист по підготовці робочого місця. Чи все вірно?"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 1,
+    "fields": {
+      "homework": 1,
+      "review_text": "Чудова робота, Анно! Все дуже детально та правильно. Можна додати ще пункт про перевірку термінів придатності розчинів.",
+      "is_approved": true,
+      "data": "2025-07-06T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 2,
+    "fields": {
+      "lecture": 11,
+      "user": 2,
+      "was_checked": true,
+      "image": "homework_images/student2_lines.jpg",
+      "date": "2025-07-08T20:00:00Z",
+      "text": "Відпрацювала лінії на штучній шкірі. Рука ще трохи тремтить, але я старалась!"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 2,
+    "fields": {
+      "homework": 2,
+      "review_text": "Для першого разу дуже добре! Намагайтесь вести лінію більш плавно, без зупинок. Продовжуйте в тому ж дусі!",
+      "is_approved": true,
+      "data": "2025-07-09T10:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 3,
+    "fields": {
+      "lecture": 54,
+      "user": 3,
+      "was_checked": false,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-07T15:00:00Z",
+      "text": "Склав інструкцію по стерилізації. 1. Замочування в дезрозчині. 2. Промивка під проточною водою. 3. УЗ-мийка. 4. Сушка. 5. Пакування в крафт-пакет. 6. Автоклавування при 134°C."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 3,
+    "fields": {
+      "homework": 3,
+      "review_text": "Все вірно, Олексію! Ідеальна послідовність. Роботу зараховано.",
+      "is_approved": true,
+      "data": "2025-07-07T17:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 4,
+    "fields": {
+      "lecture": 61,
+      "user": 3,
+      "was_checked": false,
+      "image": "homework_images/student3_lobe_practice.jpg",
+      "date": "2025-07-10T19:00:00Z",
+      "text": "Проколов силіконове вухо. Начебто вийшло рівно."
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 4,
+    "fields": {
+      "total_sum": 600.00,
+      "is_paid": true,
+      "user_email": "ivan.p@example.com",
+      "session_id": "cs_test_d1E2f3g4H5i6J7k8L9m0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 5,
+    "fields": {
+      "total_sum": 900.00,
+      "is_paid": true,
+      "user_email": "maria.t@example.com",
+      "session_id": "cs_test_e1F2g3h4I5j6K7l8M9n0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 6,
+    "fields": {
+      "total_sum": 300.00,
+      "is_paid": true,
+      "user_email": "sergey.b@example.com",
+      "session_id": "cs_test_f1G2h3i4J5k6L7m8N9o0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 7,
+    "fields": {
+      "total_sum": 900.00,
+      "is_paid": true,
+      "user_email": "oksana.m@example.com",
+      "session_id": "cs_test_g1H2i3j4K5l6M7n8O9p0"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 4,
+    "fields": {
+      "code": "PIERC-PRO-0002",
+      "is_activated": true,
+      "activated_date": "2025-07-11T10:00:00Z",
+      "created_date": "2025-07-11T09:00:00Z",
+      "order": 4,
+      "tariff": 5,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 5,
+    "fields": {
+      "code": "TATTOO-MAST-00",
+      "is_activated": true,
+      "activated_date": "2025-07-12T11:00:00Z",
+      "created_date": "2025-07-12T10:00:00Z",
+      "order": 5,
+      "tariff": 3,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 6,
+    "fields": {
+      "code": "TATTOO-BASE-00",
+      "is_activated": true,
+      "activated_date": "2025-07-13T12:00:00Z",
+      "created_date": "2025-07-13T11:00:00Z",
+      "order": 6,
+      "tariff": 1,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 7,
+    "fields": {
+      "code": "PIERC-MAST-002",
+      "is_activated": true,
+      "activated_date": "2025-07-14T13:00:00Z",
+      "created_date": "2025-07-14T12:00:00Z",
+      "order": 7,
+      "tariff": 6,
+      "start_box_coupon_is_activated": true
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash3",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "ivan.p@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-11T10:00:00Z",
+      "first_name": "Іван",
+      "last_name": "Петренко",
+      "code": 4,
+      "phone": "+380501112233",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOUhttps://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOUhttps://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-16T18:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash4",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "maria.t@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-12T11:00:00Z",
+      "first_name": "Марія",
+      "last_name": "Ткаченко",
+      "code": 5,
+      "phone": "+380932223344",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-16T19:10:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash5",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "sergey.b@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-13T12:00:00Z",
+      "first_name": "Сергій",
+      "last_name": "Бондаренко",
+      "code": 6,
+      "phone": "+380683334455",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-15T09:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash6",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "oksana.m@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-14T13:00:00Z",
+      "first_name": "Оксана",
+      "last_name": "Мельник",
+      "code": 7,
+      "phone": "+380974445566",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-16T21:00:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 3,
+    "fields": {
+      "user": 4,
+      "created_date": "2025-07-11T10:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 4,
+    "fields": {
+      "user": 5,
+      "created_date": "2025-07-12T11:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 5,
+    "fields": {
+      "user": 6,
+      "created_date": "2025-07-13T12:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 6,
+    "fields": {
+      "user": 7,
+      "created_date": "2025-07-14T13:05:00Z"
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 2,
+    "fields": {
+      "full_name": "Петренко Іван",
+      "address": "м. Львів, Нова Пошта №10",
+      "user": 4,
+      "phone": "+380501112233",
+      "comments": "",
+      "is_sent": true,
+      "sent_date": "2025-07-13T15:00:00Z",
+      "direction": "piercing",
+      "created_date": "2025-07-11T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 3,
+    "fields": {
+      "full_name": "Ткаченко Марія",
+      "address": "м. Одеса, Нова Пошта №5",
+      "user": 5,
+      "phone": "+380932223344",
+      "comments": "Покладіть, будь ласка, побільше штучної шкіри.",
+      "is_sent": true,
+      "sent_date": "2025-07-14T16:00:00Z",
+      "direction": "tattoo",
+      "created_date": "2025-07-12T12:00:00Z"
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 4,
+    "fields": {
+      "full_name": "Мельник Оксана",
+      "address": "м. Харків, Нова Пошта №22",
+      "user": 7,
+      "phone": "+380974445566",
+      "comments": "",
+      "is_sent": false,
+      "sent_date": null,
+      "direction": "piercing",
+      "created_date": "2025-07-15T09:30:00Z"
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 5,
+    "fields": {
+      "chat": 3,
+      "text": "Добрий день. Отримав стартовий набір, дякую! Все супер. Підкажіть, будь ласка, чи можна для проколу хелікса використовувати голку 18G?",
+      "user": 4,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-15T10:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 6,
+    "fields": {
+      "chat": 3,
+      "text": "Вітаємо, Іване! Раді, що все сподобалось. Так, для хеліксу голка 18G (1.0 мм) підійде, але класичним варіантом вважається 16G (1.2 мм). Під голку 18G обирайте прикрасу відповідної товщини.",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-15T10:15:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 7,
+    "fields": {
+      "chat": 4,
+      "text": "Вітаю! Я дійшла до уроку про тату-машинки. Голова йде обертом. Яку машинку порадите для новачка в стилі графіка/лайнворк? Бюджет до 5000 грн.",
+      "user": 5,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-16T11:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 8,
+    "fields": {
+      "chat": 4,
+      "text": "Доброго дня, Маріє! Для графіки та лайнворку чудово підійдуть роторні пен-машинки. Зверніть увагу на бренди Mast, Dragonhawk або Ambition. Вони мають гарні моделі у вашому бюджеті. Головне - обирайте машинку з коротким ходом голки (до 3.5 мм).",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-16T11:20:00Z",
+      "is_read_user": false,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 9,
+    "fields": {
+      "chat": 5,
+      "text": "У мене не відтворюється відео в 5 уроці. Просто чорний екран.",
+      "user": 6,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-15T09:05:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 10,
+    "fields": {
+      "chat": 5,
+      "text": "Вітаємо, Сергію! Спробуйте, будь ласка, оновити сторінку (Ctrl+F5) або зайти з іншого браузера. Ми перевірили, відео працює. Якщо проблема не зникне, напишіть нам.",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-15T09:10:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 11,
+    "fields": {
+      "chat": 1,
+      "text": "Здала ще одне ДЗ! Подивіться, будь ласка. Починає виходити все краще і краще!",
+      "user": 2,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-16T14:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": false,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 5,
+    "fields": {
+      "lecture": 12,
+      "user": 2,
+      "was_checked": true,
+      "image": "homework_images/student2_coloring.jpg",
+      "date": "2025-07-11T12:00:00Z",
+      "text": "ДЗ по щільному зафарбовуванню. Було складно, але начебто без пробілів."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 4,
+    "fields": {
+      "homework": 5,
+      "review_text": "Анно, це чудовий результат! Прокрас дуже щільний. Спробуйте наступного разу робити рухи трохи швидше, щоб менше травмувати шкіру. Зараховано!",
+      "is_approved": true,
+      "data": "2025-07-11T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 6,
+    "fields": {
+      "lecture": 19,
+      "user": 2,
+      "was_checked": false,
+      "image": "homework_images/student2_linework.jpg",
+      "date": "2025-07-16T13:55:00Z",
+      "text": "Моя перша робота в стилі лайнворк. Як вам?"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 7,
+    "fields": {
+      "lecture": 68,
+      "user": 3,
+      "was_checked": true,
+      "image": "homework_images/student3_septum_practice.jpg",
+      "date": "2025-07-12T18:30:00Z",
+      "text": "Відпрацював септум. На манекені 'sweet spot' знайти легко, а як буде на людині - страшно уявити :)"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 5,
+    "fields": {
+      "homework": 7,
+      "review_text": "Не бійтесь, головне - практика! На людині все відчувається набагато краще. Техніка вірна. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-13T10:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 8,
+    "fields": {
+      "lecture": 73,
+      "user": 3,
+      "was_checked": false,
+      "image": "homework_images/student3_navel_practice.jpg",
+      "date": "2025-07-16T16:00:00Z",
+      "text": "ДЗ по проколу пупка. Все вийшло з першого разу."
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 9,
+    "fields": {
+      "lecture": 56,
+      "user": 4,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-13T21:00:00Z",
+      "text": "Зробив табличку по голках. Мочка - 18-20G, Хрящ - 16-18G, Ніс - 18-20G, Пупок - 14G. Все вірно?"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 6,
+    "fields": {
+      "homework": 9,
+      "review_text": "Так, Іване, все вірно. Це базові розміри, від яких можна відштовхуватись. Молодець! Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-14T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 10,
+    "fields": {
+      "lecture": 64,
+      "user": 4,
+      "was_checked": false,
+      "image": "homework_images/student4_helix.jpg",
+      "date": "2025-07-16T17:45:00Z",
+      "text": "Проколов хелікс на силіконовому вусі. Чекаю на коментарі."
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 11,
+    "fields": {
+      "lecture": 7,
+      "user": 5,
+      "was_checked": true,
+      "image": "homework_images/student5_colors.jpg",
+      "date": "2025-07-14T14:20:00Z",
+      "text": "Мої палітри, створені за допомогою колірного кола. Надихалась осінню."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 7,
+    "fields": {
+      "homework": 11,
+      "review_text": "Маріє, дуже гармонійні та приємні поєднання! Ви чудово відчуваєте колір. Зараховано!",
+      "is_approved": true,
+      "data": "2025-07-14T16:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 12,
+    "fields": {
+      "lecture": 18,
+      "user": 5,
+      "was_checked": true,
+      "image": "homework_images/student5_procreate.jpg",
+      "date": "2025-07-15T19:00:00Z",
+      "text": "Створила ескіз в Procreate і зробила візуалізацію. Дуже зручна програма!"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 8,
+    "fields": {
+      "homework": 12,
+      "review_text": "Чудовий ескіз, і примірка виглядає дуже реалістично! Це важлива навичка в роботі з клієнтами. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-16T10:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 13,
+    "fields": {
+      "lecture": 2,
+      "user": 6,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-14T22:00:00Z",
+      "text": "Мені найбільше сподобались Олд Скул, Нью Скул та Японський стиль. Знайшов приклади, дуже надихає."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 9,
+    "fields": {
+      "homework": 13,
+      "review_text": "Чудовий вибір, Сергію! Це класичні стилі, які завжди будуть актуальними. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-15T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 14,
+    "fields": {
+      "lecture": 60,
+      "user": 7,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-15T20:50:00Z",
+      "text": "Порівняла ціни на лабрети. Різниця між виробниками може бути суттєвою, але на якості титану краще не економити. Правильно я розумію?"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 10,
+    "fields": {
+      "homework": 14,
+      "review_text": "Абсолютно вірно, Оксано! Якість та біосумісність прикраси - це запорука успішного загоєння. Ніколи не економте на цьому. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-16T09:45:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 15,
+    "fields": {
+      "lecture": 80,
+      "user": 7,
+      "was_checked": false,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-16T20:40:00Z",
+      "text": "Дізналась про No-Pull диски. Це геніальний винахід! Замовлю собі на майбутнє. Дякую за урок."
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 8,
+    "fields": {
+      "total_sum": 600.00,
+      "is_paid": true,
+      "user_email": "natalia.k@example.com",
+      "session_id": "cs_test_h1I2j3k4L5m6N7o8P9q0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 9,
+    "fields": {
+      "total_sum": 900.00,
+      "is_paid": true,
+      "user_email": "victor.s@example.com",
+      "session_id": "cs_test_i1J2k3l4M5n6O7p8Q9r0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 10,
+    "fields": {
+      "total_sum": 300.00,
+      "is_paid": true,
+      "user_email": "kyrylo.v@example.com",
+      "session_id": "cs_test_j1K2l3m4N5o6P7q8R9s0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 11,
+    "fields": {
+      "total_sum": 300.00,
+      "is_paid": true,
+      "user_email": "yehor.z@example.com",
+      "session_id": "cs_test_k1L2m3n4O5p6Q7r8S9t0"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 12,
+    "fields": {
+      "total_sum": 400.00,
+      "is_paid": true,
+      "user_email": "student_tattoo@example.com",
+      "session_id": "cs_test_l1M2n3o4P5q6R7s8T9u0"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 8,
+    "fields": {
+      "code": "TATTOO-PRO-000",
+      "is_activated": true,
+      "activated_date": "2025-07-17T10:00:00Z",
+      "created_date": "2025-07-17T09:00:00Z",
+      "order": 8,
+      "tariff": 2,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 9,
+    "fields": {
+      "code": "PIERC-MAST-003",
+      "is_activated": true,
+      "activated_date": "2025-07-17T11:00:00Z",
+      "created_date": "2025-07-17T10:00:00Z",
+      "order": 9,
+      "tariff": 6,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 10,
+    "fields": {
+      "code": "TATOOO-BASE-00",
+      "is_activated": true,
+      "activated_date": "2025-07-18T12:00:00Z",
+      "created_date": "2025-07-18T11:00:00Z",
+      "order": 10,
+      "tariff": 1,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 11,
+    "fields": {
+      "code": "PIERC-BASE-001",
+      "is_activated": true,
+      "activated_date": "2025-07-19T13:00:00Z",
+      "created_date": "2025-07-19T12:00:00Z",
+      "order": 11,
+      "tariff": 4,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 12,
+    "fields": {
+      "code": "PIERC-PROMO-12",
+      "is_activated": false,
+      "activated_date": null,
+      "created_date": "2025-07-20T14:00:00Z",
+      "order": 12,
+      "tariff": 4,
+      "start_box_coupon_is_activated": false
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash7",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "natalia.k@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-17T10:00:00Z",
+      "first_name": "Наталія",
+      "last_name": "Коваленко",
+      "code": 8,
+      "phone": "+380951234567",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-21T15:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash8",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "victor.s@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-17T11:00:00Z",
+      "first_name": "Віктор",
+      "last_name": "Савченко",
+      "code": 9,
+      "phone": "+380677654321",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-21T18:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash9",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "kyrylo.v@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-18T12:00:00Z",
+      "first_name": "Кирило",
+      "last_name": "Василенко",
+      "code": 10,
+      "phone": "+380938765432",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-20T10:00:00Z"
+    }
+  },
+  {
+    "model": "authentication.usermodel",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$somehash$anotherhash10",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "yehor.z@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-07-19T13:00:00Z",
+      "first_name": "Єгор",
+      "last_name": "Захарченко",
+      "code": 11,
+      "phone": "+380509876543",
+      "avatar": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "last_activity": "2025-07-21T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 7,
+    "fields": {
+      "user": 8,
+      "created_date": "2025-07-17T10:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 8,
+    "fields": {
+      "user": 9,
+      "created_date": "2025-07-17T11:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 9,
+    "fields": {
+      "user": 10,
+      "created_date": "2025-07-18T12:05:00Z"
+    }
+  },
+  {
+    "model": "web.chat",
+    "pk": 10,
+    "fields": {
+      "user": 11,
+      "created_date": "2025-07-19T13:05:00Z"
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 5,
+    "fields": {
+      "full_name": "Коваленко Наталія",
+      "address": "м. Дніпро, Нова Пошта №1",
+      "user": 8,
+      "phone": "+380951234567",
+      "comments": "",
+      "is_sent": true,
+      "sent_date": "2025-07-19T14:00:00Z",
+      "direction": "tattoo",
+      "created_date": "2025-07-17T11:30:00Z"
+    }
+  },
+  {
+    "model": "web.startbox",
+    "pk": 6,
+    "fields": {
+      "full_name": "Савченко Віктор",
+      "address": "м. Вінниця, Нова Пошта №8",
+      "user": 9,
+      "phone": "+380677654321",
+      "comments": "Дякую!",
+      "is_sent": true,
+      "sent_date": "2025-07-19T14:00:00Z",
+      "direction": "piercing",
+      "created_date": "2025-07-17T12:30:00Z"
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 12,
+    "fields": {
+      "chat": 7,
+      "text": "Допоможіть! В мене зовсім не виходять тіні, як в уроці №13. Все пливе, виходить брудно.",
+      "user": 8,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T15:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 13,
+    "fields": {
+      "chat": 7,
+      "text": "Ось, спробувала ще раз. Жах.",
+      "user": 8,
+      "image": "message_images/natalia_practice_fail.jpg",
+      "date": "2025-07-20T15:01:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 14,
+    "fields": {
+      "chat": 7,
+      "text": "Наталіє, не хвилюйтесь, це нормальний етап! Судячи з фото, ви занадто сильно тиснете на шкіру і тримаєте машинку під прямим кутом. Спробуйте тримати її під кутом ~45 градусів і робити махові рухи 'з ліктя', ледь торкаючись шкіри. І зменште вольтаж до 6-6.5V.",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T15:10:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 15,
+    "fields": {
+      "chat": 8,
+      "text": "Вітаємо, Вікторе! Бачимо ваш неймовірний прогрес. Ви вже майже на фініші! Не забудьте підготуватись до випускної роботи. Якщо потрібна допомога з ідеєю - звертайтесь!",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T09:00:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 16,
+    "fields": {
+      "chat": 8,
+      "text": "Дякую! Дуже приємно. Так, я вже готуюсь, хочу зробити на іспиті прокол 'Дейс'.",
+      "user": 9,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T09:30:00Z",
+      "is_read_user": false,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 17,
+    "fields": {
+      "chat": 9,
+      "text": "Доброго дня. Я пройшов декілька уроків, але зрозумів, що це не моє. Чи можу я повернути кошти за курс?",
+      "user": 10,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T09:55:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 18,
+    "fields": {
+      "chat": 9,
+      "text": "Вітаємо, Кириле. Нам шкода це чути. Згідно з умовами публічної оферти, з якою ви погодились при купівлі, повернення коштів можливе протягом 14 днів, якщо ви не почали перегляд уроків. Оскільки ви вже отримали доступ до навчальних матеріалів та переглянули понад 3 уроки, послуга вважається наданою, і повернення коштів неможливе. Можливо, варто спробувати ще?",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T10:05:00Z",
+      "is_read_user": true,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 19,
+    "fields": {
+      "chat": 1,
+      "text": "Я закінчила курс по тату, дякую вам! Все було неймовірно. Хочу тепер придбати курс по пірсингу. Є для мене якась знижка?",
+      "user": 2,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T12:00:00Z",
+      "is_read_user": false,
+      "is_read_admin": false,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 16,
+    "fields": {
+      "lecture": 13,
+      "user": 8,
+      "was_checked": true,
+      "image": "homework_images/natalia_shading_fail.jpg",
+      "date": "2025-07-20T18:00:00Z",
+      "text": "Спробувала зробити ДЗ по тінях. Вийшло жахливо."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 11,
+    "fields": {
+      "homework": 16,
+      "review_text": "Наталіє, бачу, ви старались. Але тут є помилки, про які ми говорили в чаті. Сильний перетравм шкіри. Робота не зарахована. Будь ласка, перегляньте урок ще раз і спробуйте на новому шматку шкіри, тримаючи машинку під кутом. У вас все вийде!",
+      "is_approved": false,
+      "data": "2025-07-21T10:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 17,
+    "fields": {
+      "lecture": 13,
+      "user": 8,
+      "was_checked": false,
+      "image": "homework_images/natalia_shading_success.jpg",
+      "date": "2025-07-21T14:55:00Z",
+      "text": "Переробила! Здається, цього разу набагато краще. Дякую за поради!"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 18,
+    "fields": {
+      "lecture": 50,
+      "user": 2,
+      "was_checked": false,
+      "image": "homework_images/anna_final_project.jpg",
+      "date": "2025-07-21T11:50:00Z",
+      "text": "Моя випускна робота! Робила на моделі. Ескіз мій, стиль - графіка. Було дуже хвилююче, але я задоволена."
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 19,
+    "fields": {
+      "lecture": 99,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T20:00:00Z",
+      "text": "Написав розгорнуту відповідь, чому пістолет - це зло. Якщо коротко: травматично, нестерильно, неякісно. Кожен має це знати!"
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 12,
+    "fields": {
+      "homework": 19,
+      "review_text": "Вікторе, чудово! Ви глибоко зрозуміли тему і можете грамотно донести це клієнтам. Це ознака справжнього професіонала. Зараховано!",
+      "is_approved": true,
+      "data": "2025-07-21T09:10:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 20,
+    "fields": {
+      "lecture": 102,
+      "user": 9,
+      "was_checked": false,
+      "image": "homework_images/victor_final_project.jpg",
+      "date": "2025-07-21T17:55:00Z",
+      "text": "Моя випускна робота. Прокол 'Дейс' на манекені з використанням техніки freehand. Прикраса - титанове кільце."
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 21,
+    "fields": {
+      "lecture": 53,
+      "user": 11,
+      "was_checked": false,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T10:55:00Z",
+      "text": "ДЗ до першого уроку. Історія пірсингу септум походить ще від ацтеків, вони носили прикраси з золота та нефриту для демонстрації статусу."
+    }
+  },
+  {
+    "model": "web.resetcode",
+    "pk": 1,
+    "fields": {
+      "code": "123456",
+      "user_email": "kyrylo.v@example.com",
+      "is_activated": true,
+      "created_date": "2025-07-18T11:50:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 22,
+    "fields": {
+      "lecture": 53,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-17T14:00:00Z",
+      "text": "ДЗ по історії пірсингу. Дослідив походження септума. Дуже цікаво, дякую."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 13,
+    "fields": {
+      "homework": 22,
+      "review_text": "Відмінно, Вікторе. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-17T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 23,
+    "fields": {
+      "lecture": 54,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-17T16:30:00Z",
+      "text": "Склав інструкцію по стерилізації. Начебто все врахував."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 14,
+    "fields": {
+      "homework": 23,
+      "review_text": "Ідеально. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-17T17:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 24,
+    "fields": {
+      "lecture": 55,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_workplace.jpg",
+      "date": "2025-07-17T18:45:00Z",
+      "text": "Намалював схему робочого місця."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 15,
+    "fields": {
+      "homework": 24,
+      "review_text": "Дуже грамотне зонування. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-17T19:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 25,
+    "fields": {
+      "lecture": 56,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_ear_anatomy.jpg",
+      "date": "2025-07-17T21:00:00Z",
+      "text": "Позначив на схемі вуха всі основні проколи."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 16,
+    "fields": {
+      "homework": 25,
+      "review_text": "Безпомилково. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T09:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 26,
+    "fields": {
+      "lecture": 57,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-18T10:15:00Z",
+      "text": "Склав анкету-опитувальник для клієнта."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 17,
+    "fields": {
+      "homework": 26,
+      "review_text": "Дуже детально, враховані всі важливі моменти. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 27,
+    "fields": {
+      "lecture": 58,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-18T12:30:00Z",
+      "text": "Створив таблицю відповідності розмірів голок для різних проколів."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 18,
+    "fields": {
+      "homework": 27,
+      "review_text": "Вірно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T13:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 28,
+    "fields": {
+      "lecture": 59,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-18T14:45:00Z",
+      "text": "Відповів на питання про затискачі. Пеннінгтон для губ та септума, Форстер для язика та хрящів."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 19,
+    "fields": {
+      "homework": 28,
+      "review_text": "Правильно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 29,
+    "fields": {
+      "lecture": 60,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-18T17:00:00Z",
+      "text": "Порівняв ціни на прикраси. Зробив висновок, що на титані економити не можна."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 20,
+    "fields": {
+      "homework": 29,
+      "review_text": "Золоті слова. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T17:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 30,
+    "fields": {
+      "lecture": 61,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-18T19:00:00Z",
+      "text": "Описав важливість довгої первинної прикраси для врахування набряку."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 21,
+    "fields": {
+      "homework": 30,
+      "review_text": "Так, це ключовий момент. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-18T19:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 31,
+    "fields": {
+      "lecture": 62,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_snakebites.jpg",
+      "date": "2025-07-18T21:15:00Z",
+      "text": "Розмітка для 'Snake Bites'."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 22,
+    "fields": {
+      "homework": 31,
+      "review_text": "Ідеальна симетрія. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-19T09:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 32,
+    "fields": {
+      "lecture": 63,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_lobe_practice.jpg",
+      "date": "2025-07-19T10:30:00Z",
+      "text": "Відпрацював прокол мочки на манекені."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 23,
+    "fields": {
+      "homework": 32,
+      "review_text": "Чисто та рівно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-19T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 33,
+    "fields": {
+      "lecture": 64,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_helix_practice.jpg",
+      "date": "2025-07-19T12:45:00Z",
+      "text": "Відпрацював прокол хелікса."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 24,
+    "fields": {
+      "homework": 33,
+      "review_text": "Гарний кут. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-19T13:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 34,
+    "fields": {
+      "lecture": 65,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-19T15:00:00Z",
+      "text": "Теоретичне завдання по проколу 'Дейс'. Для первинного проколу обрав би банан або кільце з титану."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 25,
+    "fields": {
+      "homework": 34,
+      "review_text": "Правильний вибір. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-19T15:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 35,
+    "fields": {
+      "lecture": 66,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_industrial_angle.jpg",
+      "date": "2025-07-19T17:30:00Z",
+      "text": "Схема правильного та неправильного кута для індастріала."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 26,
+    "fields": {
+      "homework": 35,
+      "review_text": "Наочно та вірно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-19T18:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 36,
+    "fields": {
+      "lecture": 67,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_nostril_practice.jpg",
+      "date": "2025-07-19T20:00:00Z",
+      "text": "Відпрацював прокол крила носа."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 27,
+    "fields": {
+      "homework": 36,
+      "review_text": "Добре. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-20T09:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 37,
+    "fields": {
+      "lecture": 68,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T10:45:00Z",
+      "text": "Описав, як пояснити клієнту про 'sweet spot'."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 28,
+    "fields": {
+      "homework": 37,
+      "review_text": "Зрозуміло та доступно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-20T11:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 38,
+    "fields": {
+      "lecture": 69,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_medusa_practice.jpg",
+      "date": "2025-07-20T13:00:00Z",
+      "text": "Відпрацював прокол 'Медуза'."
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 39,
+    "fields": {
+      "lecture": 70,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T15:30:00Z",
+      "text": "Склав пам'ятку по догляду за проколом язика."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 30,
+    "fields": {
+      "homework": 39,
+      "review_text": "Дуже докладно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-20T16:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 40,
+    "fields": {
+      "lecture": 71,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T17:45:00Z",
+      "text": "Описав причини високого ризику відторгнення пірсингу брови."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 31,
+    "fields": {
+      "homework": 40,
+      "review_text": "Все вірно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-20T18:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 41,
+    "fields": {
+      "lecture": 72,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-20T19:30:00Z",
+      "text": "Теоретичне завдання по бріджу. Головне - достатня кількість тканини."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 32,
+    "fields": {
+      "homework": 41,
+      "review_text": "Саме так. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-20T20:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 42,
+    "fields": {
+      "lecture": 73,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_navel_practice.jpg",
+      "date": "2025-07-20T21:45:00Z",
+      "text": "Відпрацював прокол пупка."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 33,
+    "fields": {
+      "homework": 42,
+      "review_text": "Добре. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T09:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 43,
+    "fields": {
+      "lecture": 74,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T10:15:00Z",
+      "text": "Склав список рекомендацій по догляду за проколом сосків."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 34,
+    "fields": {
+      "homework": 43,
+      "review_text": "Все по ділу. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T10:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 44,
+    "fields": {
+      "lecture": 75,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_microdermal_practice.jpg",
+      "date": "2025-07-21T12:30:00Z",
+      "text": "Встановив мікродермал на силіконовий килимок."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 35,
+    "fields": {
+      "homework": 44,
+      "review_text": "Техніка відпрацьована. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T13:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 45,
+    "fields": {
+      "lecture": 76,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T14:45:00Z",
+      "text": "Пояснив, чому для площинних проколів потрібні спеціальні штанги."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 36,
+    "fields": {
+      "homework": 45,
+      "review_text": "Грамотно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 46,
+    "fields": {
+      "lecture": 77,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T16:30:00Z",
+      "text": "Дослідив, що найшвидше загоюються деякі види жіночого інтимного пірсингу (VCH)."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 37,
+    "fields": {
+      "homework": 46,
+      "review_text": "Вірно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T16:45:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 47,
+    "fields": {
+      "lecture": 78,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T18:00:00Z",
+      "text": "Створив універсальну пам'ятку по догляду."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 38,
+    "fields": {
+      "homework": 47,
+      "review_text": "Супер. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T18:15:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 48,
+    "fields": {
+      "lecture": 79,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-21T19:45:00Z",
+      "text": "Описав різницю між нормою та інфекцією."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 39,
+    "fields": {
+      "homework": 48,
+      "review_text": "Чітко та зрозуміло. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-21T20:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 49,
+    "fields": {
+      "lecture": 80,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-22T09:30:00Z",
+      "text": "Написав про No-Pull диски. Замовив собі."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 40,
+    "fields": {
+      "homework": 49,
+      "review_text": "Правильне рішення. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T10:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 50,
+    "fields": {
+      "lecture": 81,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-22T11:15:00Z",
+      "text": "Створив шаблон нагадування про даунсайз."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 41,
+    "fields": {
+      "homework": 50,
+      "review_text": "Чудово. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T11:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 51,
+    "fields": {
+      "lecture": 82,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-22T13:00:00Z",
+      "text": "Придумав 3 фрази для заспокоєння клієнтів. 'Дихайте глибоко', 'Все пройде дуже швидко', 'Я повністю контролюю процес'."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 42,
+    "fields": {
+      "homework": 51,
+      "review_text": "Працює. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T13:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 52,
+    "fields": {
+      "lecture": 83,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-22T15:00:00Z",
+      "text": "Створив мудборд для свого профілю."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 43,
+    "fields": {
+      "homework": 52,
+      "review_text": "Стильно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T15:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 53,
+    "fields": {
+      "lecture": 84,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_macro_photo.jpg",
+      "date": "2025-07-22T17:00:00Z",
+      "text": "Зробив макро-фото прикраси."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 44,
+    "fields": {
+      "homework": 53,
+      "review_text": "Професійно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T17:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 54,
+    "fields": {
+      "lecture": 85,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-22T19:00:00Z",
+      "text": "Розрахував собівартість проколу мочки."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 45,
+    "fields": {
+      "homework": 54,
+      "review_text": "Тепер ви знаєте ціну своєї роботи. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-22T19:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 55,
+    "fields": {
+      "lecture": 86,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-23T10:00:00Z",
+      "text": "Знайшов 3 українських та 3 закордонних постачальників."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 46,
+    "fields": {
+      "homework": 55,
+      "review_text": "Добре. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-23T10:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 56,
+    "fields": {
+      "lecture": 87,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-23T12:00:00Z",
+      "text": "Описав ситуацію з клієнтом, якому не підходить прокол."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 47,
+    "fields": {
+      "homework": 56,
+      "review_text": "Професійний підхід. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-23T12:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 57,
+    "fields": {
+      "lecture": 88,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-23T14:30:00Z",
+      "text": "Склав форму згоди для батьків."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 48,
+    "fields": {
+      "homework": 57,
+      "review_text": "Юридично грамотно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-23T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 58,
+    "fields": {
+      "lecture": 89,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-23T16:45:00Z",
+      "text": "Створив дошку в Pinterest."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 49,
+    "fields": {
+      "homework": 58,
+      "review_text": "Гарний смак. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-23T17:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 59,
+    "fields": {
+      "lecture": 90,
+      "user": 9,
+      "was_checked": true,
+      "image": "homework_images/victor_curated_ear.jpg",
+      "date": "2025-07-23T19:00:00Z",
+      "text": "Мій варіант 'Curated Ear'."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 50,
+    "fields": {
+      "homework": 59,
+      "review_text": "Дуже гармонійно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-23T19:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 60,
+    "fields": {
+      "lecture": 91,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-24T10:00:00Z",
+      "text": "Описав переваги техніки freehand."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 51,
+    "fields": {
+      "homework": 60,
+      "review_text": "Все вірно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-24T10:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 61,
+    "fields": {
+      "lecture": 92,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-24T12:15:00Z",
+      "text": "Склав графік розтягування тунелів."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 52,
+    "fields": {
+      "homework": 61,
+      "review_text": "Безпечно та грамотно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-24T12:45:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 62,
+    "fields": {
+      "lecture": 93,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-24T14:30:00Z",
+      "text": "Описав алгоритм дій при непритомності клієнта."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 53,
+    "fields": {
+      "homework": 62,
+      "review_text": "Чітко та правильно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-24T15:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 63,
+    "fields": {
+      "lecture": 94,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-24T16:45:00Z",
+      "text": "Описав свої дії, якщо клієнт не може зняти прикрасу."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 54,
+    "fields": {
+      "homework": 63,
+      "review_text": "Професійно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-24T17:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 64,
+    "fields": {
+      "lecture": 95,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-24T19:00:00Z",
+      "text": "Придумав 5 ідей для Reels."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 55,
+    "fields": {
+      "homework": 64,
+      "review_text": "Креативно! Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-24T19:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 65,
+    "fields": {
+      "lecture": 96,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-25T10:00:00Z",
+      "text": "Дізнався про КВЕДи."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 56,
+    "fields": {
+      "homework": 65,
+      "review_text": "Добре. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-25T10:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 66,
+    "fields": {
+      "lecture": 97,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-25T12:00:00Z",
+      "text": "Ознайомився зі стандартами APP."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 57,
+    "fields": {
+      "homework": 66,
+      "review_text": "Це висока планка. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-25T12:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 67,
+    "fields": {
+      "lecture": 98,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-25T14:15:00Z",
+      "text": "Створив таблицю анодування."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 58,
+    "fields": {
+      "homework": 67,
+      "review_text": "Корисно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-25T14:45:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 68,
+    "fields": {
+      "lecture": 99,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-25T16:30:00Z",
+      "text": "Написав аргументовану відповідь про шкоду пістолета."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 59,
+    "fields": {
+      "homework": 68,
+      "review_text": "Переконливо. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-25T17:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 69,
+    "fields": {
+      "lecture": 100,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-25T18:45:00Z",
+      "text": "Розіграв діалог зі складним клієнтом."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 60,
+    "fields": {
+      "homework": 69,
+      "review_text": "Дипломатично. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-25T19:00:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 70,
+    "fields": {
+      "lecture": 101,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-26T10:00:00Z",
+      "text": "Сформулював свою УТП: 'Безпечний та естетичний пірсинг з індивідуальним підходом до анатомії'."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 61,
+    "fields": {
+      "homework": 70,
+      "review_text": "Звучить професійно. Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-26T10:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 71,
+    "fields": {
+      "lecture": 103,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-26T12:00:00Z",
+      "text": "Написав план розвитку на рік."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 62,
+    "fields": {
+      "homework": 71,
+      "review_text": "Амбітно! Успіхів! Зараховано.",
+      "is_approved": true,
+      "data": "2025-07-26T12:30:00Z"
+    }
+  },
+  {
+    "model": "web.homework",
+    "pk": 72,
+    "fields": {
+      "lecture": 104,
+      "user": 9,
+      "was_checked": true,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-26T14:00:00Z",
+      "text": "Головні інсайти: 1. Стерильність - понад усе. 2. Анатомія - ключ до успіху. 3. Ніколи не використовувати пістолет."
+    }
+  },
+  {
+    "model": "web.homeworkreview",
+    "pk": 63,
+    "fields": {
+      "homework": 72,
+      "review_text": "Ви засвоїли найголовніше. Вітаємо з успішним завершенням курсу!",
+      "is_approved": true,
+      "data": "2025-07-26T14:30:00Z"
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 20,
+    "fields": {
+      "chat": 8,
+      "text": "Я виконав усі домашні завдання та готовий до фінального тесту! Дякую за цей неймовірний курс!",
+      "user": 9,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-26T14:35:00Z",
+      "is_read_user": true,
+      "is_read_admin": false,
+      "from_admin": false
+    }
+  },
+  {
+    "model": "web.message",
+    "pk": 21,
+    "fields": {
+      "chat": 8,
+      "text": "Вікторе, ми вражені вашою наполегливістю та результатами! Ви наш найкращий учень. Посилання на фінальний тест надіслано вам на пошту. Щиро вітаємо з завершенням!",
+      "user": 1,
+      "image": "https://media.licdn.com/dms/image/v2/C5112AQEw1fXuabCTyQ/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1581099611064?e=1759363200&v=beta&t=ff9zPQQdugK46aK3pNUbXCX49mGIU_bF5YhCfGTRBOU",
+      "date": "2025-07-26T15:00:00Z",
+      "is_read_user": false,
+      "is_read_admin": true,
+      "from_admin": true
+    }
+  }
+]

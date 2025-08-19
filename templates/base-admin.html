@@ -2,61 +2,80 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Панель Ментора{% endblock %}</title>
-    <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="ecb938eb-b8f6-4d6e-a684-5a26aa30100a"
+          data-blockingmode="auto" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Панель Ментора{% endblock %}</title>
+  <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
-          rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/platform-admin.css' %}">
-    <link rel="stylesheet" href="{% static 'css/platform-admin-responsive.css' %}">
-    {% if css %}
-        <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
-  <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
-    {% endif %}
-    {% block styles %}{% endblock %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      type="text/plain" data-cookieconsent="marketing"
+      rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        type="text/plain" data-cookieconsent="marketing">
+  <link rel="stylesheet" href="{% static 'css/platform-admin.css' %}">
+  <link rel="stylesheet" href="{% static 'css/platform-admin-responsive.css' %}">
+  {% if css %}
+    <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
+    <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
+  {% endif %}
+  {% block styles %}{% endblock %}
 </head>
 <body>
 <div class="platform-wrapper">
-    <aside class="sidebar">
-        <div class="sidebar-header"><a href="{% url 'admin_dashboard' %}" class="logo">GodArt<span>Tattoo</span></a></div>
-        <nav class="main-menu">
-            <a href="{% url 'admin_dashboard' %}" id="nav-admin-dashboard"><i class="fas fa-home"></i> Головна</a>
-        </nav>
-        <nav class="admin-menu">
-            <h5>Меню Ментора</h5>
-            <a href="{% url 'admin_review_list' %}?type=waiting_for_a_check" id="nav-admin-review"><i class="fas fa-tasks"></i> Завдання на перевірку <span class="notification-badge">{{ count_of_waiting }}</span></a>
-            <a href="{% url 'admin_all_chats' %}" id="nav-admin-chats"><i class="fas fa-comments"></i> Усі чати <span class="notification-badge">{{ count_of_new_messages }}</span></a>
-            <a href="{% url 'admin_lecture_list' %}" id="nav-admin-lectures"><i class="fas fa-book-open"></i> Керування лекціями</a>
-            <a href="{% url 'admin_students' %}" id="nav-admin-students"><i class="fas fa-users"></i> Усі учні</a>
-            <a href="{% url 'admin_boxes' %}?type=active" id="nav-admin-boxes"><i class="fas fa-shipping-fast"></i> Бокси на відправку</a>
-            <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
-        </nav>
-    </aside>
-    <main class="main-content">
-        <header class="platform-header">
-            <div class="header-left">
-                <button class="mobile-menu-toggle" aria-label="Відкрити меню"><i class="fas fa-bars"></i></button>
-                <h2 class="header-title">{% block header_title %}Панель Ментора{% endblock %}</h2>
-            </div>
-            <div class="header-right">
-                <div class="user-profile">
-                    <img src="{{ user.avatar.url }}"
-                         alt="Admin Avatar">
-                    <div class="user-info"><span class="user-name">{{ user.first_name }} {{ user.last_name }}</span><span
-                            class="user-role">Ментор</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div class="page-content">
-            {% block content %}{% endblock %}
+  <aside class="sidebar">
+    <div class="sidebar-header"><a href="{% url 'admin_dashboard' %}" class="logo">GodArt<span>Tattoo</span></a></div>
+    <nav class="main-menu">
+      <a href="{% url 'admin_dashboard' %}" id="nav-admin-dashboard"><i class="fas fa-home"></i> Головна</a>
+    </nav>
+    <nav class="admin-menu">
+      <h5>Меню Ментора</h5>
+      <a href="{% url 'admin_review_list' %}?course=tattoo&type=waiting_for_a_check" id="nav-admin-review"><i
+          class="fas fa-tasks"></i> Завдання на перевірку <span class="notification-badge">{{ count_of_waiting }}</span></a>
+      <a href="{% url 'admin_all_chats' %}?course=tattoo" id="nav-admin-chats"><i class="fas fa-comments"></i> Усі чати
+        <span class="notification-badge">{{ count_of_new_messages }}</span></a>
+      <a href="{% url 'admin_lecture_list' %}?course=tattoo" id="nav-admin-lectures"><i class="fas fa-book-open"></i>
+        Керування лекціями</a>
+      <a href="{% url 'admin_landing_settings' %}?course=tattoo" id="nav-admin-landing"><i class="fas fa-sliders-h"></i>
+        Налаштування лендінгів</a>
+      <a href="{% url 'admin_students' %}?course=tattoo&q=&progress=&view=list" id="nav-admin-students"><i
+          class="fas fa-users"></i> Усі учні</a>
+      <a href="{% url 'admin_boxes' %}?type=active" id="nav-admin-boxes"><i class="fas fa-shipping-fast"></i> Бокси на
+        відправку</a>
+      <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
+    </nav>
+    <div class="sidebar-footer" style="padding: 20px; margin-top: auto; text-align: center; line-height: 1.8;">
+      <a href="{% url 'agb' %}" style="font-size: 0.8rem; color: #888; display: block;">AGB</a>
+      <a href="{% url 'impressum' %}" style="font-size: 0.8rem; color: #888; display: block;">Impressum</a>
+      <a href="{% url 'datenschutzerklarung' %}" style="font-size: 0.8rem; color: #888; display: block;">Datenschutzerklärung</a>
+      <a href="javascript:void(0)" onclick="Cookiebot.show()"
+         style="font-size: 0.8rem; color: #888; display: block; margin-top: 5px; font-weight: 600;">Cookie-Einstellungen</a>
+    </div>
+  </aside>
+  <main class="main-content">
+    <header class="platform-header">
+      <div class="header-left">
+        <button class="mobile-menu-toggle" aria-label="Відкрити меню"><i class="fas fa-bars"></i></button>
+        <h2 class="header-title">{% block header_title %}Панель Ментора{% endblock %}</h2>
+      </div>
+      <div class="header-right">
+        <div class="user-profile">
+          <img src="{{ user.avatar.url }}"
+               alt="Admin Avatar">
+          <div class="user-info"><span class="user-name">{{ user.first_name }} {{ user.last_name }}</span><span
+              class="user-role">Ментор</span>
+          </div>
         </div>
-    </main>
+      </div>
+    </header>
+    <div class="page-content">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
 </div>
 <div class="sidebar-overlay"></div>
 <script src="{% static 'js/platform.js' %}"></script>

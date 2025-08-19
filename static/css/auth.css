@@ -37,6 +37,9 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* --- Auth Container and Box --- */
@@ -44,6 +47,9 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
 }
 
 .auth-box, .thank-you-box {

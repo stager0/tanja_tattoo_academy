@@ -33,7 +33,7 @@ HOST = os.getenv("HOST")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["goadart-school.com", "www.godart-school.com"]
+ALLOWED_HOSTS = ["godart-school.com", "www.godart-school.com"]
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{HOST}",

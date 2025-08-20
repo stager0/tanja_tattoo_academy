@@ -1,0 +1,109 @@
+/* Styles for Landing Page Settings Admin Panel */
+
+.card {
+    margin-bottom: 30px;
+}
+
+.card-header {
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* 3-column grid for tariffs */
+.form-grid-3-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.tariff-settings-card {
+    background-color: var(--bg-dark);
+    padding: 20px;
+    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color);
+}
+
+.tariff-settings-card h5 {
+    margin-bottom: 15px;
+    color: var(--primary-orange);
+}
+
+/* Image upload component */
+.image-upload-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.image-upload-group .image-preview {
+    width: 100%;
+    max-width: 250px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--border-radius-small);
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-dark);
+}
+
+.image-upload-group input[type="file"] {
+    display: none; /* Hide the default ugly input */
+}
+
+.image-upload-group .btn {
+    width: fit-content;
+}
+
+.input-hint {
+    font-size: 0.85rem;
+    color: var(--text-medium);
+    margin-top: 8px;
+}
+
+/* Tab styles */
+.tab-content .tab-pane {
+    display: none;
+}
+
+.tab-content .tab-pane.active {
+    display: block;
+}
+
+.filter-tab {
+    cursor: pointer;
+}
+.filter-tab i {
+    margin-right: 8px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+/* Styles for student works previews */
+.student-works-grid .image-upload-group .image-preview {
+    aspect-ratio: 1 / 1; /* Make the preview square */
+    max-width: 100%;     /* Remove the width limit */
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .form-grid-3-col {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-grid-3-col {
+        grid-template-columns: 1fr;
+    }
+    .form-actions {
+        justify-content: stretch;
+    }
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

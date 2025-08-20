@@ -7,11 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const app = {
         // --- 1. Initialize all functionalities ---
         init() {
-            this.handlePreloader();
             this.handleHeaderScroll();
             this.handleMobileMenu();
             this.handleFaqAccordion();
-            this.handleModals(); // UPDATED: Replaced handleModal with a more generic handler
+            this.handleModals();
             this.handleScrollAnimations();
             this.handleScrollToTop();
             this.handleActiveNavOnScroll();
@@ -19,41 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.handleSmoothScrollForModalButton();
             this.handlePricingToggle();
             this.handleCourseLessonsToggle();
-        },
-
-        // --- 2. Preloader ---
-        handlePreloader() {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                window.addEventListener('load', () => {
-                    preloader.classList.add('hidden');
-                });
-            }
-        },
-
-        handleCourseLessonsToggle() {
-            const toggleButton = document.querySelector('.lessons-toggle-btn');
-            const navContainer = document.querySelector('.course-lessons-nav-mobile');
-
-            if (toggleButton && navContainer) {
-                toggleButton.addEventListener('click', () => {
-                    const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
-
-                    navContainer.classList.toggle('active');
-                    toggleButton.setAttribute('aria-expanded', !isExpanded);
-
-                    const icon = toggleButton.querySelector('i');
-                    if (icon) {
-                        if (navContainer.classList.contains('active')) {
-                            icon.classList.remove('fa-list');
-                            icon.classList.add('fa-times');
-                        } else {
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-list');
-                        }
-                    }
-                });
-            }
         },
 
         // --- 3. Header Scroll Effect & Parallax ---
@@ -128,7 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
         handleModals() {
             const modalTriggers = document.querySelectorAll('.modal-trigger');
             const videoIframe = document.getElementById('video-iframe');
-            const youtubeVideoId = 'dQw4w9WgXcQ'; // Placeholder video
+
+            const landingData = document.getElementById('landing-data');
+            const youtubeVideoId = landingData ? landingData.dataset.videoId : 'dQw4w9WgXcQ';
+
             let currentOpenModal = null;
 
             const openModal = (modal) => {
@@ -137,18 +104,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.style.overflow = 'hidden';
                 currentOpenModal = modal;
 
-                // Autoplay video if it's the lesson modal
                 if (modal.id === 'lesson-modal' && videoIframe) {
-                    videoIframe.src = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`;
+                    const videoUrl = `https://www.youtube.com/embed/${youtubeVideoId}?autoplay=1&rel=0`;
+
+                    videoIframe.setAttribute('data-src', videoUrl);
+
+                    if (window.Cookiebot && Cookiebot.consented) {
+                        videoIframe.setAttribute('src', videoUrl);
+                    }
+
                 }
             };
 
             const closeModal = () => {
                 if (!currentOpenModal) return;
 
-                // Stop video if it's the lesson modal
                 if (currentOpenModal.id === 'lesson-modal' && videoIframe) {
+                    // Очищуємо обидва атрибути, щоб зупинити відео
                     videoIframe.src = '';
+                    videoIframe.setAttribute('data-src', '');
                 }
 
                 currentOpenModal.classList.remove('visible');
@@ -166,28 +140,24 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             document.querySelectorAll('.modal').forEach(modal => {
-                // Close on overlay click
                 modal.addEventListener('click', e => {
                     if (e.target === modal) {
                         closeModal();
                     }
                 });
 
-                // Close on close button click
                 const closeModalBtn = modal.querySelector('.close-modal');
                 if (closeModalBtn) {
                     closeModalBtn.addEventListener('click', closeModal);
                 }
             });
 
-            // Close on Escape key press
             document.addEventListener('keydown', e => {
                 if (e.key === 'Escape' && currentOpenModal) {
                     closeModal();
                 }
             });
 
-            // Make closeModal available to other methods
             this.closeModal = closeModal;
         },
 

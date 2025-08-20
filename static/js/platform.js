@@ -11,7 +11,43 @@ document.addEventListener('DOMContentLoaded', () => {
             this.imageModal.init();
             this.chatUpload.init();
             this.homeworkUpload.init();
+            this.cookieConsent.init();
         },
+
+        // ======================================================
+        // НОВИЙ МОДУЛЬ ДЛЯ КЕРУВАННЯ ЗГОДОЮ НА COOKIE
+        // ======================================================
+        cookieConsent: {
+            init() {
+                // Ця логіка спрацює, якщо відвідувач вже дав згоду раніше
+                if (window.Cookiebot && window.Cookiebot.consented) {
+                    this.loadContent();
+                }
+
+                // Додаємо слухачів на події від Cookiebot
+                window.addEventListener('CookiebotOnAccept', () => this.loadContent(), false);
+            },
+
+            // Функція, що "вмикає" заблоковані стилі, шрифти та відео
+            loadContent() {
+                console.log('Cookie consent is given. Loading external resources...');
+
+                // Активуємо заблоковані стилі (шрифти, іконки)
+                document.querySelectorAll('link[data-cookieconsent]').forEach(link => {
+                    link.setAttribute('type', 'text/css');
+                });
+
+                // Активуємо заблоковані відео
+                document.querySelectorAll('iframe[data-cookieconsent]').forEach(iframe => {
+                    if (iframe.dataset.src) {
+                        iframe.setAttribute('src', iframe.dataset.src);
+                    }
+                });
+            }
+        },
+        // ======================================================
+        // КІНЕЦЬ НОВОГО МОДУЛЯ
+        // ======================================================
 
         // Модуль для управления боковой панелью (меню)
         sidebar: {
@@ -41,55 +77,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Устанавливаем обработчики кликов
                 this.gridBtn.addEventListener('click', () => this.setView('grid'));
                 this.listBtn.addEventListener('click', () => this.setView('list'));
 
-                // Проверяем URL при загрузке страницы, чтобы установить правильный вид
                 const currentUrlParams = new URLSearchParams(window.location.search);
                 const currentView = currentUrlParams.get('view');
 
-                if (currentView === 'grid') {
-                    this.setView('grid');
-                } else {
-                    // Устанавливаем вид списка по умолчанию, если ничего не выбрано
-                    this.setView('list');
-                }
-                // --- КОНЕЦ НОВОГО КОДА ---
+                this.setView(currentView === 'grid' ? 'grid' : 'list');
             },
             setView(view) {
-                // 1. Мгновенно меняем классы для отображения
                 this.container.classList.remove('view-grid', 'view-list');
                 this.container.classList.add(`view-${view}`);
 
                 this.gridBtn.classList.toggle('active', view === 'grid');
                 this.listBtn.classList.toggle('active', view === 'list');
 
-                // 2. Запоминаем выбор в скрытом поле для отправки формы
                 if (this.viewInput) {
                    this.viewInput.value = view;
                 }
 
-
-                // 3. Находим все ссылки в пагинации и обновляем их
                 const paginationLinks = document.querySelectorAll('.pagination .page-link');
-
                 paginationLinks.forEach(link => {
-                    // Проверяем, что ссылка не пустая и является валидным URL
                     if (link.href) {
                         try {
                             const url = new URL(link.href);
                             url.searchParams.set('view', view);
                             link.href = url.toString();
                         } catch (e) {
-                            // Игнорируем невалидные URL
-                            // console.error("Invalid URL in pagination:", link.href);
+                            // Ignore invalid URLs
                         }
                     }
                 });
             }
         },
-
 
         // Модуль для загрузки аватара в профиле
         profileAvatar: {

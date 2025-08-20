@@ -9,23 +9,16 @@
 <style>
     .admin-grid {
         display: grid;
-        /* Ограничиваем максимальную ширину карточек, чтобы они не растягивались */
         grid-template-columns: repeat(auto-fit, minmax(350px, 380px));
         gap: 30px;
     }
-
-    /* ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
+    .filter-group {
+        margin-bottom: 25px;
+    }
     @media (max-width: 768px) {
-        .filter-tabs {
-            /* Эти свойства больше не нужны */
-            /* flex-wrap: nowrap; */
-            /* overflow-x: auto; */
-        }
         .filter-tab {
-            /* Заставляем вкладки делить всю ширину поровну */
             flex: 1;
             text-align: center;
-            /* Немного уменьшим боковые отступы, чтобы текст поместился */
             padding-left: 5px;
             padding-right: 5px;
         }
@@ -33,12 +26,23 @@
 </style>
 {% endblock %}
 
-
 {% block content %}
-<div class="filter-tabs">
-    <a href="?type=waiting_for_a_check" class="filter-tab {% if type == "waiting_for_a_check" %}active{% endif %}">Очікують <span class="tab-counter">{{ count_of_waiting }}</span></a>
-    <a href="?type=approved" class="filter-tab {% if type == "approved" %}active{% endif %}">Зараховані <span class="tab-counter ">{{ count_of_approved }}</span></a>
-    <a href="?type=all" class="filter-tab {% if type == "all" %}active{% endif %}">Всі<span class="tab-counter">{{ all }}</span></a>
+<div class="filter-group">
+    <div class="filter-tabs">
+        <a href="?course=tattoo&type={{ type|default:'waiting_for_a_check' }}" class="filter-tab {% if course_type == 'tattoo' %}active{% endif %}">
+            <i class="fas fa-paint-brush"></i> Tattoo Завдання
+        </a>
+        <a href="?course=piercing&type={{ type|default:'waiting_for_a_check' }}" class="filter-tab {% if course_type == 'piercing' %}active{% endif %}">
+            <i class="fas fa-gem"></i> Piercing Завдання
+        </a>
+    </div>
+</div>
+<div class="filter-group">
+    <div class="filter-tabs">
+        <a href="?course={{ course_type }}&type=waiting_for_a_check" class="filter-tab {% if type == "waiting_for_a_check" %}active{% endif %}">Очікують <span class="tab-counter">{% if course_type == "tattoo" %}{{ count_of_waiting_tattoo }}{% else %}{{ count_of_waiting_piercing }}{% endif %}</span></a>
+        <a href="?course={{ course_type }}&type=approved" class="filter-tab {% if type == "approved" %}active{% endif %}">Зараховані <span class="tab-counter ">{% if course_type == "tattoo" %}{{ count_of_approved_tattoo }}{% else %}{{ count_of_approved_piercing }}{% endif %}</span></a>
+        <a href="?course={{ course_type }}&type=all" class="filter-tab {% if type == "all" %}active{% endif %}">Всі<span class="tab-counter">{% if course_type == "tattoo" %}{{ all_tattoo }}{% else %}{{ all_piercing }}{% endif %}</span></a>
+    </div>
 </div>
 
 <div class="admin-grid">
@@ -72,7 +76,7 @@
     </div>
   {% empty %}
       <div class="card" style="grid-column: 1 / -1; text-align: center;">
-        <p>Немає завдань для перевірки у цій категорії.</p>
+        <p>Немає завдань у цій категорії.</p>
     </div>
   {% endfor %}
 </div>

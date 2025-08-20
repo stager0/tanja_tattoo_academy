@@ -41,6 +41,11 @@
             <strong>Коментарі:</strong>
             <span>{{ box.comments|default:"Коментарів немає" }}</span>
           </div>
+
+          <div class="info-item">
+            <strong>Направлення:</strong>
+            <span>{{ box.direction }}</span>
+          </div>
           {% if box.is_sent %}
             <div class="info-item">
               <strong>Статус:</strong>

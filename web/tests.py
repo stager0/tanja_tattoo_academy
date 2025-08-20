@@ -47,6 +47,7 @@ def user(db):
         last_name="Bombardino",
         telegram_chat_id="2222222222",
         email="user@user.com",
+
     )
     user.set_password("1qsdyfweryrqwipp[p][[]]---az")
     user.save()
@@ -90,6 +91,7 @@ def subscribe_tariff_base(db):
     return SubscribeTariff.objects.create(
         name="base",
         price="250",
+        direction="tattoo",
         with_startbox=False
     )
 
@@ -98,6 +100,7 @@ def subscribe_tariff_pro(db):
     return SubscribeTariff.objects.create(
         name="pro",
         price="500",
+        direction="tattoo",
         with_startbox=True
     )
 
@@ -106,6 +109,7 @@ def subscribe_tariff_master(db):
     return SubscribeTariff.objects.create(
         name="master",
         price="750",
+        direction="tattoo",
         with_startbox=True
     )
 
@@ -124,11 +128,11 @@ def order_paid_master(db, subscribe_tariff_master, user):
     )
 
 @pytest.fixture
-def code_master(db, order_paid_master):
+def code_master(db, order_paid_master, subscribe_tariff_master):
     return Code.objects.create(
         code="ASDF-ASDF-ASDF",
         order=order_paid_master,
-        tariff="master"
+        tariff=subscribe_tariff_master
     )
 
 @pytest.fixture
@@ -239,7 +243,7 @@ def test_stripe_webhook_changes_order_and_creates_new_code_also_sends_email(db, 
     assert order.user_email == admin_user.email
     assert order.session_id == session_id
     assert new_code.order == order
-    assert new_code.tariff == subscribe_tariff_base.name
+    assert new_code.tariff == subscribe_tariff_base
     mocker_mailjet.assert_called_once()
 
 
@@ -372,10 +376,13 @@ def test_index_sending_form(db, mocker, client, mentor):
 
 
 @pytest.mark.django_db
-def test_dashboard_redirect_unauthorized(client, user):
+def test_dashboard_redirect_unauthorized(client, user, code_master):
     if user.is_superuser:
         user.is_superuser = False
         user.save()
+
+    user.code = code_master
+    user.save()
 
     url = reverse("dashboard")
     response = client.get(url)
@@ -388,13 +395,16 @@ def test_dashboard_redirect_unauthorized(client, user):
 
 
 @pytest.mark.django_db
-def test_chat(admin_user, client, user, chat, message_from_user, message_from_admin, mocker):
+def test_chat(admin_user, client, user, chat, message_from_user, code_master, message_from_admin, mocker):
     url = reverse("chat", kwargs={"pk":chat.pk})
 
     response_without_user = client.get(url)
     assert response_without_user.status_code == 302
 
     client.force_login(user)
+
+    user.code = code_master
+    user.save()
 
     response = client.get(url)
     assert response.status_code == 200
@@ -497,9 +507,13 @@ def test_profile_view(db, client, mocker, user, admin_user, chat):
 
 
 @pytest.mark.django_db
-def test_course(client, user, admin_user, chat, mocker, lecture_1, lecture_2):
+def test_course(client, user, admin_user, chat, mocker, code_master, lecture_1, lecture_2):
     url = reverse("course", kwargs={"pk": 1})
     response = client.get(url)
+
+    user.code = code_master
+    user.save()
+
     client.force_login(user=user)
     response_with_user = client.get(url, follow=True)
 

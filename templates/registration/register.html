@@ -2,16 +2,17 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4639fde9-0a5a-4a88-9a19-3da64f97d63d" data-blockingmode="auto" type="text/javascript"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Реєстрація - GodArt Tattoo Academy</title>
+  <title>Реєстрація - GodArt Tattoo School</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
-      rel="stylesheet">
+      rel="stylesheet"     type="text/plain" data-cookieconsent="marketing">
 
   <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
@@ -37,43 +38,43 @@
       <div class="input-row">
         <div class="input-group">
           <label for="first_name">Ім'я</label>
-          <input type="text" id="first_name" name="first_name" required placeholder="Таня" class="{% if form.first_name.errors %}input-error{% endif %}">
+          <input type="text" id="first_name" name="first_name" required placeholder="Таня" value="{{ form.first_name.value|default_if_none:'' }}" class="{% if form.first_name.errors %}input-error{% endif %}">
           {% if form.first_name.errors %}<p class="error-text">{{ form.first_name.errors.as_text }}</p>{% endif %}
         </div>
         <div class="input-group">
           <label for="last_name">Прізвище</label>
-          <input type="text" id="last_name" name="last_name" required placeholder="Іванова" class="{% if form.last_name.errors %}input-error{% endif %}">
+          <input type="text" id="last_name" name="last_name" required placeholder="Іванова" value="{{ form.last_name.value|default_if_none:'' }}" class="{% if form.last_name.errors %}input-error{% endif %}">
           {% if form.last_name.errors %}<p class="error-text">{{ form.last_name.errors.as_text }}</p>{% endif %}
         </div>
       </div>
 
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required placeholder="example@email.com" class="{% if form.email.errors %}input-error{% endif %}">
+        <input type="email" id="email" name="email" required placeholder="example@email.com" value="{{ form.email.value|default_if_none:'' }}" class="{% if form.email.errors %}input-error{% endif %}">
         {% if form.email.errors %}<p class="error-text">{{ form.email.errors.as_text }}</p>{% endif %}
       </div>
 
       <div class="input-group">
         <label for="password1">Пароль</label>
-        <input type="password" id="password1" name="password1" required placeholder="Мінімум 8 символів" class="{% if form.password1.errors %}input-error{% endif %}">
+        <input type="password" id="password1" name="password1" required placeholder="Мінімум 8 символів (мін 1 символ, буква, цифра)" class="{% if form.password1.errors %}input-error{% endif %}">
         {% if form.password1.errors %}<p class="error-text">{{ form.password1.errors.as_text }}</p>{% endif %}
       </div>
 
       <div class="input-group">
         <label for="password2">Повтор пароля</label>
-        <input type="password" id="password2" name="password2" required placeholder="Мінімум 8 символів" class="{% if form.password2.errors %}input-error{% endif %}">
+        <input type="password" id="password2" name="password2" required placeholder="Повторіть пароль" class="{% if form.password2.errors %}input-error{% endif %}">
         {% if form.password2.errors %}<p class="error-text">{{ form.password2.errors.as_text }}</p>{% endif %}
       </div>
 
       <div class="input-group">
         <label for="phone">Телефон (необов'язково)</label>
-        <input type="tel" id="phone" name="phone" placeholder="+380123456789" class="{% if form.phone.errors %}input-error{% endif %}">
+        <input type="tel" id="phone" name="phone" placeholder="+380123456789" value="{{ form.phone.value|default_if_none:'' }}" class="{% if form.phone.errors %}input-error{% endif %}">
         {% if form.phone.errors %}<p class="error-text">{{ form.phone.errors.as_text }}</p>{% endif %}
       </div>
 
       <div class="input-group">
-        <label for="subscription_code">Код підписки</label>
-        <input type="text" id="subscription_code" name="code" required placeholder="XXXX-XXXX-XXXX" class="{% if form.code.errors %}input-error{% endif %}">
+        <label for="code">Код підписки</label>
+        <input type="text" id="code" name="code" required placeholder="XXXX-XXXX-XXXX" value="{{ form.code.value|default_if_none:'' }}" class="{% if form.code.errors %}input-error{% endif %}">
         {% if form.code.errors %}<p class="error-text">{{ form.code.errors.as_text }}</p>{% endif %}
       </div>
 
@@ -84,6 +85,34 @@
     </div>
   </div>
 </div>
+
+<footer class="auth-footer" style="width: 100%; text-align: center; padding: 20px 0; margin-top: auto;">
+  <div class="footer-legal-links" style="font-size: 0.9rem; line-height: 1.8;">
+    <a href="{% url 'agb' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">AGB</a>
+    <span style="color: #555;">|</span>
+    <a href="{% url 'impressum' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Impressum</a>
+    <span style="color: #555;">|</span>
+    <a href="{% url 'datenschutzerklarung' %}" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Datenschutzerklärung</a>
+    <br>
+    <a href="javascript:void(0)" onclick="Cookiebot.show()" style="margin: 0 8px; color: #A3A3A3; text-decoration: none;">Cookie-Einstellungen</a>
+  </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function loadConsentAwareContent() {
+            document.querySelectorAll('link[data-cookieconsent]').forEach(link => {
+                link.setAttribute('type', 'text/css');
+            });
+        }
+        if (window.Cookiebot && window.Cookiebot.consented) {
+            loadConsentAwareContent();
+        }
+        window.addEventListener('CookiebotOnAccept', function () {
+            loadConsentAwareContent();
+        }, false);
+    });
+</script>
 
 </body>
 </html>

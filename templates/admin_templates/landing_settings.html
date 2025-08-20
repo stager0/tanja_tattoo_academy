@@ -1,0 +1,194 @@
+{% extends 'base-admin.html' %}
+{% load static %}
+
+{% block title %}Керування лендінгами{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/landing_settings.css' %}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+{% endblock %}
+
+{% block header_title %}Керування лендінгами{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" class="form-container">
+    {% csrf_token %}
+
+    <div class="filter-tabs">
+        <a href="?course=tattoo" class="filter-tab {% if course_type == 'tattoo' %}active{% endif %}">
+            <i class="fas fa-paint-brush"></i> Tattoo Лендінг
+        </a>
+        <a href="?course=piercing" class="filter-tab {% if course_type == 'piercing' %}active{% endif %}">
+            <i class="fas fa-gem"></i> Piercing Лендінг
+        </a>
+    </div>
+
+    <div class="tab-content">
+        <div id="tattoo-settings" class="tab-pane {% if course_type == 'tattoo' %}active{% endif %}">
+            <div class="card">
+                <h4 class="card-header">Налаштування тарифів (Tattoo)</h4>
+                <div class="form-grid-3-col">
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "{{ tariff_base.user_friendly_name|default:'Base' }}"</h5>
+                        <div class="input-group"><label for="tattoo_base_name">Назва тарифу</label><input type="text" id="tattoo_base_name" name="tattoo_base_name" value="{% if tariff_base.user_friendly_name %}{{ tariff_base.user_friendly_name }}{% else %}Base (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="tattoo_base_price">Ціна (напр. '$300')</label><input type="text" id="tattoo_base_price" name="tattoo_base_price" value="{% if tariff_base.price %}{{ tariff_base.price }}{% else %}300{% endif %}"></div>
+                    </div>
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "{{ tariff_pro.user_friendly_name|default:'Pro' }}"</h5>
+                        <div class="input-group"><label for="tattoo_pro_name">Назва тарифу</label><input type="text" id="tattoo_pro_name" name="tattoo_pro_name" value="{% if tariff_pro.user_friendly_name %}{{ tariff_pro.user_friendly_name }}{% else %}Pro (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="tattoo_pro_price">Ціна (напр. '$600')</label><input type="text" id="tattoo_pro_price" name="tattoo_pro_price" value="{% if tariff_pro.price %}{{ tariff_pro.price }}{% else %}600{% endif %}"></div>
+                    </div>
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "{{ tariff_master.user_friendly_name|default:'Master' }}"</h5>
+                        <div class="input-group"><label for="tattoo_master_name">Назва тарифу</label><input type="text" id="tattoo_master_name" name="tattoo_master_name" value="{% if tariff_master.user_friendly_name %}{{ tariff_master.user_friendly_name }}{% else %}Master (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="tattoo_master_price">Ціна (напр. '$1000')</label><input type="text" id="tattoo_master_price" name="tattoo_master_price" value="{% if tariff_master.price %}{{ tariff_master.price }}{% else %}1000{% endif %}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 class="card-header">Медіа-контент та пробний урок (Tattoo)</h4>
+                <div class="image-upload-group">
+                    <label>Фото для блоку "Про курс"</label>
+                    <img src="{% if lending_tattoo.preview %}{{ lending_tattoo.preview.url }}{% else %}https://placehold.co/600x400/202020/F5F5F5?text=Preview{% endif %}" alt="Preview" class="image-preview">
+                    <label for="tattoo_about_image" class="btn btn-secondary btn-sm">Змінити фото</label>
+                    <input type="file" id="tattoo_about_image" name="tattoo_about_image" accept="image/*">
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label for="tattoo_trial_lesson_title">Назва пробного уроку</label>
+                    <input type="text" id="tattoo_trial_lesson_title" name="tattoo_trial_lesson_title" value="{% if lending_tattoo.lecture_name %}{{ lending_tattoo.lecture_name }}{% else %}1. Вступ. Все про професію тату-майстра (немає){% endif %}">
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label for="tattoo_video_id">ID відео з YouTube для прев'ю</label>
+                    <input type="text" id="tattoo_video_id" name="tattoo_video_id" value="{% if lending_tattoo.hello_video_id %}{{ lending_tattoo.hello_video_id }}{% else %}dQw4w9WgXcQ (немає){% endif %}">
+                    <p class="input-hint">Вставте тільки ID з посилання: youtube.com/watch?v=<b>dQw4w9WgXcQ</b></p>
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Опис для пробного уроку</label>
+                    <textarea name="tattoo_trial_lesson_text" id="tattoo_trial_lesson_text" style="display:none;">{% if lending_tattoo.lecture_description %}{{ lending_tattoo.lecture_description }}{% else %}(немає){% endif %}</textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 class="card-header">Роботи учнів (Tattoo)</h4>
+                <div class="form-grid-3-col student-works-grid">
+                    {% for work in all_images %}
+                    <div class="image-upload-group">
+                        <label>Робота {{ forloop.counter }}</label>
+                        <img src="{% if work.image %}{{ work.image.url }}{% else %}https://placehold.co/400x400/202020/F5F5F5?text=Work+{% endif %}" alt="Preview" class="image-preview">
+                        <label for="tattoo_work_{{ work.id }}" class="btn btn-secondary btn-sm">Змінити фото</label>
+                        <input type="file" id="tattoo_work_{{ work.id }}" name="tattoo_work_{{ work.id }}" accept="image/*">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="save_tattoo_settings" class="btn">Зберегти зміни для Tattoo</button>
+            </div>
+        </div>
+
+        <div id="piercing-settings" class="tab-pane {% if course_type == 'piercing' %}active{% endif %}">
+            <div class="card">
+                <h4 class="card-header">Налаштування тарифів (Piercing)</h4>
+                <div class="form-grid-3-col">
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "Base"</h5>
+                        <div class="input-group"><label for="piercing_start_name">Назва тарифу</label><input type="text" id="piercing_start_name" name="piercing_start_name" value="{% if piercing_tariff_base.user_friendly_name %}{{ piercing_tariff_base.user_friendly_name }}{% else %}Base (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="piercing_start_price">Ціна (напр. '$250')</label><input type="text" id="piercing_start_price" name="piercing_start_price" value="{% if piercing_tariff_base.price %}{{ piercing_tariff_base.price }}{% else %}300{% endif %}"></div>
+                    </div>
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "Pro"</h5>
+                        <div class="input-group"><label for="piercing_pro_name">Назва тарифу</label><input type="text" id="piercing_pro_name" name="piercing_pro_name" value="{% if piercing_tariff_pro.user_friendly_name %}{{ piercing_tariff_pro.user_friendly_name }}{% else %}Pro (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="piercing_pro_price">Ціна (напр. '$550')</label><input type="text" id="piercing_pro_price" name="piercing_pro_price" value="{% if piercing_tariff_pro.price %}{{ piercing_tariff_pro.price }}{% else %}600{% endif %}"></div>
+                    </div>
+                    <div class="tariff-settings-card">
+                        <h5>Тариф "Master"</h5>
+                        <div class="input-group"><label for="piercing_master_name">Назва тарифу</label><input type="text" id="piercing_master_name" name="piercing_master_name" value="{% if piercing_tariff_master.user_friendly_name %}{{ piercing_tariff_master.user_friendly_name }}{% else %}Master (немає назви){% endif %}"></div>
+                        <div class="input-group"><label for="piercing_master_price">Ціна (напр. '$950')</label><input type="text" id="piercing_master_price" name="piercing_master_price" value="{% if piercing_tariff_master.price %}{{ piercing_tariff_master.price }}{% else %}1000{% endif %}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                 <h4 class="card-header">Медіа-контент та пробний урок (Piercing)</h4>
+                <div class="image-upload-group">
+                    <label>Фото для блоку "Про курс"</label>
+                    <img src="{% if lending_piercing.preview %}{{ lending_piercing.preview.url }}{% else %}https://placehold.co/600x400/202020/F5F5F5?text=Preview{% endif %}" alt="Preview" class="image-preview">
+                    <label for="piercing_about_image" class="btn btn-secondary btn-sm">Змінити фото</label>
+                    <input type="file" id="piercing_about_image" name="piercing_about_image" accept="image/*">
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label for="piercing_trial_lesson_title">Назва пробного уроку</label>
+                    <input type="text" id="piercing_trial_lesson_title" name="piercing_trial_lesson_title" value="{% if  lending_piercing.lecture_name %}{{ lending_piercing.lecture_name }}{% else %}1. Вступ. Професія майстра пірсингу (немає){% endif %}">
+                </div>
+                 <div class="input-group" style="margin-top: 20px;">
+                    <label for="piercing_video_id">ID відео з YouTube для прев'ю</label>
+                    <input type="text" id="piercing_video_id" name="piercing_video_id" value="{% if lending_piercing.hello_video_id %}{{ lending_piercing.hello_video_id }}{% else %}dQw4w9WgXcQ (немає){% endif %}">
+                     <p class="input-hint">Вставте тільки ID з посилання: youtube.com/watch?v=<b>dQw4w9WgXcQ</b></p>
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Опис для пробного уроку</label>
+                    <textarea name="piercing_trial_lesson_text" id="piercing_trial_lesson_text" style="display:none;">{% if lending_piercing.lecture_description %}{{ lending_piercing.lecture_description }}{% else %}Нема{% endif %}</textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 class="card-header">Роботи учнів (Piercing)</h4>
+                <div class="form-grid-3-col student-works-grid">
+                    {% for work in all_images_piercing %}
+                    <div class="image-upload-group">
+                        <label>Робота {{ forloop.counter }}</label>
+                        <img src="{% if work.image %}{{ work.image.url }}{% else %}https://placehold.co/400x400/202020/F5F5F5?text=Work+{% endif %}" alt="Preview" class="image-preview">
+                        <label for="piercing_work_{{ work.id }}" class="btn btn-secondary btn-sm">Змінити фото</label>
+                        <input type="file" id="piercing_work_{{ work.id }}" name="piercing_work_{{ work.id }}" accept="image/*">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" name="save_piercing_settings" class="btn">Зберегти зміни для Piercing</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInputs = document.querySelectorAll('.image-upload-group input[type="file"]');
+    fileInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                const previewImage = this.parentElement.querySelector('.image-preview');
+                reader.onload = function(e) { previewImage.src = e.target.result; };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+
+    function createQuillEditor(textareaSelector, placeholder) {
+        const textarea = document.querySelector(textareaSelector);
+        if (!textarea) return null;
+        const editorDiv = document.createElement('div');
+        textarea.parentNode.insertBefore(editorDiv, textarea);
+        const quill = new Quill(editorDiv, {
+            theme: 'snow',
+            modules: { toolbar: [[{'header': [1, 2, 3, false]}], ['bold', 'italic', 'underline'], [{'list': 'ordered'}, {'list': 'bullet'}], ['link'], ['clean']] },
+            placeholder: placeholder
+        });
+        quill.root.innerHTML = textarea.value;
+        return { quill, textarea };
+    }
+    const tattooEditor = createQuillEditor('#tattoo_trial_lesson_text', 'Опишіть пробний урок для тату...');
+    const piercingEditor = createQuillEditor('#piercing_trial_lesson_text', 'Опишіть пробний урок для пірсингу...');
+    const form = document.querySelector('.form-container');
+    form.addEventListener('submit', function() {
+        if (tattooEditor) { tattooEditor.textarea.value = tattooEditor.quill.root.innerHTML; }
+        if (piercingEditor) { piercingEditor.textarea.value = piercingEditor.quill.root.innerHTML; }
+    });
+});
+</script>
+{% endblock %}

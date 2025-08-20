@@ -2,7 +2,8 @@ from django.urls import path
 
 from web.views import DashboardView, ChatView, ProfileUpdateView, CourseView, AdminReviewListView, AdminReviewTaskView, \
     AdminDashboardView, AdminStudentsView, AdminBoxesView, BoxApplicationView, AdminLectureList, AdminLectureEditView, \
-    AdminLectureCreateView, AdminAllChatsView, AdminLectureDelete, get_part_of_messages
+    AdminLectureCreateView, AdminAllChatsView, AdminLectureDelete, get_part_of_messages, IndexView, AdminLendingSettings, \
+    AdminUserDelete
 
 urlpatterns = [
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
@@ -21,5 +22,8 @@ urlpatterns = [
     path("admin_lecture_create/", AdminLectureCreateView.as_view(), name="admin_lecture_create"),
     path("admin_lecture_delete/<int:pk>/", AdminLectureDelete.as_view(), name="admin_lecture_delete"),
     path("admin_all_chats/", AdminAllChatsView.as_view(), name="admin_all_chats"),
-    path("load_more_messages/<int:pk>/",  get_part_of_messages, name="load_more_messages")
+    path("load_more_messages/<int:pk>/",  get_part_of_messages, name="load_more_messages"),
+    path("piercing/", IndexView.as_view(), name="piercing_index"),
+    path("admin_landing_settings/", AdminLendingSettings.as_view(), name="admin_landing_settings"),
+    path("admin_user_delete/<int:pk>/", AdminUserDelete.as_view(), name="delete_user")
 ]

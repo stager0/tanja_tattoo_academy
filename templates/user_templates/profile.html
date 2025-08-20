@@ -8,13 +8,47 @@
 {% block styles %}
   {{ block.super }}
   <style>
-      /* Эти стили делают загрузчик аватара красивым и интерактивным */
       .avatar-upload {
           position: relative;
           width: 150px;
           height: 150px;
           margin: 0 auto;
       }
+
+      .alert-box {
+          border: 1px solid;
+          border-radius: 8px;
+          padding: 12px 16px;
+          margin-bottom: 15px;
+          font-size: 15px;
+          line-height: 1.4;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .alert-error {
+          border-color: #e74c3c;
+          background: #fbeaea;
+          color: #c0392b;
+      }
+
+      .alert-success {
+          border-color: #2ecc71;
+          background: #eafaf1;
+          color: #27ae60;
+      }
+
+      .alert-info {
+          border-color: #3498db;
+          background: #eaf4fb;
+          color: #2980b9;
+      }
+
+      .alert-warning {
+          border-color: #f39c12;
+          background: #fff5e6;
+          color: #d35400;
+      }
+
 
       #avatar-preview {
           width: 100%;
@@ -52,21 +86,23 @@
     {% csrf_token %}
 
     {% if form.non_field_errors %}
-      <div class="non-field-errors" style="margin-bottom: 20px;">
+      <div class="alert-box alert-error">
         {% for error in form.non_field_errors %}
-          <p class="error-text">{{ error }}</p>
+          <p>{{ error }}</p>
         {% endfor %}
       </div>
     {% endif %}
+
     {% if messages %}
       <div class="messages">
         {% for message in messages %}
-          <div class="alert {{ message.tags }}">
+          <div class="alert-box alert-{{ message.tags }}">
             {{ message }}
           </div>
         {% endfor %}
       </div>
     {% endif %}
+
 
     <div class="profile-grid">
       <div class="card profile-avatar-card">
@@ -138,7 +174,8 @@
               <p class="error-text">{{ form.new_password2.errors.as_text }}</p>{% endif %}
           </div>
         </div>
-        <button type="submit" value="1" name="change_password" class="btn btn-secondary" style="margin-top: 10px;">Оновити
+        <button type="submit" value="1" name="change_password" class="btn btn-secondary" style="margin-top: 10px;">
+          Оновити
           пароль
         </button>
       </div>

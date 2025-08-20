@@ -31,9 +31,9 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_KEY")
 HOST = os.getenv("HOST")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = [HOST, "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["goadart-school.com", "www.godart-school.com"]
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{HOST}",
@@ -99,8 +99,8 @@ DATABASES = {
         'NAME': os.getenv("POSTGRES_NAME"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "db",
-        "POST": "5432"
+        'HOST': os.getenv("POSTGRES_HOST", "db"),
+        "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
 
@@ -129,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -147,10 +147,15 @@ import stripe
 stripe.api_key = STRIPE_SECRET_KEY
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
+
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 

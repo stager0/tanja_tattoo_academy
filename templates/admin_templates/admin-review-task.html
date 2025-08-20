@@ -123,7 +123,6 @@
           padding-top: 20px;
       }
 
-      /* --- Стили для больших экранов --- */
       @media (min-width: 992px) {
           .task-review-workspace {
               display: grid;
@@ -137,12 +136,11 @@
           }
       }
 
-      /* --- НОВЫЕ СТИЛИ ДЛЯ РАЗДЕЛИТЕЛЕЙ НА МОБИЛЬНЫХ --- */
       @media (max-width: 768px) {
           .task-review-header {
               flex-direction: column;
               align-items: flex-start;
-              gap: 0; /* Убираем gap, чтобы разделители были четкими */
+              gap: 0;
               padding-top: 15px;
               padding-bottom: 15px;
           }
@@ -156,7 +154,7 @@
           .task-review-header > .submission-meta {
               padding: 15px 0;
               width: 100%;
-              /* Добавляем линии сверху и снизу */
+
               border-top: 1px solid var(--border-color);
               border-bottom: 1px solid var(--border-color);
           }
@@ -167,11 +165,11 @@
 
 {% block content %}
   <div class="task-review-header">
-    <a href="{% url 'admin_review_list' %}" class="back-link"><i class="fas fa-arrow-left"></i> До списку</a>
+    <a href="{% url 'admin_review_list' %}?course=tattoo&type=waiting_for_a_check" class="back-link"><i class="fas fa-arrow-left"></i> До списку</a>
     <div class="submission-meta">
       <img src="{{ homework.user.avatar.url }}" alt="Avatar">
       <div>
-        <h4>{{ homework.user.get_full_name }}</h4>
+        <h4>{{ homework.user.get_full_name }} --- ({{ direction }})</h4>
         <p>Урок {{ homework.lecture.position_number }}: {{ homework.lecture.lecture_name }}</p>
       </div>
     </div>
@@ -240,30 +238,23 @@
   {{ block.super }}
   <script>
       document.addEventListener('DOMContentLoaded', function () {
-          // Находим все кнопки быстрых ответов
           const quickReplyButtons = document.querySelectorAll('.btn-quick-reply');
 
-          // Находим текстовое поле для отзыва
           const feedbackTextarea = document.getElementById('feedback-text');
 
-          // Для каждой кнопки добавляем обработчик события "клик"
           quickReplyButtons.forEach(button => {
               button.addEventListener('click', function () {
-                  // Получаем текст с нажатой кнопки
+
                   const textToInsert = button.textContent;
 
-                  // Получаем текущий текст в поле
                   const currentText = feedbackTextarea.value;
 
-                  // Если поле пустое, просто вставляем текст
                   if (currentText.trim() === '') {
                       feedbackTextarea.value = textToInsert;
                   } else {
-                      // Если в поле уже есть текст, добавляем два переноса строки и новый текст
                       feedbackTextarea.value = currentText + '\\n\\n' + textToInsert;
                   }
 
-                  // Ставим фокус обратно в текстовое поле, чтобы можно было продолжить писать
                   feedbackTextarea.focus();
               });
           });

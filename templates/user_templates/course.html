@@ -91,7 +91,8 @@
       <div class="lesson-card">
         <div class="video-player-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
           <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-              src="{{ lecture.video_url }}"
+              data-cookieconsent="marketing"
+              data-src="{{ lecture.video_url }}"
               title="Проигрыватель видео"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -138,7 +139,7 @@
             <div class="input-group">
               <label for="hw-comment">Ваш коментар</label>
               <textarea id="hw-comment" class="autoresize-textarea" name="text"
-                        placeholder="Ваш коментар або питання для ментора..."
+                        placeholder="Ваш коментар або питання для ментора..." required
                         {% if lecture.position_number in homework_done_ids or lecture.position_number in user_tasks_waiting_for_review_pos_nums %}disabled{% endif %}
               >{% if homework_text %}{{ homework_text }}{% endif %}</textarea>
             </div>

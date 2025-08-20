@@ -1,0 +1,837 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4639fde9-0a5a-4a88-9a19-3da64f97d63d" data-blockingmode="auto" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GodArt Piercing School - Професійні курси пірсингу</title>
+  <meta name="description"
+        content="Навчіться мистецтву пірсингу з нуля. Онлайн-курси від GodArt Piercing School з практикою, підтримкою ментора та стартовим набором професіонала.">
+
+  <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      rel="stylesheet" type="text/plain" data-cookieconsent="marketing">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        type="text/plain" data-cookieconsent="marketing">
+
+  <link rel="stylesheet" href="/static/css/piercing_style.css">
+  <style>
+      #preloader {
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 0.5s, visibility 0.5s;
+      }
+
+      #preloader.hidden {
+          opacity: 0;
+          visibility: hidden;
+      }
+  </style>
+</head>
+<body>
+<div id="landing-data" data-video-id="{{ video_id }}"></div>
+
+<div id="preloader">
+    <div class="preloader-content">
+        <div class="logo-loader-text">
+            <span class="logo-part-godart">GodArt</span><span class="logo-part-brand-piercing">Piercing</span>
+        </div>
+    </div>
+</div>
+
+<header class="main-header" id="main-header">
+  <div class="container header-content">
+    <a href="#hero" class="logo">GodArt<span>Piercing</span></a>
+    <nav class="main-nav" id="main-nav">
+      <ul>
+        <li><a href="#about">Про курс</a></li>
+        <li><a href="#tariffs">Тарифи</a></li>
+        <li><a href="#curriculum">Програма</a></li>
+        <li><a href="#works">Роботи учнів</a></li>
+        <li><a href="#mentor">Ментор</a></li>
+      </ul>
+      <a href="{% url 'login' %}" class="btn btn-secondary btn-login-mobile">Увійти</a>
+    </nav>
+    <div class="header-actions">
+      {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="btn btn-login">Увійти</a>
+      {% elif user.is_authenticated and not user.is_superuser %}
+        <a href="{% url 'dashboard' %}" class="btn btn-login">Кабінет</a>
+      {% elif user.is_authenticated and user.is_superuser %}
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-login">Кабінет</a>
+      {% endif %}
+      <button class="menu-toggle" id="menu-toggle" aria-label="Відкрити меню" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="hero">
+    <div class="hero-bg-parallax"></div>
+    <div class="container hero-content">
+      <h1 class="animate-on-scroll" data-animation="fade-in-up">Стань <span>профі-майстром</span> з пірсингу</h1>
+      <p class="animate-on-scroll" data-animation="fade-in-up" data-delay="100">Опануй мистецтво безпечного та
+        естетичного пірсингу. Почни кар'єру з повною підтримкою та готовим набором інструментів.</p>
+      <div class="animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+        <a href="#tariffs" class="btn">Обрати свій тариф</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container about-content">
+      <div class="about-text animate-on-scroll" data-animation="fade-in-left">
+        <h3>Що таке GodArt Piercing School?</h3>
+        <p>Це комплексна навчальна система, що перетворить тебе з новачка на впевненого майстра пірсингу. Наша програма
+          поєднує глибоке вивчення анатомії та технік безпеки, практичні завдання на симуляторах та постійний зворотний
+          зв'язок від досвідченого ментора.</p>
+        <p>Ти навчишся всьому: від стандартів стерилізації та вибору інструментів до технік найпопулярніших проколів та
+          роботи з клієнтами. Наша мета — твій професіоналізм.</p>
+      </div>
+      <div class="about-video animate-on-scroll" data-animation="fade-in-right">
+        <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+            {% if first_lesson.preview %}{{ first_lesson.preview.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+             alt="Прев'ю курсу з пірсингу">
+        <div class="play-button modal-trigger" id="play-preview-video" aria-label="Дивитись відео-прев'ю"
+             data-modal-target="lesson-modal">
+          <i class="fas fa-play"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tariffs">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Оберіть свій шлях</h2>
+      <div class="tariffs-grid">
+        <div class="tariff-card animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+          <div class="tariff-header">
+            <h3>{{ tariff_base.user_friendly_name }}</h3>
+            <p class="tariff-desc">Для самостійного старту</p>
+          </div>
+          <div class="tariff-price-wrapper">
+            <div class="price-full">
+              <span class="price-amount">{{ tariff_base.price }}€</span>
+            </div>
+          </div>
+          <ul class="tariff-features">
+            <li><i class="fas fa-check"></i>Доступ до 40+ відеолекцій</li>
+            <li><i class="fas fa-check"></i>Практичні домашні завдання</li>
+            <li><i class="fas fa-check"></i>Перевірка ДЗ ментором</li>
+            <li><i class="fas fa-check"></i>Приватний чат з ментором</li>
+            <li><i class="fas fa-check"></i>Доступ до курсу назавжди</li>
+            <li class="disabled"><i class="fas fa-times"></i>Професійний бокс для пірсингу</li>
+          </ul>
+          <button class="btn btn-secondary modal-trigger" data-modal-target="modal-base">Дізнатись більше</button>
+        </div>
+
+        <div class="tariff-card pro animate-on-scroll" data-animation="fade-in-up" data-delay="300">
+          <div class="pro-badge">Хіт продажів</div>
+          <div class="tariff-header">
+            <h3>{{ tariff_pro.user_friendly_name }}</h3>
+            <p class="tariff-desc">Все для швидкого результату</p>
+          </div>
+          <div class="tariff-price-wrapper">
+            <div class="price-full">
+              <span class="price-amount">{{ tariff_pro.price }}€</span>
+            </div>
+          </div>
+          <ul class="tariff-features">
+            <li><i class="fas fa-star"></i><b>Все, що в тарифі Start</b></li>
+            <li><i class="fas fa-check"></i><b>Професійний бокс для пірсингу</b></li>
+            <li><i class="fas fa-check"></i>Пріоритетна перевірка ДЗ</li>
+            <li><i class="fas fa-check"></i>Додаткові матеріали та гайди</li>
+            <li class="disabled"><i class="fas fa-times"></i>Персональна практика на моделі</li>
+          </ul>
+          <button class="btn modal-trigger" data-modal-target="modal-pro">Дізнатись більше</button>
+        </div>
+
+        <div class="tariff-card animate-on-scroll" data-animation="fade-in-up" data-delay="400">
+          <div class="tariff-header">
+            <h3>{{ tariff_master.user_friendly_name }}</h3>
+            <p class="tariff-desc">Персональний супровід</p>
+          </div>
+          <div class="tariff-price-wrapper">
+            <div class="price-full">
+              <span class="price-amount">{{ tariff_master.price }}€</span>
+            </div>
+          </div>
+          <ul class="tariff-features">
+            <li><i class="fas fa-crown"></i><b>Все, що в тарифі Pro</b></li>
+            <li><i class="fas fa-check"></i><b>Персональна практика на моделі</b></li>
+            <li><i class="fas fa-check"></i>Особиста консультація з ментором</li>
+            <li><i class="fas fa-check"></i>Допомога у створенні портфоліо</li>
+            <li><i class="fas fa-check"></i>Іменний сертифікат про закінчення</li>
+          </ul>
+          <button class="btn btn-secondary modal-trigger" data-modal-target="modal-master">Дізнатись більше</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gifting">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Ваш Доступ до Майстерності: Просто та Назавжди</h2>
+      <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">
+        Ми розробили систему, яка дає вам максимальну гнучкість та цінність, незалежно від того, купуєте ви курс для
+        себе чи в подарунок.
+      </p>
+      <div class="gifting-process">
+        <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="100">
+          <div class="gifting-icon"><i class="fas fa-receipt"></i></div>
+          <h3>1. Купівля та Код</h3>
+          <p>Після оплати ви миттєво отримуєте на email унікальний «Код Підписки». Це ваш персональний ключ до
+            курсу.</p>
+        </div>
+        <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="200">
+          <div class="gifting-icon"><i class="fas fa-user-plus"></i></div>
+          <h3>2. Реєстрація та Активація</h3>
+          <p>Пройдіть просту реєстрацію на платформі та активуйте свій код. Це відкриє вам повний доступ до всіх
+            матеріалів вашого тарифу.</p>
+        </div>
+        <div class="gifting-step animate-on-scroll" data-animation="fade-in-up" data-delay="300">
+          <div class="gifting-icon"><i class="fas fa-shipping-fast"></i></div>
+          <h3>3. Пірсинг-Бокс Вже в Дорозі!</h3>
+          <p>Якщо ваш тариф включає бокс, після активації коду заповніть адресу доставки. Через пару днів все необхідне
+            буде вже у вас!</p>
+        </div>
+      </div>
+      <div class="gifting-benefits animate-on-scroll" data-animation="fade-in-up" data-delay="400">
+        <h3>Ваші Пожиттєві Привілеї</h3>
+        <ul>
+          <li><i class="fas fa-bolt"></i> <strong>Швидкий фідбек:</strong> Оперативна перевірка ДЗ та відповіді на
+            питання.
+          </li>
+          <li><i class="fas fa-headset"></i> <strong>Підтримка після курсу:</strong> Залишайтеся на зв'язку з ментором і
+            ставте запитання.
+          </li>
+          <li><i class="fas fa-infinity"></i> <strong>Безкоштовні оновлення:</strong> Отримуйте всі майбутні оновлення
+            курсу без доплат.
+          </li>
+          <li><i class="fas fa-gift"></i> <strong>Ідеальний подарунок:</strong> Код можна подарувати — він безстроковий
+            і не має терміну дії.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="curriculum">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Програма курсу</h2>
+      <div class="lesson-list animate-on-scroll" data-animation="fade-in-up">
+        <div class="lesson-item modal-trigger" id="open-first-lesson" data-modal-target="lesson-modal">
+          <div class="lesson-header">
+            <span class="lesson-title">{{ first_lesson.lecture_name }}</span>
+            <span class="lesson-status">
+                                Дивитись безкоштовно <i class="fas fa-play-circle"></i>
+                            </span>
+          </div>
+        </div>
+        <div class="lesson-item locked">
+          <div class="lesson-header">
+            <span class="lesson-title">2. Асептика, антисептика та стерилізація</span>
+            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+          </div>
+        </div>
+        <div class="lesson-item locked">
+          <div class="lesson-header">
+            <span class="lesson-title">3. Анатомія та протипоказання</span>
+            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+          </div>
+        </div>
+        <div class="lesson-item locked">
+          <div class="lesson-header">
+            <span class="lesson-title">4. Інструменти, голки та прикраси. Повний огляд</span>
+            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+          </div>
+        </div>
+        <div class="lesson-item locked">
+          <div class="lesson-header">
+            <span class="lesson-title">5. Техніки проколів: вуха, ніс, губи, брові</span>
+            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+          </div>
+        </div>
+        <div class="lesson-item locked">
+          <div class="lesson-header">
+            <span class="lesson-title">6. Догляд після проколу та вирішення проблем</span>
+            <span class="lesson-status"><i class="fas fa-lock"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="works">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Роботи наших учнів</h2>
+      <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">Це результати, яких досягають студенти
+        ще під час навчання на симуляторах.</p>
+      <div class="work-gallery">
+        <div class="work-item animate-on-scroll" data-animation="zoom-in">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_1 and piercing_work_1.image %}{{ piercing_work_1.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг хелікс від учня">
+        </div>
+        <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="100">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_2 and piercing_work_2.image %}{{ piercing_work_2.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг септум від учня">
+        </div>
+        <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="200">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_3 and piercing_work_3.image %}{{ piercing_work_3.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг крила носа від учня">
+        </div>
+        <div class="work-item animate-on-scroll" data-animation="zoom-in">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_4 and piercing_work_4.image %}{{ piercing_work_4.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг індастріал від учня">
+        </div>
+        <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="100">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_5 and piercing_work_5.image %}{{ piercing_work_5.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг губи від учня">
+        </div>
+        <div class="work-item animate-on-scroll" data-animation="zoom-in" data-delay="200">
+          <img src="
+
+
+
+
+
+
+
+
+
+
+
+
+              {% if piercing_work_6 and piercing_work_6.image %}{{ piercing_work_6.image.url }}{% else %}{% static 'imgs/not_found.jpeg' %}{% endif %}"
+               alt="Пірсинг брови від учня">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mentor">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Ваш ментор</h2>
+      <div class="mentor-content">
+        <div class="mentor-photo animate-on-scroll" data-animation="fade-in-right">
+          <img src="{% static 'imgs/admin_ava.jpg' %}" alt="Фото ментора GodArt">
+        </div>
+        <div class="mentor-bio animate-on-scroll" data-animation="fade-in-left">
+          <h3>{% if mentor %}{{ mentor.get_full_name }}{% else %}GodArt Mentor{% endif %}</h3>
+          <span class="title">Майстриня з пірсингу з 10-річним досвідом</span>
+          <p>Привіт! Я проведу тебе через усі етапи становлення професійного майстра пірсингу. Я переконана, що в нашій
+            справі головне — це безпека, точність та глибоке розуміння анатомії. Я зібрала весь свій досвід, щоб твій
+            старт був максимально ефективним та безпечним. Буду з тобою на кожному етапі, перевірятиму твої роботи та
+            відповідатиму на всі питання.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="marketing-faq">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Залишились Сумніви? Розвіємо їх!</h2>
+      <div class="faq-container animate-on-scroll" data-animation="fade-in-up">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Чи безпечно навчатися пірсингу онлайн?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Абсолютно. Наша програма розроблена з максимальним акцентом на безпеку. Вся практика виконується на
+              спеціальних силіконових моделях, що імітують шкіру. Ментор ретельно перевіряє кожне ваше практичне
+              завдання по відео, перш ніж ви перейдете до наступного етапу. Ви отримаєте знання, що значно перевищують
+              багато очних експрес-курсів.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Чи зможу я працювати після курсу, якщо в мене немає мед. освіти?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Так. Для роботи майстром пірсингу медична освіта не є обов'язковою. Наш курс дає всі необхідні знання з
+              анатомії, асептики та антисептики, яких достатньо для безпечної та професійної роботи. Ви будете знати все
+              про протипоказання, ризики та правильну обробку.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Що саме входить до професійного пірсинг-боксу?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Пірсинг-бокс містить все, що потрібно для початку роботи: професійні голки різного діаметру, затискачі
+              (пеннінгтони), силіконові моделі для практики, базові прикраси з титану, антисептики та засоби для
+              стерилізації. Це ретельно підібраний комплект, яким користуються досвідчені майстри.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Коли я зможу почати заробляти?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Це залежить від вашої старанності. Багато учнів, пройшовши основні модулі та відпрацювавши техніку на
+              симуляторах, починають робити прості проколи друзям та знайомим для портфоліо. Після завершення курсу ви
+              матимете достатньо навичок та впевненості, щоб приймати перших клієнтів за гроші.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="container animate-on-scroll" data-animation="fade-in-up">
+      <h2>Готові Почати Свій Шлях?</h2>
+      <p class="section-subtitle">Не відкладайте мрію на потім. Зробіть найціннішу інвестицію — у себе та свої навички.
+        Оберіть свій тариф і зробіть перший крок до нової, творчої професії вже сьогодні.</p>
+      <a href="#tariffs" class="btn">Хочу на курс!</a>
+    </div>
+  </section>
+
+  <section id="request-form-section">
+    <div class="container">
+      <h2 class="animate-on-scroll" data-animation="fade-in-up">Залишити заявку</h2>
+      <p class="section-subtitle animate-on-scroll" data-animation="fade-in-up">
+        Заповніть форму, і ми зв'яжемося з вами для консультації та відповіді на всі ваші запитання.
+      </p>
+      <form action="" method="POST" class="request-form animate-on-scroll" data-animation="fade-in-up">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Як до вас звертатися?</label>
+          <input type="text" id="name" name="name" placeholder="Ваше ім'я" required>
+        </div>
+        <div class="form-group">
+          <label for="contact_method">Соц. мережа куди найкраще написати</label>
+          <input type="text" id="contact_method" name="contact_method" placeholder="Telegram, Instagram, Viber..."
+                 required>
+        </div>
+        <div class="form-group">
+          <label for="contact_details">Ваш нік або номер телефону</label>
+          <input type="text" id="contact_details" name="contact_details" placeholder="@username або +380 XX XXX XX XX"
+                 required>
+        </div>
+        <button type="submit" value="submit" name="submit" class="btn">Відправити заявку</button>
+      </form>
+    </div>
+  </section>
+</main>
+<section id="cross-promo" class="cross-promo-section">
+  <div class="container">
+    <div class="cross-promo-content">
+      <div class="promo-icon">
+        <i class="fas fa-paint-brush"></i>
+      </div>
+      <div class="promo-text">
+        <h3>Готові до нового виклику? Пориньте у світ татуювання!</h3>
+        <p>Навчіться створювати мистецтво на шкірі на нашому флагманському курсі для тату-майстрів.</p>
+      </div>
+      <div class="promo-action">
+        <a href="{% url 'index' %}" class="btn btn-secondary">Дізнатись про курс тату</a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="main-footer">
+  <div class="container">
+    <div class="social-links">
+      <a href="https://www.instagram.com/tattoo.godart/" aria-label="Instagram" target="_blank"><i
+          class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@tattoo.tanya?_t=ZM-8yu2UT1Hhav&_r=1" aria-label="TikTok" target="_blank"><i
+          class="fab fa-tiktok"></i></a>
+    </div>
+    <div class="developer-credit">
+      <p>
+        Розробник сайту: <a href="https://t.me/andrii_sth" target="_blank" rel="noopener noreferrer">@andrii_sth &rarr;
+        Telegram</a>
+      </p>
+    </div>
+    <div class="footer-legal-links" style="margin: 15px 0; text-align: center; font-size: 0.9rem; line-height: 1.8;">
+      <a href="{% url 'agb' %}" style="margin: 0 10px; color: #A3A3A3; text-decoration: none;">AGB</a>
+      <span style="color: #555;">|</span>
+      <a href="{% url 'impressum' %}" style="margin: 0 10px; color: #A3A3A3; text-decoration: none;">Impressum</a>
+      <span style="color: #555;">|</span>
+      <a href="{% url 'datenschutzerklarung' %}" style="margin: 0 10px; color: #A3A3A3; text-decoration: none;">Datenschutzerklärung</a>
+      <br class="d-sm-none"> <a href="javascript:void(0)" onclick="Cookiebot.show()"
+                                style="margin: 0 10px; color: #A3A3A3; text-decoration: none;">Cookie-Einstellungen</a>
+    </div>
+    <p class="footer-copyright">© <span id="current-year">2025</span> GodArt Tattoo School. Всі права захищено.</p>
+  </div>
+</footer>
+
+<div class="modal" id="lesson-modal">
+  <div class="modal-content">
+    <button class="close-modal" aria-label="Закрити модальне вікно">×</button>
+    <div class="video-container">
+      <iframe id="video-iframe"
+              data-cookieconsent="marketing"
+              data-src=""
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+    <div class="lesson-details">
+      <h3>{{ first_lesson.lecture_name }}</h3>
+      <p>{{ first_lesson.lecture_description|safe }}</p>
+      <div class="homework-section">
+        <h4>Домашнє завдання</h4>
+        <p>Щоб завантажити ДЗ та задати питання ментору, будь ласка, придбайте курс.</p>
+        <a href="#tariffs" class="btn modal-action-btn">Обрати тариф</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-base">
+  <div class="modal-content tariff-modal-content">
+    <button class="close-modal" aria-label="Закрити модальне вікно">×</button>
+    <div class="modal-header">
+      <i class="fas fa-rocket modal-icon"></i>
+      <h3>Тариф "{{ tariff_base.user_friendly_name }}"</h3>
+      <p>Ваш впевнений крок у світ пірсинг-мистецтва</p>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">Цей тариф ідеально підходить для тих, хто хоче опанувати нову професію з нуля в
+        комфортному темпі. Ви отримаєте фундаментальні знання та навички, необхідні для старту.</p>
+      <ul class="modal-features">
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-check-circle"></i><strong>40+ відеолекцій:</strong></div>
+          <div class="feature-desc">Повний доступ до всієї теоретичної бази 24/7.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-check-circle"></i><strong>Зворотний зв'язок:</strong></div>
+          <div class="feature-desc">Ментор особисто перевіряє ваші практичні ДЗ.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-check-circle"></i><strong>Чат з ментором:</strong></div>
+          <div class="feature-desc">Ваші питання не залишаться без відповіді.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-check-circle"></i><strong>Доступ назавжди:</strong></div>
+          <div class="feature-desc">Повертайтесь до матеріалів курсу будь-коли.</div>
+        </li>
+      </ul>
+      <div class="modal-price">
+        <div class="price-full">{{ tariff_base.price }}€</div>
+      </div>
+      <div class="modal-cta">
+        <form method="post" action="{% url 'checkout_session' %}">
+          {% csrf_token %}
+          <div class="checkout-legal-checkbox email-confirm-highlight">
+            <div style="display: flex; align-items: flex-start;">
+              <input type="checkbox" id="email_confirm_{{ tariff_base.name }}" name="email_confirm" required
+                     style="margin-top: 5px; margin-right: 15px; transform: scale(1.4); flex-shrink: 0;">
+              <label for="email_confirm_{{ tariff_base.name }}">
+                <strong style="color: var(--text-light); font-size: 1rem;">Увага! Перевірте ваш Email.</strong>
+                <span style="display: block; color: var(--text-medium);">Я підтверджую, що введу правильну email-адресу на сторінці оплати, оскільки на неї буде надіслано код доступу.</span>
+              </label>
+            </div>
+          </div>
+          <div class="checkout-legal-checkbox"
+               style="margin: 20px 0; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #a3a3a3;">
+            <input type="checkbox" id="widerrufsrecht" name="widerrufsrecht" required
+                   style="margin-right: 10px; transform: scale(1.2);">
+            <label for="widerrufsrecht">
+              Ich stimme ausdrücklich zu, dass God Art Studio vor Ablauf der Widerrufsfrist mit der Ausführung des
+              Vertrages beginnt. Mir ist bekannt, dass ich durch diese Zustimmung mit Beginn der Ausführung des
+              Vertrages (d.h. mit Erhalt des Zugangscodes) mein Widerrufsrecht verliere.
+            </label>
+          </div>
+          <button name="action" value="{{ tariff_base.name }}" class="btn btn-secondary">Придбати тариф
+            "{{ tariff_base.user_friendly_name }}"
+          </button>
+        </form>
+        <p class="cta-note">Ви отримаєте код доступу на email відразу після оплати.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-pro">
+  <div class="modal-content tariff-modal-content pro-modal">
+    <div class="pro-badge-modal">Хіт продажів</div>
+    <button class="close-modal" aria-label="Закрити модальне вікно">×</button>
+    <div class="modal-header">
+      <i class="fas fa-star modal-icon"></i>
+      <h3>Тариф "{{ tariff_pro.user_friendly_name }}"</h3>
+      <p>Найкращий вибір для швидкого та ефективного старту</p>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">Не просто навчайтесь, а одразу дійте! Цей тариф включає все необхідне обладнання, щоб
+        ви почали практикуватися з перших днів.</p>
+      <ul class="modal-features">
+        <li class="feature-main"><i class="fas fa-star"></i> <strong>Все з тарифу "Start" +</strong></li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-box-open"></i><strong>Професійний пірсинг-бокс:</strong></div>
+          <div class="feature-desc">Набір інструментів, голок, прикрас та матеріалів, доставлений вам додому.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-bolt"></i><strong>Пріоритетна підтримка:</strong></div>
+          <div class="feature-desc">Ваші домашні завдання перевіряються в першу чергу.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-file-alt"></i><strong>Додаткові матеріали:</strong></div>
+          <div class="feature-desc">Ексклюзивні гайди по складним проколам та шаблони згоди клієнта.</div>
+        </li>
+      </ul>
+      <div class="modal-price">
+        <div class="price-full">{{ tariff_pro.price }}€</div>
+      </div>
+      <div class="modal-cta">
+        <form method="post" action="{% url 'checkout_session' %}">
+          {% csrf_token %}
+          <div class="checkout-legal-checkbox email-confirm-highlight">
+            <div style="display: flex; align-items: flex-start;">
+              <input type="checkbox" id="email_confirm_{{ tariff_pro.name }}" name="email_confirm" required
+                     style="margin-top: 5px; margin-right: 15px; transform: scale(1.4); flex-shrink: 0;">
+              <label for="email_confirm_{{ tariff_pro.name }}">
+                <strong style="color: var(--text-light); font-size: 1rem;">Увага! Перевірте ваш Email.</strong>
+                <span style="display: block; color: var(--text-medium);">Я підтверджую, що введу правильну email-адресу на сторінці оплати, оскільки на неї буде надіслано код доступу.</span>
+              </label>
+            </div>
+          </div>
+          <div class="checkout-legal-checkbox"
+               style="margin: 20px 0; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #a3a3a3;">
+            <input type="checkbox" id="widerrufsrecht" name="widerrufsrecht" required
+                   style="margin-right: 10px; transform: scale(1.2);">
+            <label for="widerrufsrecht">
+              Ich stimme ausdrücklich zu, dass God Art Studio vor Ablauf der Widerrufsfrist mit der Ausführung des
+              Vertrages beginnt. Mir ist bekannt, dass ich durch diese Zustimmung mit Beginn der Ausführung des
+              Vertrages (d.h. mit Erhalt des Zugangscodes) mein Widerrufsrecht verliere.
+            </label>
+          </div>
+          <button name="action" value="{{ tariff_pro.name }}" class="btn">Придбати тариф
+            "{{ tariff_pro.user_friendly_name }}"
+          </button>
+        </form>
+        <p class="cta-note">Найпопулярніший вибір серед наших студентів!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-master">
+  <div class="modal-content tariff-modal-content">
+    <button class="close-modal" aria-label="Закрити модальне вікно">×</button>
+    <div class="modal-header">
+      <i class="fas fa-crown modal-icon"></i>
+      <h3>Тариф "{{ tariff_master.user_friendly_name }}"</h3>
+      <p>Ексклюзивний шлях до майстерності під особистим наглядом</p>
+    </div>
+    <div class="modal-body">
+      <p class="modal-description">Для тих, хто прагне до найвищих результатів. Отримайте максимум уваги від ментора,
+        персональну практику та гарантований результат.</p>
+      <ul class="modal-features">
+        <li class="feature-main"><i class="fas fa-crown"></i> <strong>Все з тарифу "Pro" +</strong></li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-user-check"></i><strong>Практика на моделі:</strong></div>
+          <div class="feature-desc">Відпрацювання найпопулярніших проколів на реальній моделі під наглядом ментора.
+          </div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-comments"></i><strong>Особиста консультація:</strong></div>
+          <div class="feature-desc">Стратегічна сесія з ментором для побудови вашої кар'єри та залучення клієнтів.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-images"></i><strong>Допомога з портфоліо:</strong></div>
+          <div class="feature-desc">Створення якісних фото робіт, які будуть продавати ваші послуги.</div>
+        </li>
+        <li class="feature-item">
+          <div class="feature-name"><i class="fas fa-graduation-cap"></i><strong>Іменний сертифікат:</strong></div>
+          <div class="feature-desc">Офіційне підтвердження вашої високої кваліфікації.</div>
+        </li>
+      </ul>
+      <div class="modal-price">
+        <div class="price-full">{{ tariff_master.price }}€</div>
+      </div>
+      <div class="modal-cta">
+        <form method="post" action="{% url 'checkout_session' %}">
+          {% csrf_token %}
+          <div class="checkout-legal-checkbox email-confirm-highlight">
+            <div style="display: flex; align-items: flex-start;">
+              <input type="checkbox" id="email_confirm_{{ tariff_master.name }}" name="email_confirm" required
+                     style="margin-top: 5px; margin-right: 15px; transform: scale(1.4); flex-shrink: 0;">
+              <label for="email_confirm_{{ tariff_master.name }}">
+                <strong style="color: var(--text-light); font-size: 1rem;">Увага! Перевірте ваш Email.</strong>
+                <span style="display: block; color: var(--text-medium);">Я підтверджую, що введу правильну email-адресу на сторінці оплати, оскільки на неї буде надіслано код доступу.</span>
+              </label>
+            </div>
+          </div>
+          <div class="checkout-legal-checkbox"
+               style="margin: 20px 0; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #a3a3a3;">
+            <input type="checkbox" id="widerrufsrecht" name="widerrufsrecht" required
+                   style="margin-right: 10px; transform: scale(1.2);">
+            <label for="widerrufsrecht">
+              Ich stimme ausdrücklich zu, dass God Art Studio vor Ablauf der Widerrufsfrist mit der Ausführung des
+              Vertrages beginnt. Mir ist bekannt, dass ich durch diese Zustimmung mit Beginn der Ausführung des
+              Vertrages (d.h. mit Erhalt des Zugangscodes) mein Widerrufsrecht verliere.
+            </label>
+          </div>
+          <button name="action" value="{{ tariff_master.name }}" class="btn btn-secondary">Придбати тариф
+            "{{ tariff_master.user_friendly_name }}"
+          </button>
+        </form>
+        <p class="cta-note">Ваша інвестиція в успішну кар'єру профі.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="#" id="scroll-to-top" class="scroll-to-top" aria-label="Наверх">
+  <i class="fas fa-arrow-up"></i>
+</a>
+
+<script src="{% static 'js/piercing_script.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const preloader = document.getElementById('preloader');
+    const logoLoaderText = document.querySelector('.logo-loader-text');
+
+    function hidePreloader() {
+        if (preloader) {
+            preloader.classList.add('hidden');
+        }
+    }
+
+    function activateFontsAndContent() {
+        // "Вмикаємо" заблоковані link-теги
+        document.querySelectorAll('link[data-cookieconsent]').forEach(link => {
+            link.setAttribute('type', 'text/css');
+        });
+
+        // Чекаємо, доки шрифти завантажаться
+        document.fonts.ready.then(function () {
+            // Тільки після завантаження шрифтів додаємо клас,
+            // який застосує фірмові стилі та шрифти до логотипу
+            if(logoLoaderText) {
+                logoLoaderText.classList.add('fonts-loaded');
+            }
+        });
+    }
+
+    // --- Логіка Cookiebot ---
+
+    // Якщо згода вже є, одразу вмикаємо шрифти
+    if (window.Cookiebot && window.Cookiebot.consented) {
+        activateFontsAndContent();
+    }
+
+    // Коли користувач приймає cookie, вмикаємо шрифти
+    window.addEventListener('CookiebotOnAccept', function () {
+        activateFontsAndContent();
+    }, false);
+
+    // Керуємо прелоадером
+    const animationDuration = 4000; // ~4 секунди (час анімації + заливки)
+    let consentReady = (window.Cookiebot && window.Cookiebot.consented);
+
+    function checkAndHide() {
+        if (consentReady) {
+            // Якщо згода є, ховаємо прелоадер після завершення анімації
+            setTimeout(hidePreloader, animationDuration);
+        }
+    }
+
+    // Спрацьовує, коли користувач робить вибір
+    window.addEventListener('CookiebotOnConsentReady', function() {
+        consentReady = true;
+        checkAndHide();
+    });
+
+    // Запасний варіант для тих, хто повернувся
+    window.addEventListener('load', function() {
+        if (consentReady) {
+             checkAndHide();
+        }
+    });
+});
+</script>
+</body>
+</html>

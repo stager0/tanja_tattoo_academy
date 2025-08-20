@@ -35,36 +35,73 @@
 
     <div class="admin-card">
       <div class="admin-card-header">
-        <i class="fas fa-chart-line"></i>
-        <h3>Прогрес студентів (останній і перший)</h3>
+        <i class="fas fa-paint-brush"></i>
+        <h3>Прогрес студентів: Тату (Найгірший vs Найкращий)</h3>
       </div>
       <div class="admin-list">
-        {% if min_progress %}
+        {% if min_progress_tattoo %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
-              <strong>{{ min_progress.get_full_name }} -------> {{ min_progress.progress|default:0 }}%📉</strong>
+              <strong>{{ min_progress_tattoo.get_full_name }}
+                -------> {{ min_progress_tattoo.progress|default:0 }}%📉</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill error" style="width: {{ min_progress.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill error"
+                     style="width: {{ min_progress_tattoo.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
         {% endif %}
+        {% if max_progress_tattoo and max_progress_tattoo != min_progress_tattoo %}
+          <div class="list-item">
+            <div class="item-info" style="width: 100%;">
+              <strong>{{ max_progress_tattoo.get_full_name }}
+                -------> {{ max_progress_tattoo.progress|default:0 }}%🏆</strong>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success"
+                     style="width: {{ max_progress_tattoo.progress|default:0 }}%;"></div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if not min_progress_tattoo %}
+          <div class="list-item">
+            <div class="item-info"><strong>Немає студентів тату...</strong></div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
 
-        {% if max_progress and max_progress != min_progress %}
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <i class="fas fa-ring"></i>
+        <h3>Прогрес студентів: Пірсинг (Найгірший vs Найкращий)</h3>
+      </div>
+      <div class="admin-list">
+        {% if min_progress_piercing %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
-              <strong>{{ max_progress.get_full_name }} -------> {{ max_progress.progress|default:0 }}%🏆</strong>
+              <strong>{{ min_progress_piercing.get_full_name }} -------> {{ min_progress_piercing.progress|default:0 }}%📉</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill success" style="width: {{ max_progress.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill error"
+                     style="width: {{ min_progress_piercing.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
         {% endif %}
-        {% if not max_progress and not min_progress %}
+        {% if max_progress_piercing and max_progress_piercing != min_progress_piercing %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
-              <strong>Немає користувачів....</strong>
+              <strong>{{ max_progress_piercing.get_full_name }} -------> {{ max_progress_piercing.progress|default:0 }}%🏆</strong>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill success"
+                     style="width: {{ max_progress_piercing.progress|default:0 }}%;"></div>
+              </div>
             </div>
+          </div>
+        {% endif %}
+        {% if not min_progress_piercing %}
+          <div class="list-item">
+            <div class="item-info"><strong>Немає студентів пірсингу...</strong></div>
           </div>
         {% endif %}
       </div>

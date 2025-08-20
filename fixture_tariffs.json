@@ -1,15 +1,12 @@
 [
   {
-    "model": "web.code", "pk": 1, "fields": {"code": "PROD-NEED-2025", "is_activated": true, "activated_date": "2025-07-11T11:30:00Z", "created_date": "2025-07-02T14:00:00Z", "tariff": "pro", "start_box_coupon_is_activated": false}
-  },
-  {
     "model": "authentication.usermodel",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$1000000$XNMomk2RyejvFRaX2h7FWO$ga+oax/M7pY0bxDFQEefvjoFNjwT1S4fuP9e6obc0+s=",
       "last_login": "2025-07-15T15:00:00Z",
       "is_superuser": true,
-      "email": "admin@tattoo-school.com",
+      "email": "stuttgart.tattoo@gmail.com",
       "is_staff": true,
       "is_active": true,
       "date_joined": "2025-07-01T08:00:00Z",
@@ -17,7 +14,7 @@
       "last_name": "Інструктор",
       "code": null,
       "phone": "+380501234567",
-      "avatar": "tanja_foto_rclia4",
+      "avatar": "user_avatars/522a0e72-a24c-4ad0-a9d4-5dc3c66490de",
       "last_activity": "2025-07-15T17:55:00Z"
     }
   },
@@ -26,7 +23,9 @@
     "pk": 1,
     "fields": {
       "name": "base",
-      "price": 300
+      "user_friendly_name": "Base Tattoo",
+      "price": 300,
+      "direction": "tattoo"
     }
   },
   {
@@ -34,7 +33,10 @@
     "pk": 2,
     "fields": {
       "name": "pro",
-      "price": 600
+      "user_friendly_name": "Pro Tattoo",
+      "price": 600,
+      "with_startbox": true,
+      "direction": "tattoo"
     }
   },
   {
@@ -42,7 +44,958 @@
     "pk": 3,
     "fields": {
       "name": "master",
-      "price": 900
+      "user_friendly_name": "Master Tattoo",
+      "price": 900,
+      "with_startbox": true,
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 4,
+    "fields": {
+      "name": "base_piercing",
+      "user_friendly_name": "Base Piercing",
+      "price": 300,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 5,
+    "fields": {
+      "name": "pro_piercing",
+      "user_friendly_name": "Pro Piercing",
+      "price": 600,
+      "with_startbox": true,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.subscribetariff",
+    "pk": 6,
+    "fields": {
+      "name": "master_piercing",
+      "user_friendly_name": "Master Piercing",
+      "price": 900,
+      "with_startbox": true,
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 1,
+    "fields": {
+      "name": "tattoo_work_1",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 2,
+    "fields": {
+      "name": "tattoo_work_2",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 3,
+    "fields": {
+      "name": "tattoo_work_3",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 4,
+    "fields": {
+      "name": "tattoo_work_4",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 5,
+    "fields": {
+      "name": "tattoo_work_5",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 6,
+    "fields": {
+      "name": "tattoo_work_6",
+      "direction": "tattoo"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 7,
+    "fields": {
+      "name": "piercing_work_1",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 8,
+    "fields": {
+      "name": "piercing_work_2",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 9,
+    "fields": {
+      "name": "piercing_work_3",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 10,
+    "fields": {
+      "name": "piercing_work_4",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 11,
+    "fields": {
+      "name": "piercing_work_5",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingimage",
+    "pk": 12,
+    "fields": {
+      "name": "piercing_work_6",
+      "direction": "piercing"
+    }
+  },
+  {
+    "model": "web.lendingdata",
+    "pk": 1,
+    "fields": {
+      "direction": "tattoo",
+      "lecture_name": "1. Вступ. Все про професію тату-майстра",
+      "lecture_description": "У цьому уроці ми поговоримо про те, хто такий тату-майстер, які перспективи відкриває ця професія, та що потрібно для успішного старту. Розвіємо популярні міфи та налаштуємось на продуктивне навчання.",
+      "hello_video_id": "AHoL1AvdZPA"
+    }
+  },
+  {
+    "model": "web.lendingdata",
+    "pk": 2,
+    "fields": {
+      "direction": "piercing",
+      "lecture_name": "1. Вступ. Професія майстра пірсингу",
+      "lecture_description": "У цьому уроці ми поговоримо про те, хто такий майстер пірсингу, які перспективи відкриває ця професія, та що потрібно для успішного старту. Розвіємо популярні міфи та налаштуємось на продуктивне навчання.",
+      "hello_video_id": "AHoL1AvdZPA"
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 1,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_01@example.com",
+      "session_id": "cs_test_tt_base_01"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 1,
+    "fields": {
+      "code": "TT-BASE-A1B2C3",
+      "is_activated": false,
+      "order": 1,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 2,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_02@example.com",
+      "session_id": "cs_test_tt_base_02"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 2,
+    "fields": {
+      "code": "TT-BASE-D4E5F6",
+      "is_activated": false,
+      "order": 2,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 3,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_03@example.com",
+      "session_id": "cs_test_tt_base_03"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 3,
+    "fields": {
+      "code": "TT-BASE-G7H8I9",
+      "is_activated": false,
+      "order": 3,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 4,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_04@example.com",
+      "session_id": "cs_test_tt_base_04"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 4,
+    "fields": {
+      "code": "TT-BASE-J1K2L3",
+      "is_activated": false,
+      "order": 4,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 5,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_05@example.com",
+      "session_id": "cs_test_tt_base_05"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 5,
+    "fields": {
+      "code": "TT-BASE-M4N5O6",
+      "is_activated": false,
+      "order": 5,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 6,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_06@example.com",
+      "session_id": "cs_test_tt_base_06"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 6,
+    "fields": {
+      "code": "TT-BASE-P7Q8R9",
+      "is_activated": false,
+      "order": 6,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 7,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_07@example.com",
+      "session_id": "cs_test_tt_base_07"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 7,
+    "fields": {
+      "code": "TT-BASE-S1T2U3",
+      "is_activated": false,
+      "order": 7,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 8,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_08@example.com",
+      "session_id": "cs_test_tt_base_08"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 8,
+    "fields": {
+      "code": "TT-BASE-V4W5X6",
+      "is_activated": false,
+      "order": 8,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 9,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_09@example.com",
+      "session_id": "cs_test_tt_base_09"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 9,
+    "fields": {
+      "code": "TT-BASE-Y7Z8A9",
+      "is_activated": false,
+      "order": 9,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 10,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_10@example.com",
+      "session_id": "cs_test_tt_base_10"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 10,
+    "fields": {
+      "code": "TT-BASE-B1C2D3",
+      "is_activated": false,
+      "order": 10,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 11,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_11@example.com",
+      "session_id": "cs_test_tt_base_11"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 11,
+    "fields": {
+      "code": "TT-BASE-E4F5G6",
+      "is_activated": false,
+      "order": 11,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 12,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_12@example.com",
+      "session_id": "cs_test_tt_base_12"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 12,
+    "fields": {
+      "code": "TT-BASE-H7I8J9",
+      "is_activated": false,
+      "order": 12,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 13,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_13@example.com",
+      "session_id": "cs_test_tt_base_13"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 13,
+    "fields": {
+      "code": "TT-BASE-K1L2M3",
+      "is_activated": false,
+      "order": 13,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 14,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_14@example.com",
+      "session_id": "cs_test_tt_base_14"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 14,
+    "fields": {
+      "code": "TT-BASE-N4O5P6",
+      "is_activated": false,
+      "order": 14,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 15,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "tbase_15@example.com",
+      "session_id": "cs_test_tt_base_15"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 15,
+    "fields": {
+      "code": "TT-BASE-Q7R8S9",
+      "is_activated": false,
+      "order": 15,
+      "tariff": 1
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 16,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "tmast_01@example.com",
+      "session_id": "cs_test_tt_mast_01"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 16,
+    "fields": {
+      "code": "TT-MAST-A1B2C3",
+      "is_activated": false,
+      "order": 16,
+      "tariff": 3
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 17,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "tmast_02@example.com",
+      "session_id": "cs_test_tt_mast_02"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 17,
+    "fields": {
+      "code": "TT-MAST-D4E5F6",
+      "is_activated": false,
+      "order": 17,
+      "tariff": 3
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 18,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "tmast_03@example.com",
+      "session_id": "cs_test_tt_mast_03"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 18,
+    "fields": {
+      "code": "TT-MAST-G7H8I9",
+      "is_activated": false,
+      "order": 18,
+      "tariff": 3
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 19,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "tmast_04@example.com",
+      "session_id": "cs_test_tt_mast_04"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 19,
+    "fields": {
+      "code": "TT-MAST-J1K2L3",
+      "is_activated": false,
+      "order": 19,
+      "tariff": 3
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 20,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "tmast_05@example.com",
+      "session_id": "cs_test_tt_mast_05"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 20,
+    "fields": {
+      "code": "TT-MAST-M4N5O6",
+      "is_activated": false,
+      "order": 20,
+      "tariff": 3
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 21,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_01@example.com",
+      "session_id": "cs_test_pc_base_01"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 21,
+    "fields": {
+      "code": "PC-BASE-A1B2C3",
+      "is_activated": false,
+      "order": 21,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 22,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_02@example.com",
+      "session_id": "cs_test_pc_base_02"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 22,
+    "fields": {
+      "code": "PC-BASE-D4E5F6",
+      "is_activated": false,
+      "order": 22,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 23,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_03@example.com",
+      "session_id": "cs_test_pc_base_03"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 23,
+    "fields": {
+      "code": "PC-BASE-G7H8I9",
+      "is_activated": false,
+      "order": 23,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 24,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_04@example.com",
+      "session_id": "cs_test_pc_base_04"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 24,
+    "fields": {
+      "code": "PC-BASE-J1K2L3",
+      "is_activated": false,
+      "order": 24,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 25,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_05@example.com",
+      "session_id": "cs_test_pc_base_05"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 25,
+    "fields": {
+      "code": "PC-BASE-M4N5O6",
+      "is_activated": false,
+      "order": 25,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 26,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_06@example.com",
+      "session_id": "cs_test_pc_base_06"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 26,
+    "fields": {
+      "code": "PC-BASE-P7Q8R9",
+      "is_activated": false,
+      "order": 26,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 27,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_07@example.com",
+      "session_id": "cs_test_pc_base_07"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 27,
+    "fields": {
+      "code": "PC-BASE-S1T2U3",
+      "is_activated": false,
+      "order": 27,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 28,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_08@example.com",
+      "session_id": "cs_test_pc_base_08"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 28,
+    "fields": {
+      "code": "PC-BASE-V4W5X6",
+      "is_activated": false,
+      "order": 28,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 29,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_09@example.com",
+      "session_id": "cs_test_pc_base_09"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 29,
+    "fields": {
+      "code": "PC-BASE-Y7Z8A9",
+      "is_activated": false,
+      "order": 29,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 30,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_10@example.com",
+      "session_id": "cs_test_pc_base_10"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 30,
+    "fields": {
+      "code": "PC-BASE-B1C2D3",
+      "is_activated": false,
+      "order": 30,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 31,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_11@example.com",
+      "session_id": "cs_test_pc_base_11"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 31,
+    "fields": {
+      "code": "PC-BASE-E4F5G6",
+      "is_activated": false,
+      "order": 31,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 32,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_12@example.com",
+      "session_id": "cs_test_pc_base_12"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 32,
+    "fields": {
+      "code": "PC-BASE-H7I8J9",
+      "is_activated": false,
+      "order": 32,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 33,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_13@example.com",
+      "session_id": "cs_test_pc_base_13"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 33,
+    "fields": {
+      "code": "PC-BASE-K1L2M3",
+      "is_activated": false,
+      "order": 33,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 34,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_14@example.com",
+      "session_id": "cs_test_pc_base_14"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 34,
+    "fields": {
+      "code": "PC-BASE-N4O5P6",
+      "is_activated": false,
+      "order": 34,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 35,
+    "fields": {
+      "total_sum": "300.00",
+      "is_paid": true,
+      "user_email": "pbase_15@example.com",
+      "session_id": "cs_test_pc_base_15"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 35,
+    "fields": {
+      "code": "PC-BASE-Q7R8S9",
+      "is_activated": false,
+      "order": 35,
+      "tariff": 4
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 36,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "pmast_01@example.com",
+      "session_id": "cs_test_pc_mast_01"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 36,
+    "fields": {
+      "code": "PC-MAST-A1B2C3",
+      "is_activated": false,
+      "order": 36,
+      "tariff": 6
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 37,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "pmast_02@example.com",
+      "session_id": "cs_test_pc_mast_02"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 37,
+    "fields": {
+      "code": "PC-MAST-D4E5F6",
+      "is_activated": false,
+      "order": 37,
+      "tariff": 6
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 38,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "pmast_03@example.com",
+      "session_id": "cs_test_pc_mast_03"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 38,
+    "fields": {
+      "code": "PC-MAST-G7H8I9",
+      "is_activated": false,
+      "order": 38,
+      "tariff": 6
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 39,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "pmast_04@example.com",
+      "session_id": "cs_test_pc_mast_04"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 39,
+    "fields": {
+      "code": "PC-MAST-J1K2L3",
+      "is_activated": false,
+      "order": 39,
+      "tariff": 6
+    }
+  },
+  {
+    "model": "web.order",
+    "pk": 40,
+    "fields": {
+      "total_sum": "900.00",
+      "is_paid": true,
+      "user_email": "pmast_05@example.com",
+      "session_id": "cs_test_pc_mast_05"
+    }
+  },
+  {
+    "model": "web.code",
+    "pk": 40,
+    "fields": {
+      "code": "PC-MAST-M4N5O6",
+      "is_activated": false,
+      "order": 40,
+      "tariff": 6
     }
   }
 ]

@@ -15,9 +15,9 @@ def profile_avatar(instance, filename):
 
 
 class UserModel(EmailAbstractUser):
-    code = models.OneToOneField("web.Code", related_name="users", on_delete=models.CASCADE, null=True, blank=True) # ---------------> TO DELETE BEFORE PROD!!!!!!!!!!
+    code = models.OneToOneField("web.Code", related_name="users", on_delete=models.CASCADE, null=True)
     phone = models.CharField(max_length=13, validators=[MinLengthValidator(13)], blank=True, null=True)
-    avatar = models.ImageField(upload_to=profile_avatar, max_length=300, blank=True, storage=MediaCloudinaryStorage(), default="base_icon_k7nhiw")
+    avatar = models.ImageField(upload_to=profile_avatar, max_length=850, blank=True, storage=MediaCloudinaryStorage(), default="user_avatars/ava_npuh8l")
     last_activity = models.DateTimeField(null=True, blank=True)
     telegram_chat_id = models.CharField(null=True, blank=True)
 

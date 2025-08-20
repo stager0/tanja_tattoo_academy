@@ -2,17 +2,18 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4639fde9-0a5a-4a88-9a19-3da64f97d63d" data-blockingmode="auto" type="text/javascript"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}GodArtAcademy{% endblock %}</title>
+  <title>{% block title %}GodArtSchool{% endblock %}</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&family=Roboto:wght@400;500&family=Megrim&display=swap"  type="text/plain" data-cookieconsent="marketing"
       rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"  type="text/plain" data-cookieconsent="marketing">
   <link rel="stylesheet" href="{% static 'css/platform-student.css' %}">
   <link rel="stylesheet" href="{% static 'css/platform-student-responsive.css' %}">
   {% block styles %}{% endblock %}
@@ -21,9 +22,9 @@
 <div class="platform-wrapper">
   <aside class="sidebar">
     <div class="sidebar-header">
-        {% block logo %}
-            <a href="{% url 'dashboard' %}" class="logo">GodArt<span>Tattoo</span></a>
-        {% endblock %}
+      {% block logo %}
+        <a href="{% url 'dashboard' %}" class="logo">GodArt<span>Tattoo</span></a>
+      {% endblock %}
     </div>
     <nav class="main-menu">
       <a href="{% url 'dashboard' %}" id="nav-dashboard"><i class="fas fa-home"></i> Головна</a>
@@ -45,6 +46,13 @@
       </a>
       <a href="{% url 'profile' %}" id="nav-profile"><i class="fas fa-user-circle"></i> Профіль</a>
     </nav>
+    <div class="sidebar-footer" style="padding: 20px; margin-top: auto; text-align: center; line-height: 1.8;">
+      <a href="{% url 'agb' %}" style="font-size: 0.8rem; color: #888; display: block;">AGB</a>
+      <a href="{% url 'impressum' %}" style="font-size: 0.8rem; color: #888; display: block;">Impressum</a>
+      <a href="{% url 'datenschutzerklarung' %}" style="font-size: 0.8rem; color: #888; display: block;">Datenschutzerklärung</a>
+      <a href="javascript:void(0)" onclick="Cookiebot.show()"
+         style="font-size: 0.8rem; color: #888; display: block; margin-top: 5px; font-weight: 600;">Cookie-Einstellungen</a>
+    </div>
   </aside>
 
   <main class="main-content">

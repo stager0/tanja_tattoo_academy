@@ -1398,3 +1398,309 @@ h2::after {
         font-size: 1.8rem;
     }
 }
+.developer-credit {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.developer-credit p {
+    display: inline-block;
+    background-color: var(--bg-dark);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid var(--border-color);
+    font-size: 1rem;
+    color: var(--text-medium);
+    transition: all 0.3s ease;
+}
+
+.developer-credit p:hover {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+.developer-credit a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.developer-credit a:hover {
+    color: var(--primary-orange);
+}
+.email-warning-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background-color: rgba(255, 69, 0, 0.05);
+    border: 1px solid rgba(255, 69, 0, 0.2);
+    border-left: 4px solid var(--primary-orange);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.email-warning-box .icon {
+    font-size: 1.5rem;
+    color: var(--primary-orange);
+    margin-top: 3px;
+}
+
+.email-warning-box .text p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-medium);
+    text-align: left;
+}
+
+.email-warning-box .text p strong {
+    color: var(--text-light);
+}
+.email-confirm-highlight {
+    background-color: rgba(255, 69, 0, 0.05);
+    border: 1px solid var(--primary-orange);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px !important;
+    animation: pulse-border 2.5s infinite;
+}
+
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(255, 69, 0, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 69, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 69, 0, 0); }
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.preloader-content {
+    text-align: center;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid var(--border-color);
+    border-top-color: var(--primary-orange);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 25px auto;
+}
+
+/* Новий стиль для тексту */
+.preloader-text {
+    color: var(--text-medium);
+    font-size: 1rem;
+    max-width: 400px;
+    line-height: 1.6;
+    animation: fadeIn 1s 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.cross-promo-section {
+    background-color: var(--bg-surface);
+    padding: 60px 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.cross-promo-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.promo-icon {
+    font-size: 3rem;
+    color: var(--primary-orange);
+}
+
+.promo-text {
+    flex-grow: 1;
+}
+
+.promo-text h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.promo-text p {
+    color: var(--text-medium);
+    max-width: 500px;
+}
+
+.promo-action .btn {
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .cross-promo-content {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .promo-text p {
+        margin: 0 auto;
+    }
+}
+/* --- Фінальні стилі для "Вау" Прелоадера з текстом --- */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.logo-loader-text {
+    /* Базові стилі, які працюють без кастомних шрифтів */
+    font-family: 'Times New Roman', serif;
+    font-size: 3.5rem;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-medium);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    transition: all 0.7s ease-out;
+}
+
+/* Коли JS додасть клас .fonts-loaded, застосуються фірмові шрифти */
+.logo-loader-text.fonts-loaded .logo-part-godart {
+    font-family: var(--font-logo);
+    font-size: 4rem;
+}
+.logo-loader-text.fonts-loaded .logo-part-brand {
+    font-family: var(--font-primary);
+    font-weight: 900;
+    font-size: 3rem;
+    -webkit-text-stroke: 1px var(--primary-orange);
+}
+.logo-loader-text.fonts-loaded .logo-part-brand-piercing {
+    font-family: var(--font-primary);
+    font-weight: 900;
+    font-size: 3rem;
+    -webkit-text-stroke: 1px #4D94FF; /* Синій для пірсингу */
+}
+
+/* Анімація "цифрового шуму" та появи */
+.logo-loader-text {
+    animation: text-flicker 3s linear forwards;
+}
+
+@keyframes text-flicker {
+    0% {
+        opacity: 0;
+        text-shadow: 0 0 10px var(--text-medium);
+    }
+    30% {
+        opacity: 1;
+        text-shadow: 0 0 15px var(--text-medium);
+    }
+    100% {
+        opacity: 1;
+        -webkit-text-stroke: 1px transparent; /* Прибираємо контур в кінці */
+        color: var(--text-light); /* Робимо текст білим */
+    }
+}
+
+/* Анімація заповнення кольором для слова "Tattoo" або "Piercing" */
+.logo-loader-text.fonts-loaded .logo-part-brand,
+.logo-loader-text.fonts-loaded .logo-part-brand-piercing {
+    animation: text-flicker 3s linear forwards,
+               fill-in-color 1.5s ease-out 2s forwards;
+}
+
+@keyframes fill-in-color {
+    from {
+        color: transparent;
+    }
+    to {
+        color: var(--primary-orange); /* Заповнюємо помаранчевим */
+    }
+}
+
+/* Для пірсингу - заповнюємо синім */
+.logo-loader-text.fonts-loaded .logo-part-brand-piercing {
+    animation-name: text-flicker, fill-in-color-piercing;
+}
+
+@keyframes fill-in-color-piercing {
+    from {
+        color: transparent;
+    }
+    to {
+        color: #4D94FF; /* Заповнюємо синім */
+    }
+}
+/* --- Адаптивність для прелоадера на мобільних пристроях --- */
+@media (max-width: 480px) {
+    .logo-loader-text {
+        /* Зменшуємо базовий розмір шрифту */
+        font-size: 2.5rem;
+    }
+
+    /* Зменшуємо розміри фірмових шрифтів, коли вони завантажаться */
+    .logo-loader-text.fonts-loaded .logo-part-godart {
+        font-size: 3rem;
+    }
+    .logo-loader-text.fonts-loaded .logo-part-brand,
+    .logo-loader-text.fonts-loaded .logo-part-brand-piercing {
+        font-size: 2rem;
+    }
+}

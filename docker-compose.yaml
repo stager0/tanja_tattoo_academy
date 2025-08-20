@@ -19,6 +19,10 @@ services:
     
     command: sh -c "/app/entrypoint.sh"
 
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - MAILJET_API_KEY=${MAILJET_API_KEY}

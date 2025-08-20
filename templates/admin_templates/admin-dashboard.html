@@ -42,9 +42,11 @@
         {% if min_progress_tattoo %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
-              <strong>{{ min_progress_tattoo.get_full_name }} -------> {{ min_progress_tattoo.progress|default:0 }}%📉</strong>
+              <strong>{{ min_progress_tattoo.get_full_name }}
+                -------> {{ min_progress_tattoo.progress|default:0 }}%📉</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill error" style="width: {{ min_progress_tattoo.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill error"
+                     style="width: {{ min_progress_tattoo.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
@@ -52,15 +54,19 @@
         {% if max_progress_tattoo and max_progress_tattoo != min_progress_tattoo %}
           <div class="list-item">
             <div class="item-info" style="width: 100%;">
-              <strong>{{ max_progress_tattoo.get_full_name }} -------> {{ max_progress_tattoo.progress|default:0 }}%🏆</strong>
+              <strong>{{ max_progress_tattoo.get_full_name }}
+                -------> {{ max_progress_tattoo.progress|default:0 }}%🏆</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill success" style="width: {{ max_progress_tattoo.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill success"
+                     style="width: {{ max_progress_tattoo.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
         {% endif %}
         {% if not min_progress_tattoo %}
-          <div class="list-item"><div class="item-info"><strong>Немає студентів тату...</strong></div></div>
+          <div class="list-item">
+            <div class="item-info"><strong>Немає студентів тату...</strong></div>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -76,7 +82,8 @@
             <div class="item-info" style="width: 100%;">
               <strong>{{ min_progress_piercing.get_full_name }} -------> {{ min_progress_piercing.progress|default:0 }}%📉</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill error" style="width: {{ min_progress_piercing.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill error"
+                     style="width: {{ min_progress_piercing.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
@@ -86,13 +93,16 @@
             <div class="item-info" style="width: 100%;">
               <strong>{{ max_progress_piercing.get_full_name }} -------> {{ max_progress_piercing.progress|default:0 }}%🏆</strong>
               <div class="progress-bar-bg">
-                <div class="progress-bar-fill success" style="width: {{ max_progress_piercing.progress|default:0 }}%;"></div>
+                <div class="progress-bar-fill success"
+                     style="width: {{ max_progress_piercing.progress|default:0 }}%;"></div>
               </div>
             </div>
           </div>
         {% endif %}
         {% if not min_progress_piercing %}
-          <div class="list-item"><div class="item-info"><strong>Немає студентів пірсингу...</strong></div></div>
+          <div class="list-item">
+            <div class="item-info"><strong>Немає студентів пірсингу...</strong></div>
+          </div>
         {% endif %}
       </div>
     </div>

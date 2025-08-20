@@ -262,7 +262,6 @@ h2::after {
 .play-button i { font-size: 2rem; color: var(--text-light); margin-left: 5px; }
 
 /* --- 6. Tariffs Section --- */
-#tariffs { overflow: visible; }
 .tariffs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 .tariff-card { background: linear-gradient(145deg, var(--bg-surface), #111); padding: 40px 30px 30px 30px; border-radius: 20px; text-align: center; border: 1px solid var(--border-color); transition: transform var(--transition-fast), box-shadow var(--transition-fast); display: flex; flex-direction: column; position: relative; }
 .tariff-card.pro { border: 1px solid var(--primary-cyan); transform: scale(1.05); } /* UPDATED */

@@ -5,7 +5,7 @@
   <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="4639fde9-0a5a-4a88-9a19-3da64f97d63d" data-blockingmode="auto" type="text/javascript"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Підтвердження видалення - GodArt Tattoo School</title>
+  <title>Підтвердження видалення користувача - GodArt Tattoo School</title>
   <link rel="icon" href="{% static 'imgs/woman-with-red-hair-she-is-a-tattoo-master.png' %}" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,14 @@
           background-color: #171717;
           color: #F5F5F5;
           display: flex;
-          flex-direction: column;
+          flex-direction: column; /* Щоб footer був внизу */
           align-items: center;
           justify-content: center;
           min-height: 100vh;
           font-family: 'Montserrat', sans-serif;
           margin: 0;
           padding: 20px;
-          box-sizing: border-box;
+          box-sizing: border-box; /* Важливо для правильних відступів */
       }
 
       /* Головний контейнер для центрування */
@@ -73,12 +73,18 @@
           margin-bottom: 10px;
       }
 
-      .object-info {
+      p.user-info {
           color: #fff;
-          font-size: 1.1rem;
+          font-size: 1.2rem;
           font-weight: 600;
-          margin-bottom: 30px;
+          margin-bottom: 5px;
           word-break: break-word;
+      }
+
+      .email-info {
+          color: #a3a3a3;
+          font-size: 1rem;
+          margin-bottom: 30px;
       }
 
       .warning-text {
@@ -90,7 +96,7 @@
       /* Група кнопок */
       .btn-group {
           display: flex;
-          flex-wrap: wrap;
+          flex-wrap: wrap; /* Дозволяє переносити елементи */
           gap: 15px;
           width: 100%;
       }
@@ -98,7 +104,7 @@
       /* Базовий стиль для кнопок */
       .btn {
           display: inline-block;
-          flex: 1;
+          flex: 1; /* Кнопки займатимуть рівний простір */
           padding: 15px;
           border-radius: 10px;
           text-decoration: none;
@@ -164,16 +170,19 @@
   <div class="confirm-box">
 
     <div class="confirm-icon">
-      <i class="fas fa-exclamation-triangle"></i>
-    </div>
+      <i class="fas fa-user-slash"></i></div>
 
     <h1>Підтвердьте видалення</h1>
 
     <p>
-      Ви впевнені, що хочете назавжди видалити об'єкт:
+      Ви впевнені, що хочете назавжди видалити користувача? Усі пов'язані дані (чати, домашні завдання тощо) також
+      будуть видалені.
     </p>
-    <p class="object-info">
-      "{{ object.lecture_name }}"?
+    <p class="user-info">
+      {{ object.get_full_name }}
+    </p>
+    <p class="email-info">
+      ({{ object.email }})
     </p>
 
     <p class="warning-text">Цю дію неможливо буде скасувати.</p>
@@ -181,9 +190,10 @@
     <form method="POST">
       {% csrf_token %}
       <div class="btn-group">
-        <a href="{% url 'admin_lecture_list' %}?course=tattoo" class="btn btn-secondary">Ні, повернутись</a>
+        <a href="{% url 'admin_students' %}?course=tattoo&q=&progress=&view=list" class="btn btn-secondary">Ні,
+          повернутись</a>
 
-        <button type="submit" class="btn btn-primary">Так, видалити</button>
+        <button type="submit" class="btn btn-primary">Так, видалити користувача</button>
       </div>
     </form>
   </div>

@@ -21,16 +21,14 @@
       background-color: #B42318;
   }
 
-  /* --- НОВЕ ВИПРАВЛЕННЯ ДЛЯ ДОВГИХ EMAIL --- */
   .student-info-cell {
-    /* Цей трюк допомагає flex-елементам правильно обробляти контент, що переповнюється */
+
     min-width: 0;
   }
   .student-info-cell p {
-    /* Це правило змушує довгі слова (як email) переноситись на новий рядок */
+
     word-break: break-all;
   }
-  /* --- КІНЕЦЬ ВИПРАВЛЕННЯ --- */
 </style>
 
 <div class="filter-tabs" style="margin-bottom: 25px;">

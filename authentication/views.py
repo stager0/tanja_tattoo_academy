@@ -27,16 +27,16 @@ class RegisterView(CreateView):
         print(form)
         with transaction.atomic():
             try:
-                code_obj = form.cleaned_data.get("code", None)
-                if code_obj:
-                    code_obj.is_activated = True
-                    code_obj.activated_date = timezone.now()
-                    code_obj.save()
+                code_obj = form.cleaned_data.get("code")
+
+                code_obj.is_activated = True
+                code_obj.activated_date = timezone.now()
+                code_obj.save()
 
                 email = form.cleaned_data.get("email", "")
                 full_name = form.cleaned_data.get("first_name", "") + " " + form.cleaned_data.get("last_name", "")
                 if email and full_name:
-                    send_after_register_email(email=email, full_name=full_name)
+                    send_after_register_email(email=email, full_name=full_name, direction=code_obj.tariff.direction)
 
                 self.object = form.save()
 
@@ -47,8 +47,10 @@ class RegisterView(CreateView):
                 if mentor:
                     mentor_chat_id = mentor.telegram_chat_id if mentor.telegram_chat_id else None
                     if mentor_chat_id:
-                        send_message_in_telegram(chat_id=mentor_chat_id,
-                                                 text=f"Юзер '{full_name}' тільки що зареєструвався на платформі.")
+                        send_message_in_telegram(
+                            chat_id=mentor_chat_id,
+                            text=f"Юзер '{full_name}' ({code_obj.tariff.direction}) тільки що зареєструвався на платформі."
+                        )
                 return super().form_valid(form)
             except Exception as e:
                 print(e)
@@ -57,7 +59,7 @@ class RegisterView(CreateView):
                 return response
 
     def form_invalid(self, form):
-        print("Форма не валидна")
+        print("Form is Invalid")
         print(form.errors)
         return super().form_invalid(form)
 

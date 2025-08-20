@@ -16,6 +16,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    command: sh -c "/app/entrypoint.sh"
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - MAILJET_API_KEY=${MAILJET_API_KEY}

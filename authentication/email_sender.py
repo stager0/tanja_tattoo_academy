@@ -139,10 +139,11 @@ def send_password_change_email(email: str, full_name: str, activation_code: str)
     mailjet.send.create(data=data)
 
 
-def send_email_subscribe_code(email: str, code: str, full_name: str):
+def send_email_subscribe_code(email: str, code: str, full_name: str, direction: str = "tattoo"):
+    course_direction = "Piercing" if direction == "piercing" else "Tattoo"
     register_link = urljoin("https://" + (os.getenv("HOST")), "/accounts/register")
     current_year = datetime.now().year
-    app_name_academy = "GodArt Tattoo Academy"
+    app_name_academy = f"GodArt {course_direction} School"
 
     text_part = f"""
     Вітаємо у {app_name_academy}, {full_name}!
@@ -272,11 +273,13 @@ def send_email_subscribe_code(email: str, code: str, full_name: str):
     mailjet.send.create(data=data)
 
 
-def send_after_register_email(email: str, full_name: str):
+def send_after_register_email(email: str, full_name: str, direction: str):
+    academy_direction = "Piercing" if direction == "piercing" else "Tattoo"
+
     kit_form_link = urljoin("https://" + (os.getenv("HOST")), "/platform/box_application/")
     dashboard_link = urljoin("https://" + (os.getenv("HOST")), "/platform/dashboard/")
     current_year = datetime.now().year
-    app_name_academy = "GodArt Tattoo Academy"
+    app_name_academy = f"GodArt {academy_direction} School"
 
     text_part = f"""
     Ласкаво просимо до Академії, {full_name}!
@@ -285,11 +288,11 @@ def send_after_register_email(email: str, full_name: str):
 
     Перейти до навчання: {dashboard_link}
 
-    Якщо ваш тариф передбачає тату-бокс, не забудьте заповнити заявку на його отримання.
+    Якщо ваш тариф передбачає Start-бокс, не забудьте заповнити заявку на його отримання.
     Заповнити форму для боксу: {kit_form_link}
 
     Бажаємо натхнення!
-    Команда {app_name}
+    Команда {app_name_academy}
     """
 
     html_part = f"""
@@ -346,7 +349,7 @@ def send_after_register_email(email: str, full_name: str):
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                     <tr>
                                         <td align="center" style="font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; color: #f5f5f5; padding-bottom: 10px;">
-                                            Не забудьте про ваш Тату-Бокс!
+                                            Не забудьте про ваш Start-Бокс!
                                         </td>
                                     </tr>
                                     <tr>
@@ -392,7 +395,7 @@ def send_after_register_email(email: str, full_name: str):
                         "Name": full_name
                     }
                 ],
-                "Subject": f"Ласкаво просимо до {app_name}!",
+                "Subject": f"Ласкаво просимо до {app_name_academy}!",
                 "TextPart": text_part,
                 "HTMLPart": html_part
             }

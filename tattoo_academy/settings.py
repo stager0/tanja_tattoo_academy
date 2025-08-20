@@ -30,10 +30,7 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_KEY")
 
 HOST = os.getenv("HOST")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ["godart-school.com", "www.godart-school.com"]
+ALLOWED_HOSTS = [HOST, f"www.{HOST}"] if HOST else []
 
 CSRF_TRUSTED_ORIGINS = [
     f"https://{HOST}",

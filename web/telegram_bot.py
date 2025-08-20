@@ -54,7 +54,7 @@ def webhook_telegram(request, token: str = None):
                         return JsonResponse({"status": "ok"})
                 if "@" in text and ".com" in text:
                     user = UserModel.objects.filter(Q(telegram_chat_id=chat_id) | Q(email=text.strip().lower())).first()
-                    if user:
+                    if user and not user.telegram_chat_id:
                         user.telegram_chat_id = chat_id
                         user.save()
                         if not user.is_superuser:
@@ -85,6 +85,15 @@ def webhook_telegram(request, token: str = None):
                                 "Якщо ви ще не з нами — приєднуйтесь до курсу за посиланням:\n"
                                 f"https://{os.getenv('HOST')}\n\n"
                                 "✨ Стартуйте свій шлях у світі тату вже сьогодні!"
+                            )
+                        )
+                        return JsonResponse({"status": "ok"})
+                    elif user.telegram_chat_id:
+                        bot.send_message(
+                            chat_id=chat_id,
+                            text=(
+                                "😔 Цей акаунт вже прив’язаний до іншого профілю.\n\n"
+                                "Якщо ти вважаєш, що сталася помилка — напиши в підтримку."
                             )
                         )
                         return JsonResponse({"status": "ok"})

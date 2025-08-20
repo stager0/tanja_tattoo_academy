@@ -41,14 +41,14 @@ class Code(models.Model):
 class LendingImage(models.Model):
     name = models.CharField(max_length=20)
     direction = models.CharField(max_length=30, null=True)
-    image = models.ImageField(upload_to="lending_images/", storage=MediaCloudinaryStorage(), blank=True, null=True)
+    image = models.ImageField(upload_to="lending_images/", max_length=350, storage=MediaCloudinaryStorage(), blank=True, null=True)
 
 
 class LendingData(models.Model):
     direction = models.CharField(max_length=15)
     lecture_name = models.CharField(max_length=80)
     lecture_description = models.CharField(max_length=500)
-    preview = models.ImageField("lending_images/", storage=MediaCloudinaryStorage(), blank=True, null=True)
+    preview = models.ImageField("lending_images/", max_length=350, storage=MediaCloudinaryStorage(), blank=True, null=True)
     hello_video_id = models.CharField(max_length=300, blank=True, null=True)
 
 
@@ -64,7 +64,7 @@ def upload_message_image(instance, filename):
 # for chat
 class Message(models.Model):
     chat = models.ForeignKey(Chat, related_name="messages", on_delete=models.CASCADE)
-    text = models.CharField(max_length=512, null=False, blank=False)
+    text = models.CharField(max_length=1012, null=False, blank=False)
     user = models.ForeignKey(UserModel, related_name="messages", on_delete=models.CASCADE)
     image = models.ImageField(upload_to=upload_message_image, max_length=300, storage=MediaCloudinaryStorage(), blank=True, null=True)
     date = models.DateTimeField(default=timezone.now, null=True, blank=True)
@@ -79,12 +79,12 @@ class DirectionsEnum(models.TextChoices):
 
 # Lectures
 class Lecture(models.Model):
-    lecture_name = models.CharField(max_length=100)
-    under_name = models.CharField(max_length=60)
+    lecture_name = models.CharField(max_length=150)
+    under_name = models.CharField(max_length=160)
     position_number = models.IntegerField(blank=True, null=True)
     video_url = models.URLField(unique=False)
-    lecture = models.CharField(max_length=712, blank=True, null=True, default="До цього уроку наразі немає лекції.")
-    homework = models.CharField(max_length=400, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
+    lecture = models.CharField(max_length=2012, blank=True, null=True, default="До цього уроку наразі немає лекції.")
+    homework = models.CharField(max_length=900, blank=True, null=True, default="До цього уроку наразі немає ДЗ.")
     direction = models.CharField(max_length=15, choices=DirectionsEnum.choices, default=DirectionsEnum.tattoo)
 
 def upload_homework_images(instance, filename):
@@ -103,7 +103,7 @@ class HomeWork(models.Model):
 
 class HomeWorkReview(models.Model):
     homework = models.ForeignKey(HomeWork, related_name="reviews", on_delete=models.CASCADE)
-    review_text = models.CharField(max_length=155, blank=True, null=True)
+    review_text = models.CharField(max_length=455, blank=True, null=True)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     data = models.DateTimeField(default=timezone.now, null=True, blank=True)
 
@@ -116,6 +116,7 @@ class StartBox(models.Model):
     comments = models.CharField(max_length=200, blank=True, null=True)
     is_sent = models.BooleanField(default=False, blank=True, null=True)
     sent_date = models.DateTimeField(blank=True, null=True)
+    direction = models.CharField(max_length=30, null=True)
     created_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
 
 

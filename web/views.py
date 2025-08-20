@@ -9,10 +9,11 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q, Count, Max, OuterRef, Subquery, FloatField, IntegerField
-from django.db.models.functions import Cast
+from django.db.models.functions import Cast, Coalesce
 from django.http import HttpResponseRedirect, Http404, HttpResponse, HttpResponseServerError, JsonResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.template.loader import render_to_string
@@ -24,10 +25,11 @@ from django.views.decorators.csrf import csrf_exempt
 from dotenv import load_dotenv
 
 from authentication.email_sender import send_email_subscribe_code
-from web.forms import BoxApplicationForm, ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, LectureEditForm
+from web.forms import BoxApplicationForm, ProfileForm, ChatForm, IndexForm, LectureHomeworkUserForm, ReviewTaskForm, \
+    LectureEditForm, LendingChangeForm
 from authentication.generators import generate_subscribe_code
 from web.models import Message, Lecture, HomeWork, StartBox, Chat, UserModel, HomeWorkReview, \
-    SubscribeTariff, Order, Code
+    SubscribeTariff, Order, Code, LendingData, LendingImage
 from web.telegram_bot import send_message_in_telegram
 
 load_dotenv()
@@ -83,7 +85,7 @@ class CreateCheckoutSessionView(View):
                     'price_data': {
                         'currency': 'eur',
                         'product_data': {
-                            'name': f"Оплата за підписку '{price.name}' для \n Tanja Tattoo Academy"
+                            'name': f"Оплата за підписку '{price.user_friendly_name}' для \n GodArt Tattoo & Piercing School"
                         },
                         'unit_amount': int(price.price * 100)
                     },
@@ -92,7 +94,7 @@ class CreateCheckoutSessionView(View):
                 mode='payment',
                 success_url=request.build_absolute_uri(reverse("success_pay")),
                 cancel_url=request.build_absolute_uri(reverse("cancel_pay")),
-                metadata={"order_id": order.pk, "tariff": tariff},
+                metadata={"order_id": order.pk, "tariff": price.name, "action": tariff},
                 customer_creation='always'
             )
             response = HttpResponseRedirect(checkout_session.url)
@@ -127,19 +129,20 @@ class Webhook(View):
                 order.is_paid = True
                 order.save()
 
+                tariff_name = event["data"]["object"]["metadata"]["tariff"]
+                tariff_obj = SubscribeTariff.objects.get(name=tariff_name)
+
                 new_code = Code.objects.create(
                     code=generate_subscribe_code(),
                     order=order,
-                    tariff=event["data"]["object"]["metadata"]["tariff"]
+                    tariff=tariff_obj
                 )
                 full_name = event["data"]["object"]["customer_details"]["name"]
-                print("before", email, new_code.code, full_name)
             except Exception as e:
-                print(f"Ошибка при обработке вебхука, но оплата прошла: {e}")
+                print(f"Webhook error was occurred, but pay was successfully: {e}")
                 return HttpResponse(status=500)
             else:
-                print(email, new_code.code, full_name)
-                send_email_subscribe_code(email=email, code=new_code.code, full_name=full_name)
+                send_email_subscribe_code(email=email, code=new_code.code, full_name=full_name, direction=tariff_obj.direction)
 
         return HttpResponse(status=200)
 
@@ -236,19 +239,21 @@ class DashboardView(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         user = self.request.user
+        user_direction = user.code.tariff.direction
         chat, created = Chat.objects.get_or_create(user=user)
         new_sms = count_new_messages(user_chat_obj=chat, user=user)
         lectures_done_ids = HomeWorkReview.objects.filter(
             homework__user=user,
             homework__was_checked=True,
             is_approved=True
-        ).values_list("homework__lecture_id", flat=True).distinct()
-        lectures_count = Lecture.objects.count()
+        ).values_list("id", flat=True).distinct()
+
+        lectures_count = Lecture.objects.filter(direction=user_direction).count()
 
         next_lesson = Lecture.objects.filter(~Q(id__in=lectures_done_ids)).order_by("position_number").first()
 
         if lectures_count > 0:
-            percent_done = int((len(lectures_done_ids) / lectures_count) * 100)
+            percent_done = round((len(lectures_done_ids) / lectures_count) * 100, 1)
         else:
             percent_done = 0
 
@@ -332,14 +337,16 @@ class ChatView(LoginRequiredMixin, generic.FormView):
             message.from_admin = True
             user_chat = message.chat.user
             if user_chat and user_chat.telegram_chat_id:
-                send_message_in_telegram(chat_id=user_chat.telegram_chat_id,
-                                         text="🧑‍🏫 Ментор щойно надіслав вам повідомлення. Загляньте в особистий кабінет 😊")
+                send_message_in_telegram(
+                    chat_id=user_chat.telegram_chat_id,
+                    text="🧑‍🏫 Ментор щойно надіслав вам повідомлення. Загляньте в особистий кабінет 😊"
+                )
         else:
             message.is_read_user = True
             mentor = UserModel.objects.filter(is_superuser=True).first()
             if mentor and mentor.telegram_chat_id:
                 send_message_in_telegram(chat_id=mentor.telegram_chat_id, text=(
-                    f"🧑‍🎓 Учень {message.user.get_full_name()} надіслав повідомлення!\n\n"
+                    f"🧑‍🎓 Учень {message.user.get_full_name()}({message.user.code.tariff.direction}) надіслав повідомлення!\n\n"
                     f"📝 \"{message.text}\"\n\n"
                     f"🔗 Відкрийте чат на платформі, щоб відповісти."
                 ))
@@ -458,7 +465,8 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         user = self.request.user
         context = super().get_context_data(**kwargs)
         chat = get_object_or_404(Chat, user=user)
-        lectures = Lecture.objects.order_by("position_number").filter(position_number__gte=1)
+        user_direction = user.code.tariff.direction
+        lectures = Lecture.objects.filter(direction=user_direction).order_by("position_number").filter(position_number__gte=1)
         new_sms = count_new_messages(user_chat_obj=chat, user=user)
 
         homework_review_count = HomeWorkReview.objects.filter(
@@ -470,8 +478,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         current_page = self.request.GET.get("page")
         context["page_obj"] = paginator.get_page(current_page)
 
-        homework_done_posit_nums = HomeWorkReview.objects.filter(homework__user=user, homework__was_checked=True,
-                                                                 is_approved=True).values_list(
+        homework_done_posit_nums = HomeWorkReview.objects.filter(homework__user=user, homework__was_checked=True, is_approved=True).values_list(
             "homework__lecture__position_number", flat=True
         )
         current_task = lectures.filter(~Q(position_number__in=homework_done_posit_nums)).first()
@@ -481,20 +488,21 @@ class CourseView(LoginRequiredMixin, generic.FormView):
 
         context["new_sms"] = new_sms
         context["homework_review_count"] = homework_review_count
-        context["current_task"] = current_task.position_number or (
-            None if homework_review_count == lectures.count() else 1)
+        context["current_task"] = current_task.position_number or (None if homework_review_count == lectures.count() else 1)
         context["chat_pk"] = chat.pk
         context["current_id"] = self.kwargs["pk"] if self.kwargs["pk"] else 1
-        context["user_tasks_waiting_for_review_pos_nums"] = HomeWork.objects.filter(user=user,
-                                                                                    was_checked=False).values_list(
-            "lecture__position_number", flat=True)
+        context["user_tasks_waiting_for_review_pos_nums"] = HomeWork.objects.filter(
+            user=user,
+            was_checked=False).values_list(
+            "lecture__position_number", flat=True
+        )
 
         position_number = self.kwargs.get("pk")
         if position_number:
             try:
-                lecture_data = lectures.filter(position_number=position_number).first()
+                lecture_data = lectures.filter(position_number=position_number).filter(direction=user_direction).first()
                 if not lecture_data or not lecture_data.position_number:
-                    lecture_data = Lecture.objects.order_by("position_number").filter(position_number__gte=1).first()
+                    lecture_data = Lecture.objects.order_by("position_number").filter(position_number__gte=1).filter(direction=user_direction).first()
                 context["lecture"] = lecture_data
             except Exception or not lecture_data:
                 raise Http404("Лекції не знайдені.")
@@ -536,7 +544,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         lecture_positional_number = self.kwargs.get("pk", "")
 
         if lecture_positional_number:
-            lecture_obj = get_object_or_404(Lecture, position_number=int(lecture_positional_number))
+            lecture_obj = get_object_or_404(Lecture, position_number=int(lecture_positional_number), direction=user.code.tariff.direction)
         if not lecture_positional_number:
             return HttpResponseRedirect(reverse("course", kwargs={"pk": 1}))
         if not text and not image:
@@ -557,7 +565,7 @@ class CourseView(LoginRequiredMixin, generic.FormView):
         mentor = UserModel.objects.filter(is_superuser=True).first()
         if mentor and mentor.telegram_chat_id:
             send_message_in_telegram(chat_id=mentor.telegram_chat_id, text=(
-                f"📬 Учень {user.get_full_name()} щойно надіслав домашнє завдання для уроку «{lecture_obj.lecture_name}».\n"
+                f"📬 Учень {user.get_full_name()}({user.code.tariff.direction}) щойно надіслав домашнє завдання для уроку «{lecture_obj.lecture_name}».\n"
                 "Перевірте, будь ласка, його в особистому кабінеті."
             ))
 
@@ -565,16 +573,17 @@ class CourseView(LoginRequiredMixin, generic.FormView):
 
     def get_success_url(self):
         pk = int(self.kwargs.get("pk"))
+        user_direction = self.request.user.code.tariff.direction
         try:
-            next_lecture = Lecture.objects.filter(position_number__gt=pk).order_by("position_number").first()
+            next_lecture = Lecture.objects.filter(position_number__gt=pk, direction=user_direction).order_by("position_number").first()
             if next_lecture:
                 return reverse("course", kwargs={"pk": next_lecture.position_number})
             else:
-                next_lecture = Lecture.objects.filter(position_number=pk).first()
+                next_lecture = Lecture.objects.filter(direction=user_direction, position_number=pk).first()
                 if next_lecture:
                     return reverse("course", kwargs={"pk": next_lecture.position_number})
                 else:
-                    next_lecture = Lecture.objects.order_by("-position_number").first()
+                    next_lecture = Lecture.objects.filter(direction=user_direction).order_by("-position_number").first()
                     return reverse("course", kwargs={"pk": next_lecture.position_number})
         except Exception as e:
             print(e)
@@ -592,18 +601,17 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
         user = self.request.user
         context = super().get_context_data(**kwargs)
 
-        context["tariff"] = user.code.tariff
+        context["tariff"] = user.code.tariff.user_friendly_name
+        context["tariff_name"] = user.code.tariff.name
         context["user"] = user
         context["start_box"] = StartBox.objects.filter(user=user).first() if user.code.start_box_coupon_is_activated else None
 
         if StartBox.objects.filter(user=user) and user.code.tariff != "base":
-            context[
-                "sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
-        elif not StartBox.objects.filter(user=user) and user.code.tariff != "base":
+            context["sms"] = "Ви вже заповнили цю форму. Ви можете отримати StartBox лише один раз. Якщо ви її заповнили недавно то очікуйте смс від пошти. Ми відправимо вам бокс як можна швидше."
+        elif not StartBox.objects.filter(user=user) and user.code.tariff.direction != "base":
             context["sms"] = "Заповніть анкету нижче, і ми відправимо вам набір з усім необхідним для початку роботи."
-        elif user.code.tariff == "base":
-            context[
-                "sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
+        elif user.code.tariff.direction == "base":
+            context["sms"] = "Нажаль ваш тариф не включає стартовий бокс але ви можете звернутися до ментора в чаті якщо захотіли придбати."
 
         if not user.is_superuser:
             try:
@@ -617,7 +625,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
         return context
 
     def form_valid(self, form):
-        if self.request.user.code.tariff != "base":
+        if self.request.user.code.tariff.name != "base":
             with transaction.atomic():
                 if not self.request.user.code.start_box_coupon_is_activated:
                     full_name = form.cleaned_data.get("full_name", "")
@@ -632,18 +640,30 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
                         phone=phone,
                         address=address,
                         comments=comments,
-                        user=user
+                        user=user,
+                        direction=user.code.tariff.direction
                     )
 
                     code = user.code
                     code.start_box_coupon_is_activated = True
                     code.save()
 
+                    Message.objects.create(
+                       chat=Chat.objects.filter(user=user).first(),
+                        text=(
+                            "📨 Ми отримали вашу заявку на Start-бокс!\n"
+                            "Як тільки відправлення буде здійснено — я повідомлю вас у цей чат. Дякуємо за довіру! 🧡"
+                        ),
+                        user=UserModel.objects.filter(is_superuser=True).first(),
+                        is_read_admin=True,
+                        from_admin=True
+                    )
+
                     if user and user.telegram_chat_id:
                         send_message_in_telegram(
                             chat_id=user.telegram_chat_id,
                             text=(
-                                "📨 Ми отримали вашу заявку на тату-бокс!\n"
+                                "📨 Ми отримали вашу заявку на Start-бокс!\n"
                                 "Як тільки відправлення буде здійснено — я повідомлю вас у цей чат. Дякуємо за довіру! 🧡"
                             )
                         )
@@ -653,7 +673,7 @@ class BoxApplicationView(LoginRequiredMixin, generic.FormView):
                         send_message_in_telegram(
                             chat_id=mentor.telegram_chat_id,
                             text=(
-                                f"📬 Учень {user.get_full_name()} щойно надіслав анкету на тату-бокс.\n"
+                                f"📬 Учень {user.get_full_name()} щойно надіслав анкету на Start-бокс ({code.tariff.direction}).\n"
                                 "Перевірте, будь ласка, нову заявку у кабінеті."
                             )
                         )
@@ -672,6 +692,11 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         query_param = self.request.GET.get("type")
+        course = self.request.GET.get("course")
+
+        if course:
+            queryset = queryset.filter(user__code__tariff__direction=course)
+
         if query_param == "waiting_for_a_check":
             return queryset.filter(was_checked=False).select_related("lecture", "user")
 
@@ -688,15 +713,29 @@ class AdminReviewListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         approved_ids = HomeWorkReview.objects.filter(is_approved=True).values_list("homework_id", flat=True)
         count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
-        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
-        approved = HomeWork.objects.filter(was_checked=True, id__in=approved_ids).count()
-        all_ = HomeWork.objects.count()
+
+        count_of_waiting_tattoo = HomeWork.objects.filter(was_checked=False, lecture__direction="tattoo").count()
+        approved_tattoo = HomeWork.objects.filter(was_checked=True, id__in=approved_ids, lecture__direction="tattoo").count()
+        all_tattoo = HomeWork.objects.filter(lecture__direction="tattoo").count()
+
+        count_of_waiting_piercing = HomeWork.objects.filter(was_checked=False, lecture__direction="piercing").count()
+        approved_piercing = HomeWork.objects.filter(was_checked=True, id__in=approved_ids, lecture__direction="piercing").count()
+        all_piercing = HomeWork.objects.filter(lecture__direction="piercing").count()
 
         context["type"] = self.request.GET.get("type")
-        context["count_of_waiting"] = count_of_waiting
-        context["count_of_approved"] = approved
-        context["all"] = all_
+
+        context["count_of_waiting_tattoo"] = count_of_waiting_tattoo
+        context["count_of_approved_tattoo"] = approved_tattoo
+        context["all_tattoo"] = all_tattoo
+
+        context["count_of_waiting_piercing"] = count_of_waiting_piercing
+        context["count_of_approved_piercing"] = approved_piercing
+        context["all_piercing"] = all_piercing
+
+        context["count_of_waiting"] = HomeWork.objects.filter(was_checked=False).count()
+
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
 
@@ -739,8 +778,10 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         from_admin=True
                     )
                     if user and user.telegram_chat_id:
-                        send_message_in_telegram(chat_id=user.telegram_chat_id,
-                                                 text="✅ Ваше завдання було прийняте ментором! 🎉\n Для перегляду деталей перейдіть на платформу.🧡")
+                        send_message_in_telegram(
+                            chat_id=user.telegram_chat_id,
+                            text="✅ Ваше завдання було прийняте ментором! 🎉\n Для перегляду деталей перейдіть на платформу.🧡"
+                        )
                 else:
                     Message.objects.create(
                         chat=chat,
@@ -750,8 +791,10 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                         from_admin=True
                     )
                     if user and user.telegram_chat_id:
-                        send_message_in_telegram(chat_id=user.telegram_chat_id,
-                                                 text="❌ На жаль, завдання не було прийняте ментором. 😔\n Для перегляду деталей перейдіть на платформу.🧡")
+                        send_message_in_telegram(
+                            chat_id=user.telegram_chat_id,
+                            text="❌ На жаль, завдання не було прийняте ментором. 😔\n Для перегляду деталей перейдіть на платформу.🧡"
+                        )
 
             return super().form_valid(form)
 
@@ -766,15 +809,16 @@ class AdminReviewTaskView(LoginRequiredMixin, generic.FormView):
                 homework = HomeWork.objects.get(pk=pk)
                 context["homework"] = homework
             except HomeWork.DoesNotExist:
-                return reverse("admin_review_list") + "?type=waiting_for_a_check"
+                return reverse("admin_review_list") + "?course=tattoo&type=waiting_for_a_check"
 
         context["count_of_new_messages"] = count_of_new_messages
         context["count_of_waiting"] = count_of_waiting
+        context["direction"] = homework.user.code.tariff.direction
 
         return context
 
     def get_success_url(self):
-        return reverse("admin_review_list") + "?type=waiting_for_a_check"
+        return reverse("admin_review_list") + f"?course=tattoo&type=waiting_for_a_check"
 
 
 @method_decorator(redirect_user, name="dispatch")
@@ -794,7 +838,8 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
         )
 
         last_messages = Message.objects.filter(id__in=latest_ids).select_related("user").order_by("-date")
-        lectures_count = Lecture.objects.count()
+        lectures_tattoo_count = Lecture.objects.filter(direction="tattoo").count()
+        lectures_piercing_count = Lecture.objects.filter(direction="piercing").count()
 
         query_counting = HomeWorkReview.objects.filter(
             homework__user_id=OuterRef("pk"),
@@ -803,22 +848,41 @@ class AdminDashboardView(LoginRequiredMixin, generic.TemplateView):
             c=Count("id")
         ).values("c")
 
-        users_with_progress = UserModel.objects.filter(is_superuser=False).annotate(
-            progress=(
-                    Cast(Subquery(query_counting), IntegerField()) * 100 / lectures_count
+
+        users_with_progress_tattoo = UserModel.objects.filter(is_superuser=False).filter(code__tariff__direction="tattoo").annotate(
+            progress=Coalesce(
+                Cast(
+                    Subquery(query_counting),
+                    IntegerField()
+                ) * 100 / lectures_tattoo_count,
+                0
+            )
+        )
+        users_with_progress_piercing = UserModel.objects.filter(is_superuser=False).filter(code__tariff__direction="piercing").annotate(
+            progress=Coalesce(
+                Cast(
+                    Subquery(query_counting),
+                    IntegerField()
+                ) * 100 / lectures_piercing_count,
+                0
             )
         )
 
-        min_user_progress = users_with_progress.order_by("progress").first()
+        min_user_progress_tattoo = users_with_progress_tattoo.order_by("progress").first()
+        max_user_progress_tattoo = users_with_progress_tattoo.order_by("-progress").filter(progress__lt=100).first()
 
-        max_user_progress = users_with_progress.order_by("-progress").first()
+        min_user_progress_piercing = users_with_progress_piercing.order_by("progress").first()
+        max_user_progress_piercing = users_with_progress_piercing.order_by("-progress").filter(progress__lt=100).first()
+
 
         context["count_of_waiting"] = count_of_waiting
         context["waiting_for_check"] = waiting_for_check
         context["count_of_new_messages"] = count_of_new_messages
         context["last_messages"] = last_messages
-        context["min_progress"] = min_user_progress
-        context["max_progress"] = max_user_progress
+        context["min_progress_tattoo"] = min_user_progress_tattoo
+        context["max_progress_tattoo"] = max_user_progress_tattoo
+        context["min_progress_piercing"] = min_user_progress_piercing
+        context["max_progress_piercing"] = max_user_progress_piercing
 
         return context
 
@@ -837,35 +901,43 @@ class AdminStudentsView(LoginRequiredMixin, generic.ListView):
 
         context["count_of_waiting"] = count_of_waiting
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        all_lectures = Lecture.objects.count()
+        all_lectures_tattoo = Lecture.objects.filter(direction="tattoo").count()
+        all_lectures_piercing = Lecture.objects.filter(direction="piercing").count()
         search_query = self.request.GET.get("q")
+        course = self.request.GET.get("course")
         progres_query = self.request.GET.get("progress")
+
+        if course and course != "all":
+            queryset = queryset.filter(code__tariff__direction=course)
 
         homeworks_done_counter_query = HomeWorkReview.objects.filter(
             homework__user_id=OuterRef("pk"),
             is_approved=True
         ).values("homework__user_id").annotate(c=Count("id")).values("c")
 
-        queryset = queryset.filter(is_superuser=False).annotate(
-            progress=Cast(Subquery(homeworks_done_counter_query), FloatField()) * 100 / all_lectures
-        )
+        if all_lectures_tattoo > 0 and all_lectures_piercing > 0:
+            queryset = queryset.filter(is_superuser=False).filter(code__tariff__direction=course).annotate(
+                progress=Cast(Subquery(homeworks_done_counter_query), FloatField()) * 100 / (all_lectures_tattoo if course == "tattoo" else all_lectures_piercing)
+            )
 
-        if search_query:
-            queryset = queryset.filter(Q(email__icontains=search_query) | Q(first_name__icontains=search_query) | Q(
-                last_name__icontains=search_query))
+            if search_query:
+                queryset = queryset.filter(Q(email__icontains=search_query) | Q(first_name__icontains=search_query) | Q(
+                    last_name__icontains=search_query))
 
-        if progres_query:
-            if progres_query == "low":
-                queryset = queryset.filter(Q(progress__lte=30) | Q(progress=None))
-            if progres_query == "medium":
-                queryset = queryset.filter(progress__gte=30).filter(progress__lte=80)
-            if progres_query == "high":
-                queryset = queryset.filter(progress__gte=80)
+            if progres_query:
+                if progres_query == "low":
+                    queryset = queryset.filter(Q(progress__lte=30) | Q(progress=None))
+                if progres_query == "medium":
+                    queryset = queryset.filter(progress__gte=30).filter(progress__lte=80)
+                if progres_query == "high":
+                    queryset = queryset.filter(progress__gte=80)
+
 
         return queryset.select_related("chats", "code")
 
@@ -914,17 +986,26 @@ class AdminBoxesView(LoginRequiredMixin, generic.ListView):
                 else:
                     Message.objects.create(
                         chat=chat,
-                        text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚 Посилка вже в дорозі до тебе за вказаною адресою!",
+                        text="📦 Привіт! Ми відправили твій Start Box з приладдям 🖋️🚚 Посилка вже в дорозі до тебе за вказаною адресою!",
                         user=box.user,
                         is_read_admin=True,
                         from_admin=True
                     )
-                    user = self.request.user
+                    user = box.user
                     if user and user.telegram_chat_id:
                         send_message_in_telegram(chat_id=user.telegram_chat_id,
-                                                 text="📦 Привіт! Ми відправили твій Start Box з тату-приладдям 🖋️🚚\n Посилка вже в дорозі до тебе за вказаною адресою!")
+                                                 text="📦 Привіт! Ми відправили твій Start Box з приладдям 🖋️🚚\n Посилка вже в дорозі до тебе за вказаною адресою!")
 
         return HttpResponseRedirect(reverse("admin_boxes") + "?type=active")
+
+
+@method_decorator(redirect_user, name="dispatch")
+class AdminUserDelete(LoginRequiredMixin, generic.DeleteView):
+    model = UserModel
+    template_name = "admin_templates/delete_user.html"
+
+    def get_success_url(self):
+        return reverse("admin_students") + "?course=tattoo&q=&progress=&view=list"
 
 
 @method_decorator(redirect_user, name="dispatch")
@@ -934,6 +1015,15 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
     context_object_name = "lectures"
     queryset = Lecture.objects.order_by("position_number")
 
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        course = self.request.GET.get("course")
+        if course:
+            queryset = queryset.filter(direction=course)
+        return queryset
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
@@ -941,13 +1031,14 @@ class AdminLectureList(LoginRequiredMixin, generic.ListView):
 
         context["count_of_waiting"] = count_of_waiting
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
 
     def post(self, request, *args, **kwargs):
         if "delete" in request.POST:
             Lecture.objects.get(pk=request.POST.get("pk")).delete()
-            return redirect("admin_lecture_list")
+            return f"{redirect('admin_lecture_list')}?course=tattoo"
         return super().get(request, *args, **kwargs)
 
 
@@ -964,19 +1055,22 @@ class AdminLectureCreateView(LoginRequiredMixin, generic.CreateView):
         count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
 
         context["count_of_waiting"] = count_of_waiting
-        context["position_number"] = max(position_number) + 1
+        context["position_number"] = (max(position_number) if position_number else 0) + 1
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
 
     def get_initial(self):
         initial = super().get_initial()
-        last_position_number = int(Lecture.objects.aggregate(max_position=Max("position_number"))["max_position"] or 1)
-        initial["position_number"] = last_position_number + 1
+        course = self.request.GET.get("course", "tattoo")
+        last_position_number = int(Lecture.objects.filter(direction=course).aggregate(max_position=Max("position_number"))["max_position"] or 1)
+        initial["position_number"] = (last_position_number + 1 if last_position_number > 1 else 1)
         return initial
 
     def get_success_url(self):
-        return reverse("admin_lecture_list")
+        course = self.request.GET.get("course")
+        return f"{reverse('admin_lecture_list')}?course={course}"
 
 
 @method_decorator(redirect_user, name="dispatch")
@@ -985,7 +1079,6 @@ class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
     model = Lecture
     context_object_name = "lecture"
     form_class = LectureEditForm
-    success_url = reverse_lazy("admin_lecture_list")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -995,9 +1088,13 @@ class AdminLectureEditView(LoginRequiredMixin, generic.UpdateView):
 
         context["count_of_waiting"] = count_of_waiting
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
 
+    def get_success_url(self):
+        course = self.request.GET.get("course", "tattoo")
+        return f"{reverse('admin_lecture_list')}?course={course}"
 
 @method_decorator(redirect_user, name="dispatch")
 class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
@@ -1005,7 +1102,8 @@ class AdminLectureDelete(LoginRequiredMixin, generic.DeleteView):
     template_name = "admin_templates/admin_lecture_delete.html"
 
     def get_success_url(self):
-        return reverse("admin_lecture_list")
+        course = self.request.GET.get("course", "tattoo")
+        return f"{reverse('admin_lecture_list')}?course={course}"
 
 
 @method_decorator(redirect_user, name="dispatch")
@@ -1030,9 +1128,17 @@ class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
         ).order_by('-message_count', '-last_message_date').select_related("user")
 
         q = self.request.GET.get("q")
+        course = self.request.GET.get("course")
+        if course and course != "all":
+            queryset = queryset.filter(user__code__tariff__direction=course)
+
         if q:
             queryset = queryset.filter(
-                Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(user__email__icontains=q))
+                Q(user__first_name__icontains=q) | Q(user__last_name__icontains=q) | Q(user__email__icontains=q),
+            )
+            if course != "all":
+                queryset = queryset.filter(user__code__tariff__direction=course)
+
 
         return queryset
 
@@ -1043,8 +1149,114 @@ class AdminAllChatsView(LoginRequiredMixin, generic.ListView):
 
         context["count_of_waiting"] = count_of_waiting
         context["count_of_new_messages"] = count_of_new_messages
+        context["course_type"] = self.request.GET.get("course")
 
         return context
+
+
+@method_decorator(redirect_user, name="dispatch")
+class AdminLendingSettings(LoginRequiredMixin, generic.FormView):
+    form_class = LendingChangeForm
+    template_name = "admin_templates/landing_settings.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["course_type"] = self.request.GET.get("course", "tattoo")
+
+        context["tariff_base"] = SubscribeTariff.objects.filter(name="base").first()
+        context["tariff_pro"] = SubscribeTariff.objects.filter(name="pro").first()
+        context["tariff_master"] = SubscribeTariff.objects.filter(name="master").first()
+        context["lending_tattoo"] = LendingData.objects.filter(direction="tattoo").first()
+        context["all_images"] = LendingImage.objects.filter(direction="tattoo").order_by("id")
+
+
+        context["piercing_tariff_base"] = SubscribeTariff.objects.filter(name="base_piercing").first()
+        context["piercing_tariff_pro"] = SubscribeTariff.objects.filter(name="pro_piercing").first()
+        context["piercing_tariff_master"] = SubscribeTariff.objects.filter(name="master_piercing").first()
+        context["lending_piercing"] = LendingData.objects.filter(direction="piercing").first()
+        context["all_images_piercing"] = LendingImage.objects.filter(direction="piercing").order_by("id")
+
+        count_of_waiting = HomeWork.objects.filter(was_checked=False).count()
+        count_of_new_messages = Message.objects.filter(is_read_admin=False).count()
+
+        context["count_of_waiting"] = count_of_waiting
+        context["count_of_new_messages"] = count_of_new_messages
+
+        return context
+
+    def form_valid(self, form):
+        changed_fields = form.changed_data
+
+        changed_dict = {field: form.cleaned_data[field] for field in changed_fields}
+        course = self.request.GET.get("course", "tattoo")
+
+        try:
+            if changed_fields:
+                for key, value in changed_dict.items():
+                    if key == "tattoo_base_name":
+                        SubscribeTariff.objects.filter(name="base").update(user_friendly_name=value)
+                    elif key == "piercing_start_name":
+                        SubscribeTariff.objects.filter(name="base_piercing").update(user_friendly_name=value)
+
+                    elif key == "tattoo_base_price":
+                        SubscribeTariff.objects.filter(name="base").update(price=value)
+                    elif key == "piercing_start_price":
+                        SubscribeTariff.objects.filter(name="base_piercing").update(price=value)
+
+                    elif key == "tattoo_pro_name":
+                        SubscribeTariff.objects.filter(name="pro").update(user_friendly_name=value)
+                    elif key == "piercing_pro_name":
+                        SubscribeTariff.objects.filter(name="pro_piercing").update(user_friendly_name=value)
+
+                    elif key == "tattoo_pro_price":
+                        SubscribeTariff.objects.filter(name="pro").update(price=value)
+                    elif key == "piercing_pro_price":
+                        SubscribeTariff.objects.filter(name="pro_piercing").update(price=value)
+
+                    elif key == "tattoo_master_name":
+                        SubscribeTariff.objects.filter(name="master").update(user_friendly_name=value)
+                    elif key == "piercing_master_name":
+                        SubscribeTariff.objects.filter(name="master_piercing").update(user_friendly_name=value)
+
+                    elif key == "tattoo_master_price":
+                        SubscribeTariff.objects.filter(name="master").update(price=value)
+                    elif key == "piercing_master_price":
+                        SubscribeTariff.objects.filter(name="master_piercing").update(price=value)
+
+                    elif key == "tattoo_about_image" or key == "piercing_about_image":
+                        direction = key.split("_")[0]
+                        lending = LendingData.objects.filter(direction=direction).first()
+                        if lending.preview:
+                            lending.preview.delete(save=False)
+                        if value:
+                            lending.preview = value
+                            lending.save()
+
+                    elif key == "tattoo_trial_lesson_title" or key == "piercing_trial_lesson_title":
+                        direction = key.split("_")[0]
+                        LendingData.objects.filter(direction=direction).update(lecture_name=value)
+                    elif key == "tattoo_video_id" or key == "piercing_video_id":
+                        direction = key.split("_")[0]
+                        LendingData.objects.filter(direction=direction).update(hello_video_id=value)
+                    elif key == "tattoo_trial_lesson_text" or key == "piercing_trial_lesson_text":
+                        direction = key.split("_")[0]
+                        LendingData.objects.filter(direction=direction).update(lecture_description=value)
+
+                    elif "work" in key and isinstance(value, InMemoryUploadedFile):
+                        pk = key.split("_")[-1]
+                        lending = LendingImage.objects.filter(pk=pk, direction=key.split("_")[0]).first()
+                        if lending.image:
+                            lending.image.delete(save=False)
+                        if value:
+                            lending.image = value
+                            lending.save()
+
+        except Exception as e:
+            print(str(e))
+
+        return redirect(f"{reverse('admin_landing_settings')}?course={course}")
+
 
 
 def custom_404_view(request, exception):

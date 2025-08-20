@@ -41,14 +41,14 @@ class Code(models.Model):
 class LendingImage(models.Model):
     name = models.CharField(max_length=20)
     direction = models.CharField(max_length=30, null=True)
-    image = models.ImageField(upload_to="lending_images/", max_length=350, storage=MediaCloudinaryStorage(), blank=True, null=True)
+    image = models.ImageField(upload_to="lending_images/", max_length=350, default="404_upggja", storage=MediaCloudinaryStorage(), blank=True, null=True)
 
 
 class LendingData(models.Model):
     direction = models.CharField(max_length=15)
     lecture_name = models.CharField(max_length=80)
     lecture_description = models.CharField(max_length=500)
-    preview = models.ImageField("lending_images/", max_length=350, storage=MediaCloudinaryStorage(), blank=True, null=True)
+    preview = models.ImageField("lending_images/", max_length=350, default="404_upggja", storage=MediaCloudinaryStorage(), blank=True, null=True)
     hello_video_id = models.CharField(max_length=300, blank=True, null=True)
 
 
